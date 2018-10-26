@@ -9,7 +9,14 @@ Python 3.5.2   needed or the latest version (required by django).
 Django 2.1.2
 Pip    18.1
 
-#### Python, django in virtual environment (Tested on Linux machine, but might be good for Windows too)
+#### System globally installation
+
+Install python then run:
+> pip install django
+
+I hope it work. (Did not test it :) )
+
+#### Installation in virtual environment (Tested on Linux machine, but might be good for Windows too)
 If you don't want to have a version of python,django or whatever installed globally, then you can set up a virtual environment
 
 Run: (you need to have pip installed)
