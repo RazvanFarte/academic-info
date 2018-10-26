@@ -5,6 +5,9 @@ Proiect Colectiv. Facultate UBB Info-Engleza An 3 2018. Aplicatie management stu
 
 ### Prerequisites
 
+Python 3.5 needed or the latest version (required by django).
+
+
 ### Clone the project
 
 ### TODO Other topics to be added on the go
