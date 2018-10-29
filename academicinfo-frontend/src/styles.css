@@ -1,0 +1,49 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.toast-info {
+  background-color: #BD362F !important;
+}
+
+
+.main-body {
+  background-color: beige;
+}
+
+body {
+  padding-top: 7rem;
+}
+
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  line-height: 40px;
+  background-color: #f5f5f5;
+  padding-top: 5px;
+}
+
+img.msg {
+  height: 4em;
+}
+
+.centerImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav {
+  background-color: peru;
+}
+
+#notificationsModal .modal-body {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
