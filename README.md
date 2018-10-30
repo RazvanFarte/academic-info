@@ -3,9 +3,20 @@
 Proiect Colectiv. Facultate UBB Info-Engleza An 3 2018. Aplicatie management student-profesor: note, orar, clase etc
 
 ## Features
-* Working on it ...
+* We are still working on that
 
 ## How to install
+
+- Upgrade pip
+
+```bash
+$ pip3 install --upgrade pip
+```
+
+- create a virtual environment (macOS + linux)
+```bash
+$ virtualenv venv
+```
 
 - start the virtual environment
 ```bash
