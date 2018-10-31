@@ -53,6 +53,8 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
+import { TableComponent } from './table/table.component';
+import { CoursesListComponent } from './courses-list/courses-list.component';
 
 
 const appRoutes: Routes = [
@@ -61,6 +63,9 @@ const appRoutes: Routes = [
   },
   {
     path: 'login', component: LoginComponent
+  },
+  {
+    path: 'courses', component: CoursesListComponent
   }
 ];
 
@@ -103,7 +108,8 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-  ]
+  ],
+  declarations: []
 })
 export class MaterialModule {
 }
@@ -113,7 +119,9 @@ export class MaterialModule {
   declarations: [
     AppComponent,
     LoginComponent,
-    CommunicationComponent
+    CommunicationComponent,
+    TableComponent,
+    CoursesListComponent
   ],
   imports: [
     BrowserModule,

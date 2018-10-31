@@ -15,15 +15,19 @@
   src: url('../../assets/fonts/Bulgatti.ttf');
 }
 
-.logo {
-  font-family: Bulgatti;
+.logo-container {
   position: absolute;
   z-index: 1500;
-  margin-top: 46vh;
-  margin-left: 240vh;
-  font-size: 10vh;
+  margin-top: 40vh;
+  margin-left: 70vw;
   color: peru;
   display: inline;
+  width: 300px;
+}
+
+/deep/ .ubb-logo {
+  width: 100% !important;
+  min-width: 20vw !important;
 }
 
 
@@ -32,9 +36,7 @@
 }
 
 
-/deep/ .ubb-logo {
-  width: 30vw !important;
-}
+
 
 
 /*//////////////////////////////////////////////////////////////////
@@ -66,6 +68,7 @@
   min-width: 40vw;
   height: auto;
   margin-left: 20vw;
+  margin-top: 15vh;
   /*background-color: beige;*/
 }
 
