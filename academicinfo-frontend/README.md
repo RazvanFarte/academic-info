@@ -13,6 +13,10 @@ Go to academicinfo-frontend:
 
 Install/import the packages required:
 > npm install package.json
+or
+> npm install
+
+If `npm install` does not work try with `sudo` or with administrator command line in windows.
 
 This will generate a directory named node_modules/
 
