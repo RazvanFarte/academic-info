@@ -4,6 +4,30 @@ body {
 
 }
 
+.first-row {
+  background-color: dimgray;
+}
+
+.first-row > th {
+  border: 0.1vw solid black;
+}
+
+.second-row {
+  background-color: gray;
+}
+
+.second-row > th {
+  border: 0.1vw solid black;
+}
+
+.table-responsive {
+  overflow-x: visible !important;
+}
+
+#tableContainer {
+  overflow-x: visible !important;
+}
+
 body {
   display: -ms-flexbox;
   display: -webkit-box;

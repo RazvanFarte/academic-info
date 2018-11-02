@@ -95,7 +95,6 @@ export class LoginComponent implements OnInit {
             }
 
 
-
             if (this.failedCounter > 1) {
               this.usernameInformation.display = true;
               this.passwordInformation.display = true;

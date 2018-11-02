@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Situation} from "../shared/models/Situation";
 import {Appointment} from "../shared/models/Appointment";
-import {Student} from "../shared/models/Student";
 import {Course} from "../shared/models/Course";
 import {Meeting} from "../shared/models/Meeting";
-import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-courses-list',
@@ -18,214 +16,162 @@ export class CoursesListComponent implements OnInit {
   courses: Course[];
   appointments: Appointment[];
   situations: Situation[];
-  value = 2;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.hardCode();
-    this.meetings = this.getMeetings();
+    this.appointments = this.getAppointmentsOrdered()
+    this.meetings = this.getMeetingsOrdered();
     this.courses = this.getCoursesOrdered();
+    console.log(this.courses);
   }
 
-  getMeetingsForCourse(course: Course){
+  getAppointmentsOrdered() {
+    let appointments: Appointment[] = [];
+    this.situations
+      .map(s => s.appointment)
+      .forEach(a => {
+          if (appointments.findIndex(addedAppointment => addedAppointment.id === a.id) === -1)
+            appointments.push(a);
+        }
+      );
+    return appointments;
+  }
+
+  getMeetingCountForCourse(course: Course) {
     return this.meetings.filter(m => m.course.id === course.id).length;
-
   }
 
-  getCoursesOrdered(){
 
+  getSituationFor(meeting: Meeting, week: Appointment): Situation {
+
+    let situations = this.situations.filter(s => s.meeting.id === meeting.id)
+      .filter(s => s.appointment.id === week.id);
+
+    if ((!situations) || situations.length != 1 || (!situations[0])) {
+      return null;
+    }
+    return situations.pop();
+  }
+
+
+  getCoursesOrdered() {
     let courses: Course[] = [];
-    this.meetings.map(m => m.course)
+    this.meetings
+      .map(m => m.course)
       .forEach(c => {
-        if (courses.findIndex(addedCouse => addedCouse.id === c.id) === -1)
-          courses.push(c);
-      }
-    );
+          if (courses.findIndex(addedCourse => addedCourse.id === c.id) === -1)
+            courses.push(c);
+        }
+      );
     return courses;
   }
 
-  getMeetings(){
+  getMeetingsOrdered() {
     return this.situations
-      .filter(s => s.appointment.id === this.appointments[0].id )
+      .sort((s1, s2) => s1.meeting.id - s2.meeting.id)
+      .filter(s => s.appointment.id === this.appointments[0].id)
       .map(s => s.meeting);
   }
 
-  getSituationsForAppointment(appointment: Appointment): Situation[]{
-    return this.situations.filter(s => s.appointment.id === appointment.id);
-  }
 
   getTotalAttendances(meeting: Meeting): number {
     return this.situations.filter(s => s.meeting.id === meeting.id)
-      .filter(s => s.isPresent === true )
+      .filter(s => s.isPresent === true)
+      .length;
+  }
+
+  getRequiredAttendances(meeting: Meeting): number {
+    return this.situations.filter(s => s.meeting.id === meeting.id)
       .length;
   }
 
 
-
-
   hardCode() {
-    let week_1: Appointment = {
+    let course_baze: Course = {
       id: 1,
-      startDate: 'now',
-      endDate: 'later',
-      name: 'Week 1'
-    };
-    let week_2: Appointment = {
-      id: 2,
-      startDate: 'now',
-      endDate: 'later',
-      name: 'Week 2'
-    };
-    let week_3: Appointment = {
-      id: 3,
-      startDate: 'now',
-      endDate: 'later',
-      name: 'Week 3'
-    };
-    this.appointments = [week_1,week_2,week_3];
-
-    let student_1: Student = {
-      id: 1,
-      name: 'Dorel',
-      studyYear: 3
-    };
-
-    let course_1: Course = {
-      id: 1,
-      name: 'Baze',
+      name: 'Baze de date',
       isOptional: false,
-      isDispensable: true,
+      isDispensable: false,
       studyYear: 1,
       studySemester: 1
     };
-
-    let course_2: Course = {
-      id: 2,
-      name: 'Baze 2',
-      isOptional: false,
-      isDispensable: true,
-      studyYear: 1,
-      studySemester: 2
-    };
-
-    let meeting_1_1: Meeting = {
+    let course_map: Course = {
       id: 1,
-      type: 'Laboratory',
-      course: course_1
+      name: 'Metode avansate de programare',
+      isOptional: false,
+      isDispensable: false,
+      studyYear: 1,
+      studySemester: 1
     };
+    let course_mpp: Course = {
+      id: 1,
+      name: 'Medii de proiectare si programare',
+      isOptional: false,
+      isDispensable: false,
+      studyYear: 1,
+      studySemester: 1
+    };
+    let course_plf: Course = {
+      id: 1,
+      name: 'Programare logica si functionala',
+      isOptional: false,
+      isDispensable: false,
+      studyYear: 1,
+      studySemester: 1
+    };
+    let course_fp: Course = {
+      id: 1,
+      name: 'Fundamentele programarii',
+      isOptional: false,
+      isDispensable: false,
+      studyYear: 1,
+      studySemester: 1
+    };
+    let course_sport: Course = {
+      id: 1,
+      name: 'Sport',
+      isOptional: false,
+      isDispensable: false,
+      studyYear: 1,
+      studySemester: 1
+    };
+    let courses = [course_baze, course_fp, course_map, course_mpp, course_plf, course_sport];
+    this.situations = [];
 
-    let meeting_1_2: Meeting = {
-      id: 2,
-      type: 'Seminar',
-      course: course_1
-    };
+    for (let i = 1; i < 15; i++) {
+      let week: Appointment = {
+        id: i,
+        startDate: 'now',
+        endDate: 'later',
+        name: 'Week ' + i
+      };
 
-    let meeting_2_1: Meeting = {
-      id: 3,
-      type: 'Laboratory',
-      course: course_2
-    };
+      for (let j = 1; j < 18; j++) {
+        let type = j % 3 == 0 ? 'Seminar' :
+          (j % 3 == 1 ? 'Laboratory' : 'Workshop');
+        let meeting: Meeting = {
+          id: j,
+          type: type,
+          course: courses[j % 6]
+        };
+        let situation: Situation = {
+          student: null,
+          appointment: week,
+          meeting: meeting,
+          isPresent: ( Math.floor(Math.random() * 10) % 2  ) === 0,
+          grade: j % 10
+        };
+        if(Math.floor(Math.random() * 10) % 5 !== 0 ) {
+          this.situations.push(situation);
+        }
 
-    let meeting_2_2: Meeting = {
-      id: 4,
-      type: 'Seminar',
-      course: course_2
-    };
-
-    this.meetings = [meeting_1_1,meeting_1_2,meeting_2_1,meeting_2_2];
-
-    let situation_1_w1_sem: Situation = {
-      student: student_1,
-      appointment: week_1,
-      meeting: meeting_1_1,
-      isPresent: false,
-      grade: -1
-    };
-    let situation_1_w2_sem: Situation = {
-      student: student_1,
-      appointment: week_2,
-      meeting: meeting_1_1,
-      isPresent: false,
-      grade: -1
-    };
-    let situation_1_w3_sem: Situation = {
-      student: student_1,
-      appointment: week_3,
-      meeting: meeting_1_1,
-      isPresent: false,
-      grade: -1
-    };
-    let situation_1_w1_lab: Situation = {
-      student: student_1,
-      appointment: week_1,
-      meeting: meeting_1_2,
-      isPresent: false,
-      grade: -1
-    };
-    let situation_1_w2_lab: Situation = {
-      student: student_1,
-      appointment: week_2,
-      meeting: meeting_1_2,
-      isPresent: false,
-      grade: -1
-    };
-    let situation_1_w3_lab: Situation = {
-      student: student_1,
-      appointment: week_3,
-      meeting: meeting_1_2,
-      isPresent: false,
-      grade: -1
-    };
+      }
 
 
-    let situation_2_w1_sem: Situation = {
-      student: student_1,
-      appointment: week_1,
-      meeting: meeting_2_1,
-      isPresent: true,
-      grade: -1
-    };
-    let situation_2_w2_sem: Situation = {
-      student: student_1,
-      appointment: week_2,
-      meeting: meeting_2_1,
-      isPresent: true,
-      grade: -1
-    };
-    let situation_2_w3_sem: Situation = {
-      student: student_1,
-      appointment: week_3,
-      meeting: meeting_2_1,
-      isPresent: true,
-      grade: -1
-    };
-    let situation_2_w1_lab: Situation = {
-      student: student_1,
-      appointment: week_1,
-      meeting: meeting_2_2,
-      isPresent: true,
-      grade: -1
-    };
-    let situation_2_w2_lab: Situation = {
-      student: student_1,
-      appointment: week_2,
-      meeting: meeting_2_2,
-      isPresent: false,
-      grade: -1
-    };
-    let situation_2_w3_lab: Situation = {
-      student: student_1,
-      appointment: week_3,
-      meeting: meeting_2_2,
-      isPresent: false,
-      grade: -1
-    };
-
-    this.situations = [situation_1_w1_lab, situation_1_w1_sem, situation_1_w2_lab, situation_1_w2_sem,
-      situation_1_w3_lab, situation_1_w3_sem, situation_2_w1_lab, situation_2_w1_sem, situation_2_w2_lab,
-      situation_2_w2_sem, situation_2_w3_lab, situation_2_w3_sem];
-
+    }
   }
 
 
