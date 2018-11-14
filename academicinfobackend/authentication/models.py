@@ -64,7 +64,6 @@ class Account(AbstractBaseUser):
 
     def __unicode__(self):
         return self.email
-
     def get_full_name(self):
         return ' '.join(['self.first_name, self.last_name'])
 
