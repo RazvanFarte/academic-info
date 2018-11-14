@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'authentication',
+    'meeting',
+    'subject'
 ]
 
 MIDDLEWARE = [
@@ -102,6 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'authentication.Account'
+SUBJECT_MODEL = 'subject.Subject'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
