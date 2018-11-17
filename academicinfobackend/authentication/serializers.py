@@ -1,6 +1,16 @@
 from django.contrib.auth import update_session_auth_hash
 from rest_framework import serializers
-from authentication.models import Account
+
+
+# for example usage of the login API
+from django.contrib.auth.models import User
+
+
+# for example usage of the login API
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', "first_name", "last_name")
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -8,13 +18,13 @@ class AccountSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
-        model = Account
+        model = User
         fields = ('id', 'email', 'username', 'created_at', 'updated_at', 'first_name', 'last_name', 'user_type',
                   'faculty', 'password', 'confirm_password', )
         read_only_fields = ('created_at', 'updated_at', )
 
     def create(self, validated_data):
-        return Account.objects.create(**validated_data)
+        return User.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
 
