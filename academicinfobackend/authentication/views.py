@@ -1,5 +1,11 @@
-from rest_framework import permissions, viewsets, status
+import json
 
+import requests
+from django.http import HttpResponse
+from rest_framework import permissions, viewsets, status
+from rest_framework.views import APIView
+
+from authentication.constants import CLIENT_ID, CLIENT_SECRET, TOKEN_URI
 from authentication.serializers import AccountSerializer
 from rest_framework.response import Response
 
@@ -8,6 +14,46 @@ from oauth2_provider.contrib.rest_framework import TokenHasScope
 from rest_framework import generics
 from django.contrib.auth.models import User
 from authentication.serializers import UserSerializer
+
+
+class StudentLoginView(APIView):
+    authentication_classes = ()
+    permission_classes = ()
+
+    def post(self, request):
+        body = {
+            "grant_type": "password",
+            "username": request.data.get('username', None),
+            "password": request.data.get('password', None),
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "scope": "student",
+        }
+        headers = {
+            "Content-Type": "application/json",
+        }
+        result = requests.post(TOKEN_URI, headers=headers, data=json.dumps(body))
+        return HttpResponse(result, status=result.status_code, content_type='application/json')
+
+
+class TeacherLoginView(APIView):
+    authentication_classes = ()
+    permission_classes = ()
+
+    def post(self, request):
+        body = {
+            "grant_type": "password",
+            "username": request.data.get('username', None),
+            "password": request.data.get('password', None),
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "scope": "teacher",
+        }
+        headers = {
+            "Content-Type": "application/json",
+        }
+        result = requests.post(TOKEN_URI, headers=headers, data=json.dumps(body))
+        return HttpResponse(result, status=result.status_code, content_type='application/json')
 
 
 # for example usage of the login API
