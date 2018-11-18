@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('authentication', '0003_student_year'),
+        ('authentication', '0002_student_year'),
         ('subject', '0001_initial'),
     ]
 

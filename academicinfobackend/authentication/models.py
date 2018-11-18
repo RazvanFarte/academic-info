@@ -77,7 +77,7 @@ class Student(models.Model):
     group = models.CharField(max_length=5, null=True, blank=True, verbose_name=_("Group"))
     year = models.PositiveSmallIntegerField(name="year",
                                     null=False, default=1,
-                                    editable=True,choices=((1, "First"), (2, "Second"), (3, "Third"))
+                                    editable=True,choices=((1, "First"), (2, "Second"), (3, "Third")))
 
 
 class Teacher(models.Model):
