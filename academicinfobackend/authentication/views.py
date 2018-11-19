@@ -21,14 +21,23 @@ class StudentLoginView(APIView):
     permission_classes = ()
 
     def post(self, request):
-        body = {
-            "grant_type": "password",
-            "username": request.data.get('username', None),
-            "password": request.data.get('password', None),
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "scope": "student",
-        }
+        grant_type = request.data.get('grant_type', "password")
+        if grant_type == "password":
+            body = {
+                "grant_type": grant_type,
+                "username": request.data.get('username', None),
+                "password": request.data.get('password', None),
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "scope": "student",
+            }
+        elif grant_type == "refresh_token":
+            body = {
+                "grant_type": grant_type,
+                "refresh_token": request.data.get('refresh_token', None),
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+            }
         headers = {
             "Content-Type": "application/json",
         }
@@ -41,14 +50,23 @@ class TeacherLoginView(APIView):
     permission_classes = ()
 
     def post(self, request):
-        body = {
-            "grant_type": "password",
-            "username": request.data.get('username', None),
-            "password": request.data.get('password', None),
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "scope": "teacher",
-        }
+        grant_type = request.data.get('grant_type', "password")
+        if grant_type == "password":
+            body = {
+                "grant_type": grant_type,
+                "username": request.data.get('username', None),
+                "password": request.data.get('password', None),
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "scope": "teacher",
+            }
+        elif grant_type == "refresh_token":
+            body = {
+                "grant_type": grant_type,
+                "refresh_token": request.data.get('refresh_token', None),
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+            }
         headers = {
             "Content-Type": "application/json",
         }
