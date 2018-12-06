@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from academicinfobackend.student.models import Student
+from student.models import Student
 
 
 class Teacher(models.Model):
@@ -32,7 +32,7 @@ class Subject(models.Model):
         (DISCIPLINE_IN_ADVANCE, 'discipline_in_advance'),
     )
 
-    is_optional = models.CharField(choices=OPTIONAL_CHOICES, default=COMPULSORY, editable=False,
+    is_optional = models.CharField(max_length=64, choices=OPTIONAL_CHOICES, default=COMPULSORY, editable=False,
                                    verbose_name="subject_is_optional")
 
     teacher = models.OneToOneField(Teacher, on_delete=models.DO_NOTHING,
