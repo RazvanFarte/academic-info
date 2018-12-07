@@ -1,13 +1,18 @@
-import {Role} from './Role';
 
 export interface User {
   id: number;
+  lastLogin: string;
+  username: string;
+  email: string;
   firstName: string;
   lastName: string;
-  isActive: boolean;
-  phoneNumber: string;
-  email: string;
-  roles: Role[];
-  username: string;
-  password: string;
+  userType: number;
+  faculty: string;
+  createdAt: string;
+  updatedAt: string;
 }
+
+
+
+
+

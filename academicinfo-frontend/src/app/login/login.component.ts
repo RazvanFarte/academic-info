@@ -13,10 +13,12 @@ import {User} from '../shared/models/User';
 })
 export class LoginComponent implements OnInit {
 
-  userModel: User;
+  userModel = {
+    username: '',
+    password: ''
+  };
   loggedIn = false;
   baseURL = 'http://localhost:8080/jbugs/rest';
-  RecaptchaOptions = {theme: 'clean'};
   recaptchaResponse: any;
   errorOccurred: boolean;
   errorMessage: Error;
@@ -31,19 +33,8 @@ export class LoginComponent implements OnInit {
 
 
 
-  constructor(private userService: UserService, private router: Router, private http: HttpClient,
-              private toastrService: ToastrService) {
-    this.userModel = {
-      id: 0,
-      firstName: '',
-      lastName: '',
-      isActive: false,
-      phoneNumber: '',
-      email: '',
-      roles: [],
-      username: '',
-      password: ''
-    };
+  constructor(private userService: UserService, private router: Router, private http: HttpClient) {
+
     this.loggedIn = userService.isLoggedIn();
     this.errorOccurred = false;
     this.usernameInformation = {
@@ -61,15 +52,11 @@ export class LoginComponent implements OnInit {
     };
     this.errorMessage = null;
     this.failedCounter = 0;
+
   }
 
   ngOnInit() {
     this.usernameError = false;
-    // this.scrollDownRightEvent(5, 2,1, 200, 100);
-
-    // this.parallax.nativeElement.scrollTop = 100;
-    // this.parallax.nativeElement.scrollLeft = 200;
-
   }
 
 
@@ -129,20 +116,10 @@ export class LoginComponent implements OnInit {
     localStorage.setItem(LSKEY, this.userModel.username);
     localStorage.setItem(TOKENKEY, token);
     this.loggedIn = true;
-    this.getUsersPermissions(this.userModel.username);
   }
 
   resolved(captchaResponse: string) {
     this.recaptchaResponse = captchaResponse;
   }
 
-  getUsersPermissions(username: string) {
-    this.userService.getUsersPermissions(username).subscribe(
-      (list) => {
-        for (let i = 0; i < list.length; i++) {
-          localStorage.setItem(list[i].type, '1');
-        }
-      }
-    );
-  }
 }

@@ -19,24 +19,16 @@
       </li>
       <li class="nav-item">
 
-        <a class="nav-link" tooltip="User profile" data-placement="bottom" routerLink="user_profile" *ngIf="isUserLoggedIn()"><i class="material-icons"
+        <a class="nav-link" tooltip="User profile" data-placement="bottom" routerLink="user_profile"><i class="material-icons"
                                                                                                                                  style="font-size: 36px;margin: 3px 10px 0 20px ;">account_circle</i></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="login" *ngIf="!isUserLoggedIn()" style="font-size: 24px; margin: 3px 10px 0;"
-           translate>demo.Login</a>
+           translate>Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="users" tooltip="Users" data-placement="bottom" *ngIf="isUserLoggedIn()"><i
-          class="material-icons" style="font-size: 36px; margin: 3px 10px 0 20px;">supervisor_account</i></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="roles" *ngIf="isUserLoggedIn()"
-           style="font-size: 24px; margin: 3px 10px 0;" translate>demo.Roles</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="bugs" *ngIf="isUserLoggedIn()"
-           style="font-size: 24px; margin: 3px 10px 0;" translate>demo.Bugs</a>
+        <a class="nav-link" tooltip="Situations" data-placement="bottom" routerLink="courses"
+           style="font-size: 24px; margin: 3px 10px 0;">My Courses</a>
       </li>
     </ul>
 
@@ -52,7 +44,7 @@
       <li class="dropdown">
         <a data-target="#" href="" data-toggle="dropdown" class="dropdown-toggle"
            style="margin: 0 10px 0 0;cursor: pointer; font-size: 20px; color: #420000" translate><span
-          class="glyphicon glyphicon-globe"></span>demo.Language<b class="caret"></b></a>
+          class="glyphicon glyphicon-globe"></span>Language<b class="caret"></b></a>
         <!--
         <ul class="dropdown-menu">
           <li><img src="../assets/romaniaFlag.png" (click)="useLanguage('ro')" height="36px"
@@ -64,7 +56,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link btn btn-default" style="margin: 0 10px 0 0;cursor: pointer; font-size: 20px; color: #420000"
-           *ngIf="isUserLoggedIn()" (click)="logout()" translate><span class="glyphicon glyphicon-log-out"></span>demo.Logout</a>
+           *ngIf="isUserLoggedIn()" (click)="logout()" translate><span class="glyphicon glyphicon-log-out"></span>Logout</a>
       </li>
     </ul>
   </div>
@@ -72,7 +64,6 @@
 
 <div id="wrap" style="overflow: hidden">
   <main role="main" id="main" class="container clear-top">
-    <!-- <app-notification #notifications></app-notification> -->
     <router-outlet></router-outlet>
   </main>
 
@@ -88,5 +79,3 @@
     </div>
   </footer>
 </div>
-
-<!-- <app-notification></app-notification> -->

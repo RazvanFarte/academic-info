@@ -1,0 +1,84 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="subjectControl">
+    <mat-form-field>
+      <ng-template matStepLabel>Choose subject</ng-template>
+      <mat-select placeholder="Subject..." [formControl]="subjectControl" (selectionChange)="subjectSelected()"
+                  required>
+        <mat-option *ngFor="let subject of subjects" [value]="subject">
+          {{ subject.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="subjectControl.hasError('required')">Please choose a subject</mat-error>
+      <mat-hint> You must choose the subject for which you want to add data</mat-hint>
+    </mat-form-field>
+    <div class="button-row">
+      <button mat-raised-button matStepperNext color="primary" >Next</button>
+    </div>
+  </mat-step>
+
+
+  <mat-step [stepControl]="meetingControl">
+    <mat-form-field>
+      <ng-template matStepLabel>Choose meeting</ng-template>
+      <mat-select placeholder="Meeting..." [formControl]="meetingControl" required>
+        <mat-option *ngFor="let meeting of meetings" [value]="meeting">
+          {{ meeting.type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="meetingControl.hasError('required')">Please choose a meeting</mat-error>
+      <mat-hint> You must choose the meeting for which you want to add data</mat-hint>
+    </mat-form-field>
+    <div class="button-row">
+      <button mat-raised-button matStepperPrevious color="warn">Back</button>
+      <button mat-raised-button matStepperNext color="primary">Next</button>
+    </div>
+  </mat-step>
+
+
+  <mat-step [stepControl]="weekControl">
+    <mat-form-field>
+      <ng-template matStepLabel>Choose week</ng-template>
+      <mat-select placeholder="Week..." [formControl]="weekControl" required>
+        <mat-option *ngFor="let week of weeks" [value]="week">
+          Week {{ week }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="weekControl.hasError('required')">Please choose a week</mat-error>
+      <mat-hint> You must choose the week for which you want to add data</mat-hint>
+    </mat-form-field>
+    <div class="button-row">
+      <button mat-raised-button matStepperPrevious color="warn">Back</button>
+      <button mat-raised-button matStepperNext color="primary" [disabled]="disableSave === true"
+      (click)="tableEditable = false"
+      >Save changes</button>
+    </div>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel> Save </ng-template>
+    All changes have been saved
+    <div class="button-row">
+      <button mat-raised-button matStepperPrevious color="warn" (click)="tableEditable = true">Back</button>
+      <button mat-raised-button color="warn" (click)="stepper.reset()">Reset selection</button>
+    </div>
+  </mat-step>
+
+</mat-horizontal-stepper>
+<div class="space-giver"></div>
+
+<mat-chip-list>
+  <mat-chip color="accent" selected *ngIf="subjectControl?.touched && meetingControl?.touched">
+    {{ subjectControl.value.name }} {{ meetingControl.value.type }}
+  </mat-chip>
+  <mat-chip color="accent" selected *ngIf="weekControl?.touched">
+    Week {{ weekControl.value }}
+  </mat-chip>
+</mat-chip-list>
+<div class="main-content" *ngIf="showTable()">
+  <div class="space-giver"></div>
+  <app-situation-table [situations]="getSituations(meetingControl.value,weekControl.value)"
+                       [selection]="getNewSelection(situations)"
+                       [editable]="tableEditable"
+                       [gradeFormControls] = "getNewGradeControl(situations)"
+  ></app-situation-table>
+</div>

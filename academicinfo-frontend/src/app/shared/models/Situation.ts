@@ -1,11 +1,13 @@
-import {Appointment} from "./Appointment";
 import {Meeting} from "./Meeting";
 import {Student} from "./Student";
+import {Teacher} from "./Teacher";
 
 export class Situation {
-  student: Student;
-  appointment: Appointment;
-  meeting: Meeting;
+  id: number;
+  weekNumber: number;
   isPresent: boolean;
   grade: number;
+  meeting: Meeting;
+  student: Student;
+  teacher: Teacher;
 }

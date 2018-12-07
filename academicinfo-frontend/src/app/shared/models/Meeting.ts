@@ -1,7 +1,9 @@
-import {Course} from "./Course";
+import {Subject} from "./Subject";
+
 
 export class Meeting {
   id: number;
   type: string;
-  course: Course;
+  attendanceRequired: boolean;
+  subject: Subject;
 }

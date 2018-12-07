@@ -1,6 +1,7 @@
+import {User} from "./User";
 
-export class Student {
-  id: number;
-  name: string;
-  studyYear: number;
+export interface Student{
+  user: User;
+  group: string;
+  year: number;
 }

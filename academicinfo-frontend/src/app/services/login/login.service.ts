@@ -1,18 +1,13 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs/internal/Observable';
-import {Router} from '@angular/router';
-import {Role} from '../shared/models/Role';
-import {User} from '../shared/models/User';
-
-
-export const LSKEY = 'currentUser';
-export const TOKENKEY = 'webtoken';
+import { Injectable } from '@angular/core';
+import {LSKEY} from "../user.service";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs/internal/Observable";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class LoginService {
 
   baseURL = 'http://localhost:port/app';
 
