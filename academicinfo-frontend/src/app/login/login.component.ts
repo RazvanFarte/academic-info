@@ -110,6 +110,10 @@ export class LoginComponent implements OnInit {
       this.loggedIn = false;
       this.errorOccurred = true;
     });
+    //TODO remove below
+    this.router.navigate(['/courses']);
+    localStorage.setItem(LSKEY, 'aa');
+    localStorage.setItem(TOKENKEY, 'aa');
   }
 
   login(token: string) {

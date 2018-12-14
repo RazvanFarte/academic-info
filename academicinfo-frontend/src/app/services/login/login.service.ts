@@ -15,6 +15,7 @@ export class LoginService {
   }
 
   validateUserCredentials(username: string, password: string): Observable<any> {
+    console.log("aaaaa")
     let body = {
       'username': username,
       'password': password

@@ -15,9 +15,13 @@ export class CourseService {
   private meetings: Meeting[];
   private situations: Situation[];
   private students: Student[];
+  private initialized: boolean = false;
 
   constructor() {
+  if(this.initialized === true)
+    return;
 
+    this.initialized = true;
     this.subjects = [];
     this.meetings = [];
     this.situations = [];
@@ -476,8 +480,8 @@ export class CourseService {
       };
       const student: Student = {
         user: user,
-        group: "923",
-        year: 2
+        group: "" + (i % 5 + 1),
+        year: i % 3 + 1
       };
       this.students.push(student);
     }
@@ -506,14 +510,7 @@ export class CourseService {
       teacher: teacher
     };
 
-    const meeting: Meeting = {
-      id: 0,
-      type: "Laboratory",
-      attendanceRequired: true,
-      subject: subject
-    };
-
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10; i++) {
       let subject: Subject = {
         id: i,
         name: "Course name " + i,
@@ -524,13 +521,13 @@ export class CourseService {
       let meeting_1: Meeting = {
         id: i * 10,
         type: "Seminar",
-        attendanceRequired: i % 10 !== 0,
+        attendanceRequired: i % 2 === 0,
         subject: subject
       };
       let meeting_2: Meeting = {
         id: i * 10 + 1,
         type: "Laboratory",
-        attendanceRequired: i % 15 !== 0,
+        attendanceRequired: i % 2 === 0,
         subject: subject
       };
 
@@ -541,11 +538,12 @@ export class CourseService {
         meeting_3 = {
           id: i * 10 + 2,
           type: "Workshop",
-          attendanceRequired: i % 3 !== 0,
+          attendanceRequired: i % 2 === 0,
           subject: subject
         };
         this.meetings.push(meeting_3);
       }
+    }
 
 
       for (let j = 1; j < 15; j++) {
@@ -595,6 +593,11 @@ export class CourseService {
 
 
   getSituationsSorted(meeting: Meeting, weekNumber: number): Situation[] {
+    if(! meeting || ! weekNumber){
+      return this.situations;
+    }
+
+
     return this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === weekNumber)
       .sort((s1, s2) => s1.student.user.lastName > s2.student.user.lastName ? 1 : -1);
   }

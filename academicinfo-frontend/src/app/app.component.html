@@ -14,12 +14,12 @@
   <div class="collapse navbar-collapse " id="navbarsExampleDefault">
     <ul class="nav navbar-nav " style="margin-top: .5em;">
       <li>
-        <a class="nav-link" tooltip="Home" data-placement="bottom" routerLink="home"><i class="material-icons"
+        <a class="nav-link" tooltip="Home" data-placement="bottom" routerLink="home" ><i class="material-icons"
                                                                                         style="font-size: 36px;margin: 3px 10px 0 20px;">home</i></a>
       </li>
       <li class="nav-item">
 
-        <a class="nav-link" tooltip="User profile" data-placement="bottom" routerLink="user_profile"><i class="material-icons"
+        <a class="nav-link" tooltip="User profile" data-placement="bottom" routerLink="user_profile" *ngIf="isUserLoggedIn()"><i class="material-icons"
                                                                                                                                  style="font-size: 36px;margin: 3px 10px 0 20px ;">account_circle</i></a>
       </li>
       <li class="nav-item">
@@ -28,7 +28,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" tooltip="Situations" data-placement="bottom" routerLink="courses"
-           style="font-size: 24px; margin: 3px 10px 0;">My Courses</a>
+           style="font-size: 24px; margin: 3px 10px 0;" *ngIf="isUserLoggedIn()">My Courses</a>
       </li>
     </ul>
 

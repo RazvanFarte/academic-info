@@ -1,4 +1,8 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
+
+<button mat-raised-button color="primary" [hidden]="enableShowAllButton === false"
+        (click)="showTableForAll()"
+>Show for all</button>
+<mat-horizontal-stepper *ngIf="enableSelectionStepper === true" [linear]="true" #stepper>
   <mat-step [stepControl]="subjectControl">
     <mat-form-field>
       <ng-template matStepLabel>Choose subject</ng-template>
@@ -48,8 +52,8 @@
     </mat-form-field>
     <div class="button-row">
       <button mat-raised-button matStepperPrevious color="warn">Back</button>
-      <button mat-raised-button matStepperNext color="primary" [disabled]="disableSave === true"
-      (click)="tableEditable = false"
+      <button mat-raised-button matStepperNext color="primary" [disabled]="enableSaveSelection === false"
+              (click)="tableEditable = false"
       >Save changes</button>
     </div>
   </mat-step>
@@ -66,7 +70,7 @@
 </mat-horizontal-stepper>
 <div class="space-giver"></div>
 
-<mat-chip-list>
+<mat-chip-list *ngIf="enableSelectionStepper === true">
   <mat-chip color="accent" selected *ngIf="subjectControl?.touched && meetingControl?.touched">
     {{ subjectControl.value.name }} {{ meetingControl.value.type }}
   </mat-chip>
@@ -80,5 +84,6 @@
                        [selection]="getNewSelection(situations)"
                        [editable]="tableEditable"
                        [gradeFormControls] = "getNewGradeControl(situations)"
+                       [displayedColumns]= "getDisplayedColumns()"
   ></app-situation-table>
 </div>

@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { CommunicationComponent } from './communication/communication.component';
-import {RouterModule, Routes} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, RouterModule, RouterStateSnapshot, Routes, UrlTree} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -53,9 +53,14 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
+
 import { TableComponent } from './table/table.component';
 import { SituationTableComponent } from './situation-table/situation-table.component';
-import { ProfessorSituationComponent } from './professor-situation/professor-situation.component';
+import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
+import {Observable} from "rxjs/Observable";
+import {LSKEY} from "./services/user.service";
+
+
 
 
 const appRoutes: Routes = [
@@ -63,10 +68,10 @@ const appRoutes: Routes = [
     path: '', pathMatch: 'full', redirectTo: '/login'
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login', component: LoginComponent,
   },
   {
-    path: 'courses', component: ProfessorSituationComponent
+    path: 'courses', component: TeacherSituationComponent
   }
 ];
 
@@ -122,7 +127,7 @@ export class MaterialModule {
     CommunicationComponent,
     TableComponent,
     SituationTableComponent,
-    ProfessorSituationComponent
+    TeacherSituationComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +138,8 @@ export class MaterialModule {
     RecaptchaModule.forRoot(),
     RecaptchaFormsModule,
     MaterialModule,
+    MatTableModule,
+    MatSortModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

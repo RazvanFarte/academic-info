@@ -1,19 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {Meeting} from "../shared/models/Meeting";
-import {FormControl, Validators} from '@angular/forms';
-import {CourseService} from "../services/course/course.service";
+import {FormControl, Validators} from "@angular/forms";
 import {Subject} from "../shared/models/Subject";
-import {Teacher} from "../shared/models/Teacher";
 import {SelectionModel} from "@angular/cdk/collections";
+import {CourseService} from "../services/course/course.service";
 import {Situation} from "../shared/models/Situation";
+import {Meeting} from "../shared/models/Meeting";
+import {Teacher} from "../shared/models/Teacher";
 
 @Component({
-  selector: 'app-professor-situation',
-  templateUrl: './professor-situation.component.html',
-  styleUrls: ['./professor-situation.component.css']
+  selector: 'app-teacher-situation',
+  templateUrl: './teacher-situation.component.html',
+  styleUrls: ['./teacher-situation.component.css']
 })
-export class ProfessorSituationComponent implements OnInit {
-
+export class TeacherSituationComponent implements OnInit {
   public weeks: number[];
   public meetings: Meeting[];
   public subjects: Subject[];
@@ -21,16 +20,21 @@ export class ProfessorSituationComponent implements OnInit {
   weekControl: FormControl;
   subjectControl: FormControl;
   meetingControl: FormControl;
-  disableSave: boolean;
   tableEditable: boolean;
-
+  displayedColumns: string[];
+  enableShowAllButton: boolean;
+  enableSelectionStepper: boolean;
+  enableSaveSelection: boolean;
+  showAllButtonClicked: boolean;
 
   constructor(public courseService: CourseService) {
   }
 
   ngOnInit() {
     this.tableEditable = true;
-    this.disableSave = false;
+    this.enableShowAllButton = true;
+    this.enableSaveSelection = true;
+    this.enableSelectionStepper = true;
     const teacher: Teacher = {
       user: {
         id: 0,
@@ -62,7 +66,10 @@ export class ProfessorSituationComponent implements OnInit {
   }
 
   showTable() {
-    return this.weekControl.touched && this.subjectControl.touched && this.meetingControl.touched;
+    return this.showAllButtonClicked || (
+      this.weekControl.touched
+      && this.subjectControl.touched
+      && this.meetingControl.touched);
   }
 
   getSituations(meeting: Meeting, week: number): Situation[] {
@@ -74,9 +81,34 @@ export class ProfessorSituationComponent implements OnInit {
     return new SelectionModel<Situation>(true, situations.filter(s => s.isPresent === true));
   }
 
+  getDisplayedColumns() {
+    if(this.showAllButtonClicked === true)
+      return ['name', 'year', 'group', 'subject','meeting', 'is_present', 'grade', 'email'];
+    return ['name', 'year', 'group', 'is_present', 'grade', 'email'];
+  }
+
   getNewGradeControl(situations: Situation[]): FormControl[] {
-    let result = situations.map( s => new FormControl(s.grade));
+    let result = situations.map(s => new FormControl(s.grade));
     return result;
   }
 
+  getMeeting(): Meeting {
+    if (this.weekControl.touched)
+      return this.meetingControl.value;
+    return null;
+  }
+
+  getWeek(): number {
+    if (this.weekControl.touched)
+      return this.weekControl.value;
+    return null;
+  }
+
+  showTableForAll() {
+    this.showAllButtonClicked = true;
+    this.enableSelectionStepper = false;
+    this.enableShowAllButton = false;
+  }
+
 }
+
