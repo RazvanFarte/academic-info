@@ -1,10 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {LSKEY, TOKENKEY, UserService} from '../services/user.service';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
 import {Error, Information, Warning} from '../communication/communication.component';
-import {User} from '../shared/models/User';
+import {login_properties} from "../shared/properties/login-properties";
+import {ACCESS_TOKEN, LoginService, REFRESH_TOKEN} from "../services/login/login.service";
 
 @Component({
   selector: 'app-login',
@@ -17,26 +15,18 @@ export class LoginComponent implements OnInit {
     username: '',
     password: ''
   };
-  loggedIn = false;
-  baseURL = 'http://localhost:8080/jbugs/rest';
   recaptchaResponse: any;
-  errorOccurred: boolean;
   errorMessage: Error;
-  usernameError: boolean;
   usernameInformation: Information;
   passwordInformation: Information;
   failedLoginWarning: Warning;
   failedCounter: number;
-  @ViewChild('scrollMe') scrollContainer: ElementRef;
-  @ViewChild('parallax') parallax: ElementRef;
-  @ViewChild('container-login-username') containerUsername: ElementRef;
 
+  constructor(private loginService: LoginService,
+              private router: Router) {}
 
-
-  constructor(private userService: UserService, private router: Router, private http: HttpClient) {
-
-    this.loggedIn = userService.isLoggedIn();
-    this.errorOccurred = false;
+  ngOnInit() {
+    this.failedCounter = 0;
     this.usernameInformation = {
       message: 'Username was generated based on your first and last names. Please contact the administrator if forgotten',
       display: false
@@ -51,77 +41,41 @@ export class LoginComponent implements OnInit {
       display: false
     };
     this.errorMessage = null;
-    this.failedCounter = 0;
-
-  }
-
-  ngOnInit() {
-    this.usernameError = false;
   }
 
 
   submitForm() {
-    this.errorOccurred = false;
-    this.loggedIn = true;
 
-    this.http.post(this.baseURL + '/captcha', this.recaptchaResponse).subscribe((response) => {
-      if (response['success'] === true) {
-        this.userService.validateUserCredentials(this.userModel.username,
-          this.userModel.password).subscribe(
-          (credentials_response) => {
-              this.login(credentials_response.token);
-              localStorage.setItem('id', credentials_response.id);
-              this.loggedIn = true;
-              this.router.navigate(['./user_profile']);
-          },
-          (error) => {
-            this.errorOccurred = true;
-            this.errorMessage = error['error'];
-            if (this.errorMessage.id === 1404) {
-              this.failedCounter++;
-            }
+    let loginData;
+    if(this.userModel.username.includes("scs")){
+      loginData = login_properties.student_login;
+    } else {
+      loginData = login_properties.teacher_login;
+    }
+
+    loginData.params.username = this.userModel.username;
+    loginData.params.password = this.userModel.password;
 
 
-            if (this.failedCounter > 1) {
-              this.usernameInformation.display = true;
-              this.passwordInformation.display = true;
-            }
-
-            if (this.failedCounter > 2) {
-              this.failedLoginWarning.display = true;
-            }
-            this.loggedIn = false;
+    this.loginService.validateUserCredentials(loginData)
+      .subscribe((response) => {
+          localStorage.setItem(ACCESS_TOKEN, response.access_token);
+          localStorage.setItem(REFRESH_TOKEN, response.refresh_token);
+          this.router.navigate(['/home']);
+      },
+        (error) => {
+          this.errorMessage = error;
+          this.failedCounter++;
+          if (this.failedCounter > 1) {
+            this.usernameInformation.display = true;
+            this.passwordInformation.display = true;
           }
-        );
-
-      } else {
-        this.loggedIn = false;
-        this.errorOccurred = true;
-      }
-    },(error)=> {
-      this.errorMessage = {
-        id: 0,
-        type: 'Backend connection refused',
-        details: [{
-          detail: 'Backend connection refused',
-          message: ''
-        }]
-      };
-      this.loggedIn = false;
-      this.errorOccurred = true;
-    });
-    //TODO remove below
-    this.router.navigate(['/courses']);
-    localStorage.setItem(LSKEY, 'aa');
-    localStorage.setItem(TOKENKEY, 'aa');
+          if (this.failedCounter > 2) {
+            this.failedLoginWarning.display = true;
+          }
+        }
+      );
   }
-
-  login(token: string) {
-    localStorage.setItem(LSKEY, this.userModel.username);
-    localStorage.setItem(TOKENKEY, token);
-    this.loggedIn = true;
-  }
-
   resolved(captchaResponse: string) {
     this.recaptchaResponse = captchaResponse;
   }

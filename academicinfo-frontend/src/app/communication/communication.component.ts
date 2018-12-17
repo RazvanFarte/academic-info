@@ -3,9 +3,8 @@ import {Router} from '@angular/router';
 
 
 export interface Error {
-  id: number;
-  type: string;
-  details: {detail: string, message: string}[];
+  error: string;
+  error_description: string;
 }
 export interface Warning {
   message: string;

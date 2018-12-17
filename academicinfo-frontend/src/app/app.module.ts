@@ -53,12 +53,8 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
-
-import { TableComponent } from './table/table.component';
 import { SituationTableComponent } from './situation-table/situation-table.component';
 import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
-import {Observable} from "rxjs/Observable";
-import {LSKEY} from "./services/user.service";
 
 
 
@@ -125,7 +121,6 @@ export class MaterialModule {
     AppComponent,
     LoginComponent,
     CommunicationComponent,
-    TableComponent,
     SituationTableComponent,
     TeacherSituationComponent
   ],

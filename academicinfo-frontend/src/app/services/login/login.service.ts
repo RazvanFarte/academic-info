@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import {LSKEY} from "../user.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
 import {Router} from "@angular/router";
+
+export const ACCESS_TOKEN = 'ACCESS_TOKEN';
+export const REFRESH_TOKEN = 'REFRESH_TOKEN';
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +16,17 @@ export class LoginService {
   constructor(private router: Router,private http: HttpClient) {
   }
 
-  validateUserCredentials(username: string, password: string): Observable<any> {
-    console.log("aaaaa")
+  validateUserCredentials(loginData): Observable<any> {
     let body = {
-      'username': username,
-      'password': password
+      'username': loginData.username,
+      'password': loginData.password
     };
-    return this.http.post(this.baseURL + '/login',body);
+    return this.http.post(loginData.url,body);
   }
 
   isLoggedIn() {
-    let username = localStorage.getItem(LSKEY);
-    return !!username;
+    let access_token = localStorage.getItem(ACCESS_TOKEN);
+    return !!access_token || access_token != '';
   }
 
   logout(username: String):Observable<any>{
