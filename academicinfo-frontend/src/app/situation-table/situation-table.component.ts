@@ -37,8 +37,7 @@ export class SituationTableComponent implements OnInit {
   presenceFilter;
   gradeOperationFilter;
 
-  constructor(private courseService: CourseService) {
-  }
+  constructor() {}
 
   ngOnInit() {
     this.situationsDataSource = new MatTableDataSource(this.situations);

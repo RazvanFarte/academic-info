@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {Subject} from "../shared/models/Subject";
 import {SelectionModel} from "@angular/cdk/collections";
-import {CourseService} from "../services/course/course.service";
 import {Situation} from "../shared/models/Situation";
 import {Meeting} from "../shared/models/Meeting";
 import {Teacher} from "../shared/models/Teacher";
+import {LoginService} from "../services/login/login.service";
+import {SituationService} from "../services/situation/situation.service";
 
 @Component({
   selector: 'app-teacher-situation',
@@ -17,6 +18,7 @@ export class TeacherSituationComponent implements OnInit {
   public meetings: Meeting[];
   public subjects: Subject[];
   public situations: Situation[];
+  public selectedSituations: Situation[];
   weekControl: FormControl;
   subjectControl: FormControl;
   meetingControl: FormControl;
@@ -26,8 +28,9 @@ export class TeacherSituationComponent implements OnInit {
   enableSelectionStepper: boolean;
   enableSaveSelection: boolean;
   showAllButtonClicked: boolean;
+  teacherID: number;
 
-  constructor(public courseService: CourseService) {
+  constructor(public situationService: SituationService, public loginService: LoginService) {
   }
 
   ngOnInit() {
@@ -50,18 +53,18 @@ export class TeacherSituationComponent implements OnInit {
       }
     };
 
-
+    this.teacherID = this.loginService.getUserId();
     this.weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     this.weekControl = new FormControl('', [Validators.required]);
     this.subjectControl = new FormControl('', [Validators.required]);
     this.meetingControl = new FormControl('', [Validators.required]);
-    this.subjects = this.courseService.getSubjects(teacher);
-
-    this.meetings = this.courseService.getMeetings(this.subjects[0]);
+    this.subjects = this.situationService.getSubjects(teacher);
+    this.situationService.getSituations(this.teacherID, null, null)
+      .subscribe(r => this.situations = r);
   }
 
   subjectSelected() {
-    this.meetings = this.courseService.getMeetings(this.subjectControl.value);
+    this.meetings = this.situationService.getMeetings(this.subjectControl.value);
     this.meetingControl.reset();
   }
 
@@ -73,8 +76,8 @@ export class TeacherSituationComponent implements OnInit {
   }
 
   getSituations(meeting: Meeting, week: number): Situation[] {
-    this.situations = this.courseService.getSituationsSorted(meeting, week);
-    return this.situations;
+    this.selectedSituations = this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === week);
+    return this.selectedSituations;
   }
 
   getNewSelection(situations: Situation[]): SelectionModel<Situation> {

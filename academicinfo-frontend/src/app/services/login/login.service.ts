@@ -33,4 +33,9 @@ export class LoginService {
 
     return this.http.post(this.baseURL + '/logout',username);
   }
+
+  getUserId(): number{
+    //TODO
+    return 1;
+  }
 }
