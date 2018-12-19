@@ -51,6 +51,12 @@ export class SituationTableComponent implements OnInit {
           return item.student.year;
         case 'group':
           return item.student.group;
+        case 'week':
+          return item.weekNumber;
+        case 'subject':
+          return item.meeting.subject.name;
+        case 'meeting':
+          return item.meeting.type;
         case 'email':
           return item.student.user.email;
         case "is_present":
@@ -77,8 +83,16 @@ export class SituationTableComponent implements OnInit {
       ok = ok === true && "" + situation.grade === this.filters.grade;
     if (this.filters.email != '')
       ok = ok === true && situation.student.user.email.toLowerCase().includes(this.filters.email.toLowerCase());
-    if (this.filters.is_present != '')
-      ok = ok === true && situation.isPresent == (this.filters.is_present == 'true');
+    if (this.filters.is_present != '') {
+      if (this.filters.is_present === 'not_required') {
+        ok = ok === true && situation.meeting.attendanceRequired === false;
+      }
+      else {
+        ok = ok === true
+          && situation.meeting.attendanceRequired === true
+          && situation.isPresent == (this.filters.is_present == 'true');
+      }
+    }
     if (this.filters.name != '')
       ok = ok === true && ((situation.student.user.lastName + " " +situation.student.user.firstName).trim().toLowerCase().includes(this.filters.name.trim().toLowerCase()));
     return ok;

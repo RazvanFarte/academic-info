@@ -83,7 +83,7 @@ export class TeacherSituationComponent implements OnInit {
 
   getDisplayedColumns() {
     if(this.showAllButtonClicked === true)
-      return ['name', 'year', 'group', 'subject','meeting', 'is_present', 'grade', 'email'];
+      return ['name', 'year', 'group', 'subject','meeting', 'week', 'is_present', 'grade', 'email'];
     return ['name', 'year', 'group', 'is_present', 'grade', 'email'];
   }
 

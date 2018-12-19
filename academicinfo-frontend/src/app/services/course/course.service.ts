@@ -5,6 +5,7 @@ import {Teacher} from "../../shared/models/Teacher";
 import {Subject} from "../../shared/models/Subject";
 import {User} from "../../shared/models/User";
 import {Student} from "../../shared/models/Student";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class CourseService {
   private initialized: boolean = false;
 
   constructor() {
-  if(this.initialized === true)
-    return;
+    if (this.initialized === true)
+      return;
 
     this.initialized = true;
     this.subjects = [];
@@ -463,9 +464,9 @@ export class CourseService {
       "Ame"
       ,
       "Amelia"
-      ];
+    ];
 
-    for(let i = 0; i < 30; i++){
+    for (let i = 0; i < 30; i++) {
       const user: User = {
         id: i,
         lastLogin: "2018-01-01",
@@ -510,24 +511,37 @@ export class CourseService {
       teacher: teacher
     };
 
+    const subjectNames = [
+      'Limbaje formale si tehnici de compilare',
+      'Programare paralela si distribuita',
+      'Proiect colectiv',
+      'Ingineria sistemelor soft',
+      'Medii de proiectare si programare',
+      'Securitate software',
+      'Prelucrarea datelor audio-video',
+      'Fundamentele programarii',
+      'Algebra computationala',
+      'Metode avansate de programare'
+    ];
+
     for (let i = 0; i < 10; i++) {
       let subject: Subject = {
         id: i,
-        name: "Course name " + i,
-        isOptional: i % 20 === 0,
+        name: subjectNames[i],
+        isOptional: i % 5 === 4,
         teacher: teacher
       };
       this.subjects.push(subject);
       let meeting_1: Meeting = {
         id: i * 10,
         type: "Seminar",
-        attendanceRequired: i % 2 === 0,
+        attendanceRequired: i % 3 === 0,
         subject: subject
       };
       let meeting_2: Meeting = {
         id: i * 10 + 1,
         type: "Laboratory",
-        attendanceRequired: i % 2 === 0,
+        attendanceRequired: i % 3 === 1,
         subject: subject
       };
 
@@ -538,62 +552,37 @@ export class CourseService {
         meeting_3 = {
           id: i * 10 + 2,
           type: "Workshop",
-          attendanceRequired: i % 2 === 0,
+          attendanceRequired: i % 3 === 2,
           subject: subject
         };
         this.meetings.push(meeting_3);
       }
     }
 
-
-      for (let j = 1; j < 15; j++) {
-        for( let k = 0; k < this.students.length; k++) {
-          let situation_0: Situation = {
-            id: j * 1000 + k * 100,
-            weekNumber: j,
-            isPresent: ((k + i + j) % 2 !== 0),
-            grade: (i + j) % 9,
-            meeting: meeting_1,
-            student: this.students[k],
+    let currentId = 0;
+    for (let i = 0; i < this.students.length; i++) {
+      for (let j = 0; j < this.meetings.length; j++) {
+        for (let k = 0; k < 15; k++) {
+          let situation: Situation = {
+            id: currentId,
+            weekNumber: k,
+            isPresent: (Math.floor(Math.random() * 10 % 2) === 0),
+            grade: Math.floor(Math.random() * 10 % 10) + 1,
+            meeting: this.meetings[j],
+            student: this.students[i],
             teacher: teacher
           };
-          let situation_1: Situation = {
-            id: j * 1000 + k * 100 + 1,
-            weekNumber: j,
-            isPresent: ((k + i + j) % 2 !== 0),
-            grade: (k + j) % 9,
-            meeting: meeting_2,
-            student: this.students[k],
-            teacher: teacher
-          };
-
-          this.situations.push(situation_0,situation_1);
-
-          if (i % 3 === 0) {
-            let situation_2: Situation = {
-              id: j * 100 + 6,
-              weekNumber: j,
-              isPresent: j < 7 && ((i + j) % 4 !== 0),
-              grade: (i + j) % 9,
-              meeting: meeting_3,
-              student: this.students[k],
-              teacher: teacher
-            };
-            this.situations.push(situation_2);
-          }
+          currentId += 1;
+          this.situations.push(situation);
         }
-
-
-
       }
-
     }
-
   }
 
 
   getSituationsSorted(meeting: Meeting, weekNumber: number): Situation[] {
-    if(! meeting || ! weekNumber){
+
+    if (!meeting || !weekNumber) {
       return this.situations;
     }
 
@@ -602,15 +591,25 @@ export class CourseService {
       .sort((s1, s2) => s1.student.user.lastName > s2.student.user.lastName ? 1 : -1);
   }
 
-  getMeetings(subject: Subject): Meeting[] {
+  getMeetings(subject
+                :
+                Subject
+  ):
+    Meeting[] {
     return this.meetings.filter(m => m.subject.id === subject.id);
   }
 
-  getSubjects(teacher: Teacher) {
+  getSubjects(teacher
+                :
+                Teacher
+  ) {
     return this.subjects.filter(s => s.teacher.user.id === teacher.user.id);
   }
 
-  saveSituations(situations: Situation[]) {
+  saveSituations(situations
+                   :
+                   Situation[]
+  ) {
     this.situations = situations;
   }
 

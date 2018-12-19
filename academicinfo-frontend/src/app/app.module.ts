@@ -1,9 +1,9 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {Injectable, NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { CommunicationComponent } from './communication/communication.component';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
+import {CommunicationComponent} from './communication/communication.component';
 import {ActivatedRouteSnapshot, CanActivate, RouterModule, RouterStateSnapshot, Routes, UrlTree} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
@@ -53,14 +53,10 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
-
-import { TableComponent } from './table/table.component';
-import { SituationTableComponent } from './situation-table/situation-table.component';
-import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
+import {SituationTableComponent} from './situation-table/situation-table.component';
+import {TeacherSituationComponent} from './teacher-situation/teacher-situation.component';
 import {Observable} from "rxjs/Observable";
 import {LSKEY} from "./services/user.service";
-
-
 
 
 const appRoutes: Routes = [
@@ -125,7 +121,6 @@ export class MaterialModule {
     AppComponent,
     LoginComponent,
     CommunicationComponent,
-    TableComponent,
     SituationTableComponent,
     TeacherSituationComponent
   ],
@@ -158,7 +153,8 @@ export class MaterialModule {
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {

@@ -48,3 +48,35 @@ tr.custom-table-row:hover{
   background-color: lightgreen;
 
 }
+
+/deep/ .mat-sort-header-container {
+  text-align: center !important;
+  align-items: center !important;
+  margin-left: 26% !important;
+}
+
+/deep/ .mat-header-cell {
+  text-align: center;
+}
+
+/deep/ .mat-cell {
+  justify-content:flex-end;
+  text-align: center;
+}
+
+/deep/ th {
+  text-align: center;
+}
+
+
+/deep/th.mat-header-cell {
+  align-items: center;
+  margin-left: 30% !important;
+
+}
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  align-items: center;
+  margin-left: 30% !important;
+
+}
