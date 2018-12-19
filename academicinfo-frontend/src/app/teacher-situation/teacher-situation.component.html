@@ -81,7 +81,7 @@
 <div class="main-content" *ngIf="showTable()">
   <div class="space-giver"></div>
   <app-situation-table [situations]="getSituations(meetingControl.value,weekControl.value)"
-                       [selection]="getNewSelection(situations)"
+                       [selection]="getNewSelection(selectedSituations)"
                        [editable]="tableEditable"
                        [gradeFormControls] = "getNewGradeControl(situations)"
                        [displayedColumns]= "getDisplayedColumns()"

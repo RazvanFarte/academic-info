@@ -1,12 +1,8 @@
 <div *ngIf="errors.length > 0">
   <div *ngFor="let error of errors">
-    <div class="alert alert-danger fade show" role="alert" *ngIf="error?.id != null">
-      <h4 class="error-header">Error occurred :</h4>
-      <span *ngIf="error?.details">
-    <div *ngFor="let d of error?.details">
-      <p class="mb-0">{{ d?.detail | translate}}</p>
-    </div>
-  </span>
+    <div class="alert alert-danger fade show" role="alert" *ngIf="error?.error != null">
+      <h4 class="error-header">Error occurred : {{error?.error }}</h4>
+      <p class="mb-0">{{ error?.error_description }}</p>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
-import {LSKEY, UserService} from './services/user.service';
+import {ACCESS_TOKEN, LoginService} from "./services/login/login.service";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'AcademicInfo';
   loggedIn = true;
 
-  constructor(private router: Router, private userService: UserService){
+  constructor(private router: Router, private loginService: LoginService){
 
   }
 
@@ -20,8 +20,8 @@ export class AppComponent {
   }
 
   logout() {
-    if (localStorage.getItem(LSKEY)) {
-      this.userService.logout(localStorage.getItem(LSKEY)).subscribe(response => console.log());
+    if (localStorage.getItem(ACCESS_TOKEN)) {
+      this.loginService.logout(localStorage.getItem(ACCESS_TOKEN)).subscribe(response => {});
       this.router.navigate(['./login']);
       localStorage.clear();
       this.loggedIn = false;

@@ -53,10 +53,10 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
-import {SituationTableComponent} from './situation-table/situation-table.component';
-import {TeacherSituationComponent} from './teacher-situation/teacher-situation.component';
-import {Observable} from "rxjs/Observable";
-import {LSKEY} from "./services/user.service";
+import { SituationTableComponent } from './situation-table/situation-table.component';
+import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
+
+
 
 
 const appRoutes: Routes = [
