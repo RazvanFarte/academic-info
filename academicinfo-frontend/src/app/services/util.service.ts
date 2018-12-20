@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Router} from '@angular/router';
-import {LSKEY} from './user.service';
+import {ACCESS_TOKEN} from "./login/login.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class UtilService {
 
   routeIfNotLoggedIn()
   {
-    if( localStorage.getItem(LSKEY)){
+    if( localStorage.getItem(ACCESS_TOKEN)){
       return true;
     }
     else {

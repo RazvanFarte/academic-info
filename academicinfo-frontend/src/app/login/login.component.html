@@ -1,4 +1,3 @@
-
 <div id="container-main" #scrollMe style="overflow: hidden;">
   <div class="parallax" #parallax style="z-index: 10; overflow-y: scroll; overflow-x: scroll">
     <div class="parallax__layer parallax__layer__0">
@@ -18,10 +17,12 @@
     </div>
     <div class="parallax__layer parallax__layer__5">
       <img src="https://sam.beckham.io/images/articles/firewatch/layer_5.png" class="responsive"/>
-      <div class="logo"> <img src="../assets/logo_UBB.png" class="ubb-logo"> </div>
+      <div class="logo-container">
+        <img src="../assets/logo_UBB.png" class="ubb-logo">
+      </div>
     </div>
     <div class="parallax__layer parallax__layer__6">
-      <div class="login-container" *ngIf="loggedIn == false">
+      <div class="login-container">
 
         <div class="limiter">
           <div class="container-login100">
@@ -34,23 +35,24 @@
                          name="username" #username="ngModel"
                          minlength="5" pattern="[a-z0-9]+" required
                          [(ngModel)]="userModel.username"
-                         placeholder=" {{ 'demo.Username' | translate }}">
-                  <span *ngIf="username.touched">
-                  <div class="errorLabel" *ngIf="username?.errors && username?.errors['required']">
-                    {{ 'demo.Username is required' | translate }}
-                  </div>
-                  <div class="errorLabel" *ngIf="username?.errors && username?.errors['minlength']">
-                    {{ 'demo.Username must have a minimum length of 5 characters' | translate }}
-                  </div>
-                    <div class="errorLabel" *ngIf="username?.errors && username?.errors['pattern']">
-                    {{ 'demo.Username can contain only alphanumerical characters' | translate }}
-
-                  </div>
-                    </span>
+                         placeholder="Username">
                   <span class="focus-input100"></span>
                   <span class="symbol-input100">
-							    <i class="fa fa-user"></i>
-						    </span>
+							      <i class="fa fa-user"></i>
+						      </span>
+                </div>
+                <div class="error-location">
+                  <div *ngIf="username.touched === true">
+                    <div class="errorLabel" *ngIf="username?.errors && username?.errors['required']">
+                      {{ 'Username is required' | translate }}
+                    </div>
+                    <div class="errorLabel" *ngIf="username?.errors && username?.errors['minlength']">
+                      {{ 'Username must have a minimum length of 5 characters' | translate }}
+                    </div>
+                    <div class="errorLabel" *ngIf="username?.errors && username?.errors['pattern']">
+                      {{ 'Username can contain only alphanumerical characters' | translate }}
+                    </div>
+                  </div>
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-10">
@@ -59,10 +61,10 @@
                          name="password" #password="ngModel"
                          required
                          [(ngModel)]="userModel.password"
-                         placeholder=" {{ 'demo.Password' | translate }}">
+                         placeholder=" {{ 'Password' | translate }}">
                   <span *ngIf="password.touched">
                     <div class="errorLabel" *ngIf="password?.errors && password?.errors['required']">
-                      {{ 'demo.Password is required' | translate }}
+                      {{ 'Password is required' | translate }}
                     </div>
                   </span>
                   <span class="focus-input100"></span>
@@ -72,7 +74,7 @@
                 </div>
                 <div class="container-login100-form-btn p-t-10">
                   <button class="login100-form-btn" [disabled]="formControl.invalid">
-                    {{ 'demo.Login' | translate }}
+                    {{ 'Login' | translate }}
                   </button>
                 </div>
 
@@ -97,6 +99,7 @@
       </div>
       <img src="https://sam.beckham.io/images/articles/firewatch/layer_6.png" class="responsive"/>
     </div>
+
     <div class="bird-container bird-container--one">
       <div class="bird bird--one"></div>
     </div>
@@ -109,6 +112,7 @@
     <div class="bird-container bird-container--four">
       <div class="bird bird--four"></div>
     </div>
+
     <div class="parallax__cover">
     </div>
   </div>

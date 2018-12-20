@@ -15,26 +15,29 @@
   src: url('../../assets/fonts/Bulgatti.ttf');
 }
 
-.logo {
-  font-family: Bulgatti;
+.logo-container {
   position: absolute;
   z-index: 1500;
-  margin-top: 46vh;
-  margin-left: 240vh;
-  font-size: 10vh;
+  margin-top: 40vh;
+  margin-left: 70vw;
   color: peru;
   display: inline;
+  width: 300px;
+}
+
+/deep/ .ubb-logo {
+  width: 100% !important;
+  min-width: 20vw !important;
 }
 
 
 .errorLabel {
   color: red;
+  font-size: 15px;
 }
 
 
-/deep/ .ubb-logo {
-  width: 30vw !important;
-}
+
 
 
 /*//////////////////////////////////////////////////////////////////
@@ -66,6 +69,7 @@
   min-width: 40vw;
   height: auto;
   margin-left: 20vw;
+  margin-top: 20vh;
   /*background-color: beige;*/
 }
 
@@ -195,11 +199,15 @@ iframe {
   margin: 0 auto;
 }
 
+.error-location {
+
+}
+
 .container-login100 {
   width: 80vw;
   min-height: 100vh;
   margin-left: 20vw;
-  margin-top: 10vh;
+  margin-top: 15vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -241,6 +249,7 @@ iframe {
 .login100-form {
   width: 100%;
   min-width: 300px;
+  margin-top: 10vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -727,6 +736,7 @@ iframe {
   -webkit-animation-delay: 10.25s;
   animation-delay: 10.25s;
 }
+
 @-webkit-keyframes fly-cycle {
   100% {
     background-position: -900px 0;

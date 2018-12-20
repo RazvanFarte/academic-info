@@ -1,10 +1,10 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {Injectable, NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { CommunicationComponent } from './communication/communication.component';
-import {RouterModule, Routes} from '@angular/router';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
+import {CommunicationComponent} from './communication/communication.component';
+import {ActivatedRouteSnapshot, CanActivate, RouterModule, RouterStateSnapshot, Routes, UrlTree} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -53,14 +53,21 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
+import { SituationTableComponent } from './situation-table/situation-table.component';
+import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
+
+
 
 
 const appRoutes: Routes = [
   {
-    path: '', pathMatch: 'full', redirectTo: '/home'
+    path: '', pathMatch: 'full', redirectTo: '/login'
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login', component: LoginComponent,
+  },
+  {
+    path: 'courses', component: TeacherSituationComponent
   }
 ];
 
@@ -113,7 +120,9 @@ export class MaterialModule {
   declarations: [
     AppComponent,
     LoginComponent,
-    CommunicationComponent
+    CommunicationComponent,
+    SituationTableComponent,
+    TeacherSituationComponent
   ],
   imports: [
     BrowserModule,
@@ -124,6 +133,8 @@ export class MaterialModule {
     RecaptchaModule.forRoot(),
     RecaptchaFormsModule,
     MaterialModule,
+    MatTableModule,
+    MatSortModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -142,7 +153,8 @@ export class MaterialModule {
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
