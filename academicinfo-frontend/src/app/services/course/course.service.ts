@@ -5,7 +5,6 @@ import {Teacher} from "../../shared/models/Teacher";
 import {Subject} from "../../shared/models/Subject";
 import {User} from "../../shared/models/User";
 import {Student} from "../../shared/models/Student";
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -519,12 +518,9 @@ export class CourseService {
       'Medii de proiectare si programare',
       'Securitate software',
       'Prelucrarea datelor audio-video',
-      'Fundamentele programarii',
-      'Algebra computationala',
-      'Metode avansate de programare'
     ];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 7; i++) {
       let subject: Subject = {
         id: i,
         name: subjectNames[i],
@@ -535,41 +531,31 @@ export class CourseService {
       let meeting_1: Meeting = {
         id: i * 10,
         type: "Seminar",
-        attendanceRequired: i % 3 === 0,
+        attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
         subject: subject
       };
       let meeting_2: Meeting = {
         id: i * 10 + 1,
         type: "Laboratory",
-        attendanceRequired: i % 3 === 1,
+        attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
         subject: subject
       };
-
-      let meeting_3: Meeting = null;
-
       this.meetings.push(meeting_1, meeting_2);
-      if (i % 3 === 0) {
-        meeting_3 = {
-          id: i * 10 + 2,
-          type: "Workshop",
-          attendanceRequired: i % 3 === 2,
-          subject: subject
-        };
-        this.meetings.push(meeting_3);
-      }
     }
 
     let currentId = 0;
     for (let i = 0; i < this.students.length; i++) {
       for (let j = 0; j < this.meetings.length; j++) {
-        for (let k = 0; k < 15; k++) {
+        for (let k = 0; k < 10; k++) {
           let situation: Situation = {
             id: currentId,
             weekNumber: k,
-            isPresent: (Math.floor(Math.random() * 10 % 2) === 0),
+            isPresent: (Math.floor(Math.random() * 10 % 2) > 0),
+            isGradable: (Math.floor(Math.random() * 10 % 2) > 0),
             grade: Math.floor(Math.random() * 10 % 10) + 1,
             meeting: this.meetings[j],
             student: this.students[i],
+            updated: false,
             teacher: teacher
           };
           currentId += 1;
@@ -581,11 +567,10 @@ export class CourseService {
 
 
   getSituationsSorted(meeting: Meeting, weekNumber: number): Situation[] {
-
     if (!meeting || !weekNumber) {
+      console.log(this.situations.length);
       return this.situations;
     }
-
 
     return this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === weekNumber)
       .sort((s1, s2) => s1.student.user.lastName > s2.student.user.lastName ? 1 : -1);

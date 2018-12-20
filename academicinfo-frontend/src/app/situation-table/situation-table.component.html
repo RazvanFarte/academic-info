@@ -1,17 +1,34 @@
+<div class="button-row">
+  <button mat-raised-button color="basic" (click)="resetFilters()">
+    <mat-icon>refresh</mat-icon>
+    Reset filters
+  </button>
+  <button mat-raised-button color="basic" (click)="save()">
+    <mat-icon>save</mat-icon>
+    Save
+  </button>
+  <mat-form-field appearance="outline" class="basic-select">
+    <mat-select  [compareWith]="compareColumn" [(ngModel)]="displayedColumns" multiple>
+      <mat-select-trigger>
+        Columns to display
+      </mat-select-trigger>
+      <mat-option *ngFor="let column of possibleColumns" [value]="column.value">{{column.display}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="basic" disabled>
+    <mat-icon>info</mat-icon>
+    Average grade: {{getAverageGrade()}}
+  </button>
+  <button mat-raised-button color="basic" disabled>
+    <mat-icon>info</mat-icon>
+    Average presence: {{getAveragePresence()}}%
+  </button>
+</div>
+
 <div class="mat-elevation-z8">
-  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-    <button mat-raised-button color="warn" (click)="resetFilters()">
-      <mat-icon>clear</mat-icon>
-      Reset filters
-    </button>
-    <button mat-raised-button color="primary" (click)="save()">
-      <mat-icon>save</mat-icon>
-      Save modifications
-    </button>
-  </mat-button-toggle-group>
-  <mat-tab-group>
-    <mat-tab label="Filter by..."></mat-tab>
-    <mat-tab>
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Filter by..." style="width: 20px"></mat-tab>
+    <mat-tab *ngIf="isColumnDisplayed('name') === true">
       <ng-template mat-tab-label>
         <div *ngIf="nameFilter === ''"> Name</div>
         <div *ngIf="nameFilter !== ''" style="color: red"> Name (edited)</div>
@@ -22,7 +39,7 @@
       </mat-form-field>
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab *ngIf="isColumnDisplayed('year') === true">
       <ng-template mat-tab-label>
         <div *ngIf="yearFilter === ''"> Year</div>
         <div *ngIf="yearFilter !== ''" style="color: red"> Year (edited)</div>
@@ -33,10 +50,10 @@
       </mat-form-field>
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab *ngIf="isColumnDisplayed('group') === true">
       <ng-template mat-tab-label>
-        <div *ngIf="groupFilter === ''"> Group</div>
-        <div *ngIf="groupFilter !== ''" style="color: red"> Group (edited)</div>
+        <div *ngIf="groupFilter == ''"> Group</div>
+        <div *ngIf="groupFilter != ''" style="color: red"> Group (edited)</div>
       </ng-template>
       <mat-form-field class="example-full-width">
         <input type="number" [(ngModel)]="groupFilter" matInput (keyup)="applyFilter($event.target.value,'group')"
@@ -44,17 +61,67 @@
       </mat-form-field>
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab *ngIf="isColumnDisplayed('subject') === true">
+      <ng-template mat-tab-label>
+        <div *ngIf="subjectFilter === ''"> Subject</div>
+        <div *ngIf="subjectFilter !== ''" style="color: red"> Subject (edited)</div>
+      </ng-template>
+      <mat-form-field class="example-full-width">
+        <input [(ngModel)]="subjectFilter" matInput (keyup)="applyFilter($event.target.value,'subject')"
+               placeholder="Filter by subject">
+      </mat-form-field>
+    </mat-tab>
+
+    <mat-tab *ngIf="isColumnDisplayed('meeting') === true">
+      <ng-template mat-tab-label>
+        <div *ngIf="meetingFilter === ''"> Meeting</div>
+        <div *ngIf="meetingFilter !== ''" style="color: red"> Meeting (edited)</div>
+      </ng-template>
+      <mat-form-field class="example-full-width">
+        <input [(ngModel)]="meetingFilter" matInput (keyup)="applyFilter($event.target.value,'meeting')"
+               placeholder="Filter by meeting">
+      </mat-form-field>
+    </mat-tab>
+
+    <mat-tab *ngIf="isColumnDisplayed('week') === true">
+      <ng-template mat-tab-label>
+        <div *ngIf="weekFilter === ''"> Week </div>
+        <div *ngIf="weekFilter !== ''" style="color: red"> Week (edited)</div>
+      </ng-template>
+      <mat-form-field class="example-full-width">
+        <input type="number" [(ngModel)]="weekFilter" matInput (keyup)="applyFilter($event.target.value,'week')"
+               placeholder="Filter by week">
+      </mat-form-field>
+    </mat-tab>
+
+    <mat-tab *ngIf="isColumnDisplayed('is_present') === true">
+      <ng-template mat-tab-label>
+        <div *ngIf="presenceFilter === ''"> Presence</div>
+        <div *ngIf="presenceFilter !== ''" style="color: red"> Presence (edited)</div>
+      </ng-template>
+      <mat-form-field class="example-full-width">
+        <mat-select placeholder="Filter by presence" [(ngModel)]="presenceFilter">
+          <mat-option value="true" (click)="applyFilter('true','is_present')">Present</mat-option>
+          <mat-option value="false" (click)="applyFilter('false','is_present')">Absent</mat-option>
+          <mat-option value="not_required" (click)="applyFilter('not_required','is_present')">Not required</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-tab>
+
+
+    <mat-tab *ngIf="isColumnDisplayed('grade') === true">
       <ng-template mat-tab-label>
         <div *ngIf="gradeFilter === '' && gradeOperationFilter === ''"> Grade</div>
         <div *ngIf="gradeFilter !== '' || gradeOperationFilter !== ''" style="color: red"> Grade (edited)</div>
       </ng-template>
       <mat-form-field class="example-full-width">
         <mat-select placeholder="Operation type" [(ngModel)]="gradeOperationFilter">
-          <mat-option value="option">Greater than</mat-option>
-          <mat-option value="option">Less than</mat-option>
-          <mat-option value="option">Equal to</mat-option>
-          <mat-option value="option">Different from</mat-option>
+          <mat-option value="greater_than" (click)="applyFilter('greater_than','gradeOperation')">Greater than
+          </mat-option>
+          <mat-option value="less_than" (click)="applyFilter('less_than','gradeOperation')">Less than</mat-option>
+          <mat-option value="equal_to" (click)="applyFilter('equal_to','gradeOperation')">Equal to</mat-option>
+          <mat-option value="different_from" (click)="applyFilter('different_from','gradeOperation')">Different from
+          </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -64,7 +131,7 @@
     </mat-tab>
 
 
-    <mat-tab>
+    <mat-tab *ngIf="isColumnDisplayed('email') === true">
       <ng-template mat-tab-label>
         <div *ngIf="emailFilter === ''"> Email</div>
         <div *ngIf="emailFilter !== ''" style="color: red"> Email (edited)</div>
@@ -74,60 +141,51 @@
                placeholder="Filter by e-mail">
       </mat-form-field>
     </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <div *ngIf="presenceFilter === ''"> Presence</div>
-        <div *ngIf="presenceFilter !== ''" style="color: red"> Presence (edited)</div>
-      </ng-template>
-      <mat-form-field class="example-full-width">
-        <mat-select placeholder="Filter by presence" [(ngModel)]="presenceFilter">
-          <mat-option value="option" (click)="applyFilter('true','is_present')">Present</mat-option>
-          <mat-option value="option" (click)="applyFilter('false','is_present')">Absent</mat-option>
-          <mat-option value="option" (click)="applyFilter('not_required','is_present')">Not required</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-tab>
+
   </mat-tab-group>
 
 
-  <table mat-table [dataSource]="situationsDataSource" class="mat-elevation-z8" matSort>
+  <table mat-table [dataSource]="situationsDataSource" matSort class="mat-elevation-z8">
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+      <td mat-cell *matCellDef="let situation">
+        <button mat-raised-button color="basic" (click)="getOverallSituation(situation.student)">
+          Check student
+        </button>
+      </td>
+    </ng-container>
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.student.user.lastName + " " +
-      situation.student.user.firstName }}
+        situation.student.user.firstName }}
       </td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="year">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.student.year }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="group">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Group</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.student.group}}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="subject">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.meeting.subject.name}}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="meeting">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Meeting</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.meeting.type }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="week">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Week</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.weekNumber }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="is_present">
@@ -136,53 +194,45 @@
         <div *ngIf="situation.meeting.attendanceRequired === false">
           <mat-icon>not_interested</mat-icon>
         </div>
-        <mat-checkbox (click)="$event.stopPropagation()"
-                      (change)="situation.isPresent = situation.isPresent!==true"
-                      [checked]="selection.isSelected(situation)"
+        <mat-checkbox [(ngModel)]="situation.isPresent"
+                      (click)="saveChange(situation)"
                       [disabled]="editable === false"
                       *ngIf="situation.meeting.attendanceRequired === true"
         >
         </mat-checkbox>
       </td>
-      <td mat-footer-cell *matFooterCellDef></td>
 
     </ng-container>
 
     <ng-container matColumnDef="grade">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Grade</th>
       <td mat-cell type="number" *matCellDef="let situation">
-        <form *ngIf="editable === true">
+        <div *ngIf="situation.isGradable === true">
+          <div class="form-group table-input-form" *ngIf="editable === true">
 
-          <mat-form-field class="grade-form">
-            <input matInput [formControl]="fc[getIndexForSituation(situation)]"
-                   (change)="situation.grade = fc[getIndexForSituation(situation)].value"
-            >
-            <mat-hint>Between 0 and 10</mat-hint>
-
-            <mat-error *ngIf="fc[getIndexForSituation(situation)].hasError('required')">
-              Grade is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </form>
-        <div *ngIf="editable === false">
-          {{ situation.grade }}
+            <mat-form-field appearance="outline">
+              <input type="number" min="0" max="10" matInput [(ngModel)]="situation.grade" (input)="saveChange(situation)" [disabled]="situation.isGradable === false">
+              <mat-icon matSuffix *ngIf="situation.grade >= 5">check</mat-icon>
+              <mat-icon matSuffix *ngIf="situation.grade < 5">close</mat-icon>
+            </mat-form-field>
+          </div>
+          <div *ngIf="editable === false">
+            {{ situation.grade }}
+          </div>
         </div>
       </td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>E-Mail</th>
       <td mat-cell *matCellDef="let situation"> {{ situation.student.user.email}}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
 
-    <tr mat-header-row class="custom-table-header" *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row class="custom-table-row" *matRowDef="let row; columns: displayedColumns;"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row"></tr>
+    <tr mat-header-row class="custom-table-header" *matHeaderRowDef="getDisplayedColumns()"></tr>
+    <tr mat-row class="custom-table-row" *matRowDef="let row; columns: getDisplayedColumns();"></tr>
 
   </table>
-  <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons></mat-paginator>
 </div>
+<mat-paginator [pageSizeOptions]="[50, 100]"></mat-paginator>

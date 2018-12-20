@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Situation} from "../shared/models/Situation";
-import {CourseService} from "../services/course/course.service";
 import {FormControl, FormGroupDirective, NgForm} from "@angular/forms";
-import {ErrorStateMatcher, MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
+import {ErrorStateMatcher, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from "@angular/material";
+import {Student} from "../shared/models/Student";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -19,7 +19,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class SituationTableComponent implements OnInit {
 
   @Input() situations: Situation[];
-  @Input() displayedColumns: string[];
+  @Input() idisplayedColumns: string[];
+  displayedColumns: string[];
+  possibleColumns;
   @Input() selection;
   @Input() gradeFormControls: FormControl[];
   @Input() editable: boolean;
@@ -32,17 +34,50 @@ export class SituationTableComponent implements OnInit {
   nameFilter: string;
   groupFilter: string;
   yearFilter: string;
+  subjectFilter: string;
+  meetingFilter: string;
+  weekFilter: string;
   emailFilter: string;
   gradeFilter: string;
   presenceFilter;
   gradeOperationFilter;
 
-  constructor() {}
+  constructor(public snackBar: MatSnackBar) {
+  }
+
+  getDisplayedColumns(): string[] {
+    if (this.displayedColumns == null)
+      this.displayedColumns = this.idisplayedColumns;
+    return this.displayedColumns;
+  }
+
+  compareColumn(column1: string, column2: string) {
+    return column1 === column2;
+  }
+
+  // warning, the changed field is not guaranteed to be updated when this method is called, it usually updates after
+  saveChange(situation: Situation){
+    situation.updated = true;
+  }
 
   ngOnInit() {
+    this.possibleColumns = [
+      {'value': 'action', 'display': 'Actions'},
+      {'value': 'name', 'display': 'Name'},
+      {'value': 'year', 'display': 'Year'},
+      {'value': 'group', 'display': 'Group'},
+      {'value': 'subject', 'display': 'Subject'},
+      {'value': 'meeting', 'display': 'Meeting'},
+      {'value': 'week', 'display': 'Week'},
+      {'value': 'is_present', 'display': 'Present'},
+      {'value': 'grade', 'display': 'Grade'},
+      {'value': 'email', 'display': 'E-Mail'}
+    ];
     this.situationsDataSource = new MatTableDataSource(this.situations);
-    this.situationsDataSource.paginator = this.paginator;
+    this.getDisplayedColumns();
     this.situationsDataSource.sortingDataAccessor = (item, property) => {
+      if(this.situationsDataSource.paginator._pageIndex > 0)
+        this.situationsDataSource.paginator.firstPage();
       switch (property) {
         case 'name':
           return item.student.user.lastName + " " + item.student.user.firstName;
@@ -59,42 +94,90 @@ export class SituationTableComponent implements OnInit {
         case 'email':
           return item.student.user.email;
         case "is_present":
-          return item.isPresent;
+          return item.meeting.attendanceRequired ? ( item.isPresent === true ? -1 : 0 ) : 1;
+        case "grade":
+          return item.isGradable ? item.grade : -1;
         default:
           return item[property];
       }
     };
-    this.situationsDataSource.filterPredicate = (situation: Situation, filters: string) => this.filterPredicate(situation);
+
     this.situationsDataSource.sort = this.sort;
+    this.situationsDataSource.paginator = this.paginator;
+    this.situationsDataSource.filterPredicate = (situation: Situation, filters: string) => this.filterPredicate(situation);
+
     this.gradeErrorMatcher = new MyErrorStateMatcher();
     this.fc = [];
     this.resetFormControl();
     this.resetFilters();
   }
 
+
+  filterByYear(situation: Situation): boolean {
+    return this.filters.year == '' || ("" + situation.student.year == "" + this.filters.year);
+  }
+
+  filterByGroup(situation: Situation): boolean {
+    return this.filters.group == '' || "" + situation.student.group == "" + this.filters.group;
+  }
+
+  filterBySubject(situation: Situation): boolean {
+    return this.filters.subject == ''
+      || situation.meeting.subject.name.toLowerCase().trim()
+        .includes(this.filters.subject.trim().toLowerCase());
+  }
+
+  filterByMeeting(situation: Situation): boolean {
+    return this.filters.meeting == ''
+      || situation.meeting.type.toLowerCase().trim()
+        .includes(this.filters.meeting.trim().toLowerCase());
+  }
+
+  filterByWeek(situation: Situation): boolean {
+    return this.filters.week == '' || "" + situation.weekNumber == "" + this.filters.week;
+  }
+
+  filterByGrade(situation: Situation): boolean {
+    return (this.filters.grade == '' || this.filters.gradeOperation == '')
+      || (situation.isGradable && (this.gradeOperationFilter == 'less_than' ? situation.grade < this.filters.grade
+        : this.gradeOperationFilter == 'greater_than' ? situation.grade > this.filters.grade
+          : this.gradeOperationFilter == 'equal_to' ? situation.grade == this.filters.grade
+            : this.gradeOperationFilter == 'different_from' ? situation.grade != this.filters.grade
+              : false));
+  }
+
+  filterByEmail(situation: Situation): boolean {
+    return this.filters.email == ''
+      || situation.student.user.email.toLowerCase()
+        .includes(this.filters.email.toLowerCase());
+  }
+
+  filterByPresence(situation: Situation): boolean {
+    return (this.filters.is_present == '')
+      || (this.filters.is_present == 'not_required' ? situation.meeting.attendanceRequired == false
+        : (situation.meeting.attendanceRequired == true
+          && situation.isPresent == (this.filters.is_present == 'true')));
+
+  }
+
+
+  filterByName(situation: Situation): boolean {
+    return this.filters.name == ''
+      || (situation.student.user.lastName + " " + situation.student.user.firstName).trim().toLowerCase()
+        .includes(this.filters.name.trim().toLowerCase());
+  }
+
+
   filterPredicate(situation: Situation): boolean {
-    let ok = true;
-    if (this.filters.year != '')
-      ok = ok === true && "" + situation.student.year === this.filters.year;
-    if (this.filters.group != '')
-      ok = ok === true && "" + situation.student.group === this.filters.group;
-    if (this.filters.grade != '')
-      ok = ok === true && "" + situation.grade === this.filters.grade;
-    if (this.filters.email != '')
-      ok = ok === true && situation.student.user.email.toLowerCase().includes(this.filters.email.toLowerCase());
-    if (this.filters.is_present != '') {
-      if (this.filters.is_present === 'not_required') {
-        ok = ok === true && situation.meeting.attendanceRequired === false;
-      }
-      else {
-        ok = ok === true
-          && situation.meeting.attendanceRequired === true
-          && situation.isPresent == (this.filters.is_present == 'true');
-      }
-    }
-    if (this.filters.name != '')
-      ok = ok === true && ((situation.student.user.lastName + " " +situation.student.user.firstName).trim().toLowerCase().includes(this.filters.name.trim().toLowerCase()));
-    return ok;
+    return this.filterByName(situation)
+      && this.filterBySubject(situation)
+      && this.filterByMeeting(situation)
+      && this.filterByYear(situation)
+      && this.filterByGroup(situation)
+      && this.filterByWeek(situation)
+      && this.filterByGrade(situation)
+      && this.filterByPresence(situation)
+      && this.filterByEmail(situation);
   }
 
 
@@ -110,7 +193,8 @@ export class SituationTableComponent implements OnInit {
   applyFilter(filterValue: string, filterColumn: string) {
 
     this.filters[filterColumn] = filterValue;
-    this.situationsDataSource.filter = "a" + filterValue.trim().toLowerCase();
+    // do not remove the static string, otherwise the filter won't register a change on empty strings
+    this.situationsDataSource.filter = "DONT_REMOVE" + filterValue.trim().toLowerCase();
 
     if (this.situationsDataSource.paginator) {
       this.situationsDataSource.paginator.firstPage();
@@ -122,6 +206,10 @@ export class SituationTableComponent implements OnInit {
       'name': '',
       'year': '',
       'group': '',
+      'subject': '',
+      'meeting': '',
+      'gradeOperation': '',
+      'week': '',
       'grade': '',
       'email': '',
       'is_present': ''
@@ -129,6 +217,9 @@ export class SituationTableComponent implements OnInit {
     this.nameFilter = '';
     this.groupFilter = '';
     this.yearFilter = '';
+    this.subjectFilter = '';
+    this.meetingFilter = '';
+    this.weekFilter = '';
     this.emailFilter = '';
     this.presenceFilter = '';
     this.gradeOperationFilter = '';
@@ -138,37 +229,54 @@ export class SituationTableComponent implements OnInit {
   }
 
   getAveragePresence(): number {
-    const filteredSituations = this.situations
-      .filter(s => this.filterPredicate(s) === true
-        && s.meeting.attendanceRequired === true);
+    let filteredSituations = this.situationsDataSource.data
+      .filter(s => s.meeting.attendanceRequired === true);
 
-    if(filteredSituations.length === 0)
+    if (filteredSituations.length === 0)
       return 100;
 
     const situationsWithPresence = filteredSituations
       .filter(s => s.isPresent === true);
 
-    return situationsWithPresence.length / filteredSituations.length * 100;
+    return Math.round((situationsWithPresence.length / filteredSituations.length * 100) * 100) / 100;
   }
 
   getAverageGrade(): number {
-    const filteredSituations = this.situations
-      .filter(s => this.filterPredicate(s) === true);
+    const filteredSituations = this.situationsDataSource.data
+      .filter(s => s.isGradable === true);
 
-    if(filteredSituations.length === 0)
+    if (filteredSituations.length === 0)
       return null;
 
     const sum = filteredSituations
       .map(s => s.grade)
       .reduce((sum, grade) => sum + grade);
 
-    return sum / filteredSituations.length;
+    return Math.round(sum / filteredSituations.length * 100) / 100;
 
   }
 
-  save(){
-
+  removeColumn(column: string) {
+    this.displayedColumns = this.displayedColumns.filter(c => c != column);
   }
 
+  save() {
+    let avgGrade = Math.round(this.getAverageGrade() * 100) / 100;
+    let avgPresence = Math.round(this.getAveragePresence() * 100) / 100;
+
+    let message = "Average grade is " + avgGrade + "\n"
+      + "Average presence is " + avgPresence + "%";
+    //this.snackBar.open(message, 'OK', {duration: 2000,});
+
+    this.snackBar.open("Data has been successfully saved!", 'Clear', {duration: 2000});
+  }
+
+  isColumnDisplayed(column: string): boolean {
+    return this.displayedColumns.find(c => c === column) != null;
+  }
+
+  getOverallSituation(student: Student) {
+
+  }
 
 }

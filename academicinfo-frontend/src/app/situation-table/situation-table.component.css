@@ -2,19 +2,19 @@ table {
   width: 100%;
 }
 
-tr.custom-table-header th{
-  background-color: silver;
+tr.custom-table-header th {
+  background-color: lightgrey;
   border-bottom: 1px solid black;
   font-size: 20px;
   text-align-all: center;
   color: black;
 }
 
-tr.custom-table-row td{
+tr.custom-table-row td {
   border-bottom-width: 0;
 }
 
-tr.custom-table-row:hover{
+tr.custom-table-row:hover {
   background: #f5f5f5;
 }
 
@@ -38,13 +38,11 @@ tr.custom-table-row:hover{
   margin-left: 5vw;
 }
 
-
 /deep/ .mat-tab-label {
   opacity: 1 !important;
 }
 
-
-/deep/.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+/deep/ .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: lightgreen;
 
 }
@@ -60,7 +58,7 @@ tr.custom-table-row:hover{
 }
 
 /deep/ .mat-cell {
-  justify-content:flex-end;
+  justify-content: flex-end;
   text-align: center;
 }
 
@@ -68,15 +66,77 @@ tr.custom-table-row:hover{
   text-align: center;
 }
 
-
-/deep/th.mat-header-cell {
+/deep/ th.mat-header-cell {
   align-items: center;
   margin-left: 30% !important;
 
+}
+
+/deep/ .mat-raised-button[disabled][disabled] {
+  background-color: lightgrey;
+  color: black;
 }
 
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   align-items: center;
   margin-left: 30% !important;
 
+}
+
+.mat-elevation-z8 {
+  background-color: #fff;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.button-row {
+  margin-bottom: 2vh;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+
+.basic-select {
+
+}
+
+/deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 0;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  background-color: white;
+}
+
+/deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  border-radius: 0;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  background-color: white;
+}
+
+/deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-outline-end, /deep/ .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  min-width: 0;
+}
+
+/deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin-right: 8px;
+}
+
+/deep/ .mat-cell .mat-form-field-wrapper .mat-form-field-infix {
+  width: 4vw;
+}
+
+/deep/ .cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+  text-align: center;
+}
+
+/deep/ .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+/deep/ .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.2vh 0 1vh 0;
+}
+
+/deep/ tr .form-group {
+  margin-bottom: 0;
 }

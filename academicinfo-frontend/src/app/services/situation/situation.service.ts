@@ -7,6 +7,8 @@ import {Teacher} from "../../shared/models/Teacher";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {situation_properties} from "../../shared/properties/situation-properties";
 import {Observable} from "rxjs/Observable";
+import {CourseService} from "../course/course.service";
+import {of} from "rxjs/internal/observable/of";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class SituationService {
 
   private properties;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private courseService: CourseService) {
     this.properties = situation_properties;
   }
 
@@ -29,7 +31,8 @@ export class SituationService {
       params: p.params,
       headers: new HttpHeaders(p.headers)
     };
-    return this.http.get<Situation[]>(this.properties.url, options);
+    return of(this.courseService.getSituationsSorted(meeting, weekNumber));
+    //TODO return this.http.get<Situation[]>(this.properties.url, options);
   }
 
   getAllSituations(teacher_id: number): Observable<Situation[]> {
@@ -38,7 +41,8 @@ export class SituationService {
     let options = {
       headers: new HttpHeaders(p.headers)
     };
-    return this.http.get<Situation[]>(p.url, options);
+    return of(this.courseService.getSituationsSorted(null,null));
+    //TODO return this.http.get<Situation[]>(p.url, options);
   }
 
 
@@ -48,18 +52,18 @@ export class SituationService {
       return this.getSituationsFor(teacher_id, meeting, weekNumber);
     }
 
-  getMeetings(subject: Subject): Meeting[] {
+  getMeetings(subject: Subject): Observable<Meeting[]> {
     //return this.meetings.filter(m => m.subject.id === subject.id);
-    return null;
+    //TODO
+    return of(this.courseService.getMeetings(subject));
   }
 
-  getSubjects(teacher: Teacher) {
+  getSubjects(teacher: Teacher): Observable<Subject[]> {
     //return this.subjects.filter(s => s.teacher.user.id === teacher.user.id);
-    return null;
+    return of(this.courseService.getSubjects(teacher));
   }
 
   saveSituations(situations: Situation[]) {
     //this.situations = situations;
-    return null;
   }
 }

@@ -7,7 +7,7 @@
 
 
 .main-body {
-  background-color: beige;
+  background-color: whitesmoke;
 }
 
 body {
@@ -40,7 +40,8 @@ img.msg {
 }
 
 nav {
-  background-color: peru;
+  background-color: lightgrey;
+  color: black;
 }
 
 #notificationsModal .modal-body {

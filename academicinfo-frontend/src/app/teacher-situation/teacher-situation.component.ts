@@ -29,12 +29,14 @@ export class TeacherSituationComponent implements OnInit {
   enableSaveSelection: boolean;
   showAllButtonClicked: boolean;
   teacherID: number;
+  doneLoading: boolean = false;
 
   constructor(public situationService: SituationService, public loginService: LoginService) {
   }
 
   ngOnInit() {
     this.tableEditable = true;
+    this.doneLoading = false;
     this.enableShowAllButton = true;
     this.enableSaveSelection = true;
     this.enableSelectionStepper = true;
@@ -58,13 +60,23 @@ export class TeacherSituationComponent implements OnInit {
     this.weekControl = new FormControl('', [Validators.required]);
     this.subjectControl = new FormControl('', [Validators.required]);
     this.meetingControl = new FormControl('', [Validators.required]);
-    this.subjects = this.situationService.getSubjects(teacher);
+    this.situationService.getSubjects(teacher).subscribe(s => this.subjects = s);
     this.situationService.getSituations(this.teacherID, null, null)
-      .subscribe(r => this.situations = r);
+      .subscribe(r => {
+          this.situations = r;
+          console.log('received: ' + r.length + ' elems');
+        }
+        ,
+        e => {
+        console.log(e);
+        },
+        () => {
+          this.doneLoading = true;
+        });
   }
 
   subjectSelected() {
-    this.meetings = this.situationService.getMeetings(this.subjectControl.value);
+    this.situationService.getMeetings(this.subjectControl.value).subscribe(m => this.meetings = m);
     this.meetingControl.reset();
   }
 
@@ -76,7 +88,11 @@ export class TeacherSituationComponent implements OnInit {
   }
 
   getSituations(meeting: Meeting, week: number): Situation[] {
-    this.selectedSituations = this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === week);
+    if (!meeting || !week) {
+      this.selectedSituations = this.situations;
+    } else {
+      this.selectedSituations = this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === week);
+    }
     return this.selectedSituations;
   }
 
@@ -85,9 +101,9 @@ export class TeacherSituationComponent implements OnInit {
   }
 
   getDisplayedColumns() {
-    if(this.showAllButtonClicked === true)
-      return ['name', 'year', 'group', 'subject','meeting', 'week', 'is_present', 'grade', 'email'];
-    return ['name', 'year', 'group', 'is_present', 'grade', 'email'];
+    if (this.showAllButtonClicked === true)
+      return ['action','name', 'year', 'group', 'subject', 'meeting', 'week', 'is_present', 'grade', 'email'];
+    return ['action','name', 'year', 'group', 'is_present', 'grade', 'email'];
   }
 
   getNewGradeControl(situations: Situation[]): FormControl[] {

@@ -6,8 +6,10 @@ export class Situation {
   id: number;
   weekNumber: number;
   isPresent: boolean;
+  isGradable: boolean;
   grade: number;
   meeting: Meeting;
   student: Student;
   teacher: Teacher;
+  updated: boolean;
 }
