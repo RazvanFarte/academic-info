@@ -28,6 +28,7 @@ export class TeacherSituationComponent implements OnInit {
   enableSelectionStepper: boolean;
   enableSaveSelection: boolean;
   showAllButtonClicked: boolean;
+  showSelectedButtonClicked: boolean;
   teacherID: number;
   doneLoading: boolean = false;
 
@@ -40,8 +41,8 @@ export class TeacherSituationComponent implements OnInit {
     this.enableShowAllButton = true;
     this.enableSaveSelection = true;
     this.enableSelectionStepper = true;
+    this.showSelectedButtonClicked = false;
     const teacher: Teacher = {
-      user: {
         id: 0,
         lastLogin: "2018-01-01",
         username: "popescu",
@@ -51,8 +52,7 @@ export class TeacherSituationComponent implements OnInit {
         userType: 1,
         faculty: "IE",
         createdAt: "2018-01-02",
-        updatedAt: "2018-01-02",
-      }
+        updatedAt: "2018-01-02"
     };
 
     this.teacherID = this.loginService.getUserId();
@@ -82,7 +82,8 @@ export class TeacherSituationComponent implements OnInit {
 
   showTable() {
     return this.showAllButtonClicked || (
-      this.weekControl.touched
+      this.showSelectedButtonClicked
+      && this.weekControl.touched
       && this.subjectControl.touched
       && this.meetingControl.touched);
   }

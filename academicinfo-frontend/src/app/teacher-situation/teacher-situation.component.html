@@ -2,12 +2,9 @@
 <div *ngIf="doneLoading === false">
   <mat-spinner></mat-spinner>
 </div>
-<div *ngIf="doneLoading === true">
-  <button mat-raised-button color="basic" [hidden]="enableShowAllButton === false"
-          (click)="showTableForAll()"
-  >Show for all
-  </button>
-  <mat-horizontal-stepper *ngIf="enableSelectionStepper === true" [linear]="true" #stepper>
+<div class="teacher-situation-container" *ngIf="doneLoading === true">
+  <div class="stepper-container">
+  <mat-horizontal-stepper *ngIf="enableSelectionStepper === true && showSelectedButtonClicked === false" [linear]="true">
     <mat-step [stepControl]="subjectControl">
       <mat-form-field>
         <ng-template matStepLabel>Choose subject</ng-template>
@@ -20,8 +17,13 @@
         <mat-error *ngIf="subjectControl.hasError('required')">Please choose a subject</mat-error>
         <mat-hint> You must choose the subject for which you want to add data</mat-hint>
       </mat-form-field>
-      <div class="button-row">
+      <div class="button-stepper-row">
         <button mat-raised-button matStepperNext color="basic">Next</button>
+        <button mat-raised-button color="basic" [hidden]="enableShowAllButton === false"
+                (click)="showTableForAll()"
+        >
+          Show for all
+        </button>
       </div>
     </mat-step>
 
@@ -37,9 +39,9 @@
         <mat-error *ngIf="meetingControl.hasError('required')">Please choose a meeting</mat-error>
         <mat-hint> You must choose the meeting for which you want to add data</mat-hint>
       </mat-form-field>
-      <div class="button-row">
-        <button mat-raised-button matStepperPrevious color="warn">Back</button>
+      <div class="button-stepper-row">
         <button mat-raised-button matStepperNext color="basic">Next</button>
+        <button mat-raised-button matStepperPrevious color="warn">Back</button>
       </div>
     </mat-step>
 
@@ -55,28 +57,16 @@
         <mat-error *ngIf="weekControl.hasError('required')">Please choose a week</mat-error>
         <mat-hint> You must choose the week for which you want to add data</mat-hint>
       </mat-form-field>
-      <div class="button-row">
+      <div class="button-stepper-row">
+        <button mat-raised-button color="basic" (click)="showSelectedButtonClicked = true">Display</button>
         <button mat-raised-button matStepperPrevious color="warn">Back</button>
-        <button mat-raised-button matStepperNext color="basic" [disabled]="enableSaveSelection === false"
-                (click)="tableEditable = false"
-        >Save changes
-        </button>
       </div>
     </mat-step>
-
-    <mat-step>
-      <ng-template matStepLabel> Save</ng-template>
-      All changes have been saved
-      <div class="button-row">
-        <button mat-raised-button matStepperPrevious color="warn" (click)="tableEditable = true">Back</button>
-        <button mat-raised-button color="warn" (click)="stepper.reset()">Reset selection</button>
-      </div>
-    </mat-step>
-
   </mat-horizontal-stepper>
+  </div>
   <div class="space-giver"></div>
 
-  <mat-chip-list *ngIf="enableSelectionStepper === true">
+  <mat-chip-list class="chip-container" *ngIf="enableSelectionStepper === true">
     <mat-chip color="accent" selected *ngIf="subjectControl?.touched && meetingControl?.touched">
       {{ subjectControl.value.name }} {{ meetingControl.value.type }}
     </mat-chip>
@@ -84,6 +74,7 @@
       Week {{ weekControl.value }}
     </mat-chip>
   </mat-chip-list>
+
   <div class="main-content" *ngIf="showTable()">
     <div class="space-giver"></div>
     <app-situation-table [situations]="getSituations(meetingControl.value,weekControl.value)"

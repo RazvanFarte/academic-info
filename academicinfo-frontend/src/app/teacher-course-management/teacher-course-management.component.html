@@ -1,0 +1,36 @@
+
+
+
+
+
+
+
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="side" opened
+               [fixedInViewport]="true" [fixedTopGap]="true"
+               [fixedBottomGap]="true" [ngClass]="getSidenavClass()">
+    <div class="sidenav-button-row">
+      <button mat-raised-button [ngClass]="getSidenavButtonClass()" color="basic" (click)="operationType = 'add'">
+        Add new course
+      </button>
+      <button mat-raised-button [ngClass]="getSidenavButtonClass()" color="basic" (click)="operationType = 'edit'" >
+        Edit course
+      </button>
+      <button mat-raised-button [ngClass]="getSidenavButtonClass()" color="basic" (click)="operationType = 'situations'">
+        Assign grades/attendances
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <div *ngIf="operationType === 'none'" class="component-details">
+      <h2> Welcome to course management! </h2>
+      <button mat-raised-button color="primary" style="display: inline; margin-left: 5%" (click)="openDialog()">HELP </button>
+
+    </div>
+    <app-teacher-situation *ngIf="operationType ==='situations'"></app-teacher-situation>
+    <app-teacher-add-course *ngIf="operationType === 'add'"></app-teacher-add-course>
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

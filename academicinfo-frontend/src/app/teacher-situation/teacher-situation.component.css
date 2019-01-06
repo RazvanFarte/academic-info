@@ -5,3 +5,32 @@
 .button-row {
   margin-top: 5vh !important;
 }
+
+
+.button-stepper-row {
+  display: inline;
+  margin-left: 20vw;
+  width: 20vw;
+}
+
+/deep/ .stepper-form {
+  width: 30% !important;
+}
+
+.stepper-container {
+  position: fixed;
+  top: 30%;
+  left: 25%;
+  width: 50%;
+  display: inline;
+}
+
+.teacher-situation-container {
+  overflow: hidden;
+  background-color: whitesmoke;
+}
+
+/deep/ .mat-chip-list-wrapper {
+  margin-top: 5vh !important;
+  margin-left: 1vw !important;
+}

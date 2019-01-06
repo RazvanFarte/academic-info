@@ -466,7 +466,7 @@ export class CourseService {
     ];
 
     for (let i = 0; i < 30; i++) {
-      const user: User = {
+      const student: Student = {
         id: i,
         lastLogin: "2018-01-01",
         username: "username" + i,
@@ -477,9 +477,6 @@ export class CourseService {
         faculty: "IE",
         createdAt: "2018-01-02",
         updatedAt: "2018-01-02",
-      };
-      const student: Student = {
-        user: user,
         group: "" + (i % 5 + 1),
         year: i % 3 + 1
       };
@@ -488,7 +485,6 @@ export class CourseService {
 
 
     const teacher: Teacher = {
-      user: {
         id: 0,
         lastLogin: "2018-01-01",
         username: "popescu",
@@ -498,8 +494,7 @@ export class CourseService {
         userType: 1,
         faculty: "IE",
         createdAt: "2018-01-02",
-        updatedAt: "2018-01-02",
-      }
+        updatedAt: "2018-01-02"
     };
 
 
@@ -532,13 +527,15 @@ export class CourseService {
         id: i * 10,
         type: "Seminar",
         attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
-        subject: subject
+        subject: subject,
+        teachers: [teacher]
       };
       let meeting_2: Meeting = {
         id: i * 10 + 1,
         type: "Laboratory",
         attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
-        subject: subject
+        subject: subject,
+        teachers: [teacher]
       };
       this.meetings.push(meeting_1, meeting_2);
     }
@@ -573,28 +570,19 @@ export class CourseService {
     }
 
     return this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === weekNumber)
-      .sort((s1, s2) => s1.student.user.lastName > s2.student.user.lastName ? 1 : -1);
+      .sort((s1, s2) => s1.student.lastName > s2.student.lastName ? 1 : -1);
   }
 
-  getMeetings(subject
-                :
-                Subject
-  ):
+  getMeetings(subject: Subject):
     Meeting[] {
     return this.meetings.filter(m => m.subject.id === subject.id);
   }
 
-  getSubjects(teacher
-                :
-                Teacher
-  ) {
-    return this.subjects.filter(s => s.teacher.user.id === teacher.user.id);
+  getSubjects(teacher: Teacher) {
+    return this.subjects.filter(s => s.teacher.id === teacher.id);
   }
 
-  saveSituations(situations
-                   :
-                   Situation[]
-  ) {
+  saveSituations(situations: Situation[]) {
     this.situations = situations;
   }
 

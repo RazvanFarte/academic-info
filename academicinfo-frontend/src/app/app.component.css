@@ -19,10 +19,15 @@
 
 }
 
+/deep/ .mat-stepper-horizontal, /deep/ .mat-stepper-vertical {
+  background-color: whitesmoke;
+}
+
 .redirect {
   background-color: transparent;
 
 }
+
 
 .header-text {
   font-size: 26px;
@@ -73,201 +78,6 @@
   float: right;
 }
 
-/*
-.footer {
-  position: absolute;
-  overflow: hidden;
-  z-index: 9000;
-  bottom: 0;
-  width: 100%;
-  right: 0;
-  left: 0;
-  height: 60px;
-  -webkit-box-shadow: 0 8px 6px -6px #000;
-  -moz-box-shadow: 0 8px 6px -6px #000;
-  box-shadow: 0 -8px 6px -6px #000;
-}
-*/
-
-.footer-distributed {
-  position: absolute;
-  overflow: hidden;
-  z-index: 9000;
-  margin-right: 0;
-  bottom: 0;
-  right: 0;
-  background-color: lightgrey;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
-  box-sizing: border-box;
-  width: 100vw;
-  text-align: left;
-  font: bold 1vw sans-serif;
-  padding: 0.5vw 0.5vw;
-}
-
-.footer-distributed .footer-left,
-.footer-distributed .footer-center,
-.footer-distributed .footer-right {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.footer-right {
-  margin-top: 2vh;
-}
-
-/* Footer left */
-
-.footer-distributed .footer-left {
-  width: 18vw;
-  margin-left: 2vw;
-  margin-right: 5vw;
-}
-
-/* The company logo */
-
-.footer-distributed h3 {
-  color: black;
-  font: normal 1vw 'Cookie', cursive;
-  margin: 0;
-}
-
-.footer-distributed h3 span {
-  color: powderblue;
-}
-
-/* Footer links */
-
-.footer-distributed .footer-links {
-  color: black;
-  margin: 0.1vw 0 0.1vw;
-  padding: 0;
-}
-
-.footer-distributed .footer-links a {
-  display: inline-block;
-  line-height: 1.8;
-  text-decoration: none;
-  color: inherit;
-}
-
-/* Footer Center */
-
-.footer-distributed .footer-center {
-  width: 40vw;
-}
-
-.footer-distributed .footer-center i {
-  background-color: lightgrey;
-  color: black;
-  font-size: 25px;
-  width: 38px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 42px;
-  margin: 10px 15px;
-  vertical-align: middle;
-  display: inline;
-}
-
-.footer-distributed .footer-center i.fa-envelope {
-  font-size: 1vw;
-  display: inline;
-}
-
-.footer-distributed .footer-center i.fa-map-marker {
-  font-size: 1vw;
-  display: inline;
-}
-
-.footer-distributed .footer-center p {
-  display: inline-block;
-  color: black;
-  vertical-align: middle;
-}
-
-.footer-distributed .footer-center .info {
-  display: inline;
-  margin-right: 5vw;
-  width: 17.5vw;
-}
-
-.footer-distributed .footer-center p span {
-  display: block;
-  font-weight: normal;
-  font-size: 0.8vw;
-  line-height: 2;
-}
-
-.footer-distributed .footer-center p a {
-  color: #5383d3;
-  text-decoration: none;
-}
-
-/* Footer Right */
-
-.footer-distributed .footer-right {
-  width: 28vw;
-}
-
-.footer-distributed .footer-company-about {
-  line-height: 20px;
-  color: #92999f;
-  font-size: 13px;
-  font-weight: normal;
-  margin: 0;
-}
-
-.footer-distributed .footer-icons {
-  display: inline-block;
-  width: 10vw;
-  margin-right: 2vw;
-}
-
-.footer-distributed .footer-icons a {
-  display: inline-block;
-  width: 2vw;
-  cursor: pointer;
-  background-color: lightgrey;
-  border-radius: 2px;
-
-  font-size: 1vw;
-  color: black;
-  text-align: center;
-
-  margin-right: 3px;
-  margin-bottom: 5px;
-}
-
-.footer-distributed .footer-right .footer-company-name {
-  width: 12vw;
-  display: inline-block;
-  color: black;
-  font-size: 1vw;
-}
-
-/* If you don't want the footer to be responsive, remove these media queries */
-
-@media (max-width: 300px) {
-
-  .footer-distributed {
-    font: bold 14px sans-serif;
-  }
-
-  .footer-distributed .footer-left,
-  .footer-distributed .footer-center,
-  .footer-distributed .footer-right {
-    display: block;
-    width: 100vw;
-    margin-bottom: 40px;
-    text-align: center;
-  }
-
-  .footer-distributed .footer-center i {
-    margin-left: 0;
-  }
-
-}
 
 .dropdown-menu {
   min-width: 5px !important;

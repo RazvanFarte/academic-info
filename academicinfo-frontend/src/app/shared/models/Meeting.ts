@@ -1,4 +1,5 @@
 import {Subject} from "./Subject";
+import {Teacher} from "./Teacher";
 
 
 export class Meeting {
@@ -6,4 +7,5 @@ export class Meeting {
   type: string;
   attendanceRequired: boolean;
   subject: Subject;
+  teachers: Teacher[];
 }

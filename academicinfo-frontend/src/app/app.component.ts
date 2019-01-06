@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'AcademicInfo';
   loggedIn = true;
 
+  showFooter: boolean = true;
   constructor(private router: Router, private loginService: LoginService){
 
   }

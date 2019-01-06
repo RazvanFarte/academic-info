@@ -80,7 +80,7 @@ export class SituationTableComponent implements OnInit {
         this.situationsDataSource.paginator.firstPage();
       switch (property) {
         case 'name':
-          return item.student.user.lastName + " " + item.student.user.firstName;
+          return item.student.lastName + " " + item.student.firstName;
         case 'year':
           return item.student.year;
         case 'group':
@@ -92,7 +92,7 @@ export class SituationTableComponent implements OnInit {
         case 'meeting':
           return item.meeting.type;
         case 'email':
-          return item.student.user.email;
+          return item.student.email;
         case "is_present":
           return item.meeting.attendanceRequired ? ( item.isPresent === true ? -1 : 0 ) : 1;
         case "grade":
@@ -148,7 +148,7 @@ export class SituationTableComponent implements OnInit {
 
   filterByEmail(situation: Situation): boolean {
     return this.filters.email == ''
-      || situation.student.user.email.toLowerCase()
+      || situation.student.email.toLowerCase()
         .includes(this.filters.email.toLowerCase());
   }
 
@@ -163,7 +163,7 @@ export class SituationTableComponent implements OnInit {
 
   filterByName(situation: Situation): boolean {
     return this.filters.name == ''
-      || (situation.student.user.lastName + " " + situation.student.user.firstName).trim().toLowerCase()
+      || (situation.student.lastName + " " + situation.student.firstName).trim().toLowerCase()
         .includes(this.filters.name.trim().toLowerCase());
   }
 
@@ -230,7 +230,7 @@ export class SituationTableComponent implements OnInit {
 
   getAveragePresence(): number {
     let filteredSituations = this.situationsDataSource.data
-      .filter(s => s.meeting.attendanceRequired === true);
+      .filter(s  => this.filterPredicate(s) &&  s.meeting.attendanceRequired === true);
 
     if (filteredSituations.length === 0)
       return 100;
@@ -243,7 +243,7 @@ export class SituationTableComponent implements OnInit {
 
   getAverageGrade(): number {
     const filteredSituations = this.situationsDataSource.data
-      .filter(s => s.isGradable === true);
+      .filter(s => this.filterPredicate(s) && s.isGradable === true);
 
     if (filteredSituations.length === 0)
       return null;

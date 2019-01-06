@@ -55,6 +55,11 @@ import {
 import {ReactiveFormsModule} from '@angular/forms';
 import { SituationTableComponent } from './situation-table/situation-table.component';
 import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
+import {
+  IntroductionDialog,
+  TeacherCourseManagementComponent
+} from './teacher-course-management/teacher-course-management.component';
+import { TeacherAddCourseComponent } from './teacher-add-course/teacher-add-course.component';
 
 
 
@@ -67,7 +72,10 @@ const appRoutes: Routes = [
     path: 'login', component: LoginComponent,
   },
   {
-    path: 'courses', component: TeacherSituationComponent
+    path: 'situations', component: TeacherSituationComponent
+  },
+  {
+    path: 'courses-management', component: TeacherCourseManagementComponent
   }
 ];
 
@@ -110,7 +118,8 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-  ]
+  ],
+  declarations: []
 })
 export class MaterialModule {
 }
@@ -122,7 +131,13 @@ export class MaterialModule {
     LoginComponent,
     CommunicationComponent,
     SituationTableComponent,
-    TeacherSituationComponent
+    TeacherSituationComponent,
+    TeacherCourseManagementComponent,
+    TeacherAddCourseComponent,
+    IntroductionDialog
+  ],
+  entryComponents: [
+    IntroductionDialog
   ],
   imports: [
     BrowserModule,

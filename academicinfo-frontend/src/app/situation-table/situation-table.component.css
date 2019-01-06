@@ -83,6 +83,11 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 
 }
 
+.situation-table-container {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
 .mat-elevation-z8 {
   background-color: #fff;
   font-family: Roboto, "Helvetica Neue", sans-serif;

@@ -1,3 +1,5 @@
+
+<div class="situation-table-container">
 <div class="button-row">
   <button mat-raised-button color="basic" (click)="resetFilters()">
     <mat-icon>refresh</mat-icon>
@@ -158,8 +160,8 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let situation"> {{ situation.student.user.lastName + " " +
-        situation.student.user.firstName }}
+      <td mat-cell *matCellDef="let situation"> {{ situation.student.lastName + " " +
+        situation.student.firstName }}
       </td>
     </ng-container>
 
@@ -226,7 +228,7 @@
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>E-Mail</th>
-      <td mat-cell *matCellDef="let situation"> {{ situation.student.user.email}}</td>
+      <td mat-cell *matCellDef="let situation"> {{ situation.student.email}}</td>
     </ng-container>
 
 
@@ -236,3 +238,4 @@
   </table>
 </div>
 <mat-paginator [pageSizeOptions]="[50, 100]"></mat-paginator>
+</div>
