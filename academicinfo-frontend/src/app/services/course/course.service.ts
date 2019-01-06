@@ -7,6 +7,7 @@ import {User} from "../../shared/models/User";
 import {Student} from "../../shared/models/Student";
 import {Observable} from "rxjs";
 import {StudentBackend} from "../../shared/models/student-backend";
+import {SubjectBackend} from "../../shared/models/subject-backend";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -31,6 +32,7 @@ export class CourseService {
     this.students = [];
 
     this.students = this.getStudents();
+    this.subjects = this.getAllSubjects();
 
 
     const teacher: Teacher = {
@@ -47,7 +49,6 @@ export class CourseService {
         updatedAt: "2018-01-02",
       }
     };
-
 
     const subject: Subject = {
       id: 0,
@@ -66,25 +67,18 @@ export class CourseService {
       'Prelucrarea datelor audio-video',
     ];
 
-    for (let i = 0; i < 7; i++) {
-      let subject: Subject = {
-        id: i,
-        name: subjectNames[i],
-        isOptional: i % 5 === 4,
-        teacher: teacher
-      };
-      this.subjects.push(subject);
+    for (let i = 0; i < this.subjects.length; i++) {
       let meeting_1: Meeting = {
         id: i * 10,
         type: "Seminar",
         attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
-        subject: subject
+        subject: this.subjects[i]
       };
       let meeting_2: Meeting = {
         id: i * 10 + 1,
         type: "Laboratory",
         attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
-        subject: subject
+        subject: this.subjects[i]
       };
       this.meetings.push(meeting_1, meeting_2);
     }
@@ -177,6 +171,45 @@ export class CourseService {
       year: student.GroupID
     };
     return studentFront;
+  }
+
+  private getAllSubjects(): Subject[] {
+    // let subjectsBackend: SubjectBackend[];
+    // this.getSubjectsBackend().subscribe(data => subjectsBackend = data,  error => console.log(error));
+    //
+    // let subjects: Subject[];
+    // subjects = subjectsBackend.map(subject => this.mapSubjectBackendToFrontend(subject));
+    console.log("Passed get all subjects");
+    return [];
+  }
+
+  private mapSubjectBackendToFrontend(subject: SubjectBackend): Subject{
+    // TODO Make a link on backend between subject and teacher
+    const teacher: Teacher = {
+      user: {
+        id: 0,
+        lastLogin: "2018-01-01",
+        username: "popescu",
+        email: "popescu@scs.ubbcluj.ro",
+        firstName: "Ion",
+        lastName: "Popescu",
+        userType: 1,
+        faculty: "IE",
+        createdAt: "2018-01-02",
+        updatedAt: "2018-01-02",
+      }
+    };
+
+    return {
+      id: subject.SubjectID,
+      name: subject.Title,
+      isOptional: true,
+      teacher: teacher
+    };
+  }
+
+  private getSubjectsBackend(): Observable<SubjectBackend[]> {
+    return this.http.get<SubjectBackend[]>('http://bechend.azurewebsites.net/api/subject');
   }
 
 }
