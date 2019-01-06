@@ -1,4 +1,4 @@
-export class SubjectBackend {
+export interface SubjectBackend {
   SubjectID: number;
   Title: string;
 }

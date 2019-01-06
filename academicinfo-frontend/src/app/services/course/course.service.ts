@@ -5,6 +5,9 @@ import {Teacher} from "../../shared/models/Teacher";
 import {Subject} from "../../shared/models/Subject";
 import {User} from "../../shared/models/User";
 import {Student} from "../../shared/models/Student";
+import {Observable} from "rxjs";
+import {StudentBackend} from "../../shared/models/student-backend";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,7 @@ export class CourseService {
   private students: Student[];
   private initialized: boolean = false;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     if (this.initialized === true)
       return;
 
@@ -27,464 +30,7 @@ export class CourseService {
     this.situations = [];
     this.students = [];
 
-    let names: string[] = [
-      "Aaren"
-      ,
-      "Aarika"
-      ,
-      "Abagael"
-      ,
-      "Abagail"
-      ,
-      "Abbe"
-      ,
-      "Abbey"
-      ,
-      "Abbi"
-      ,
-      "Abbie"
-      ,
-      "Abby"
-      ,
-      "Abbye"
-      ,
-      "Abigael"
-      ,
-      "Abigail"
-      ,
-      "Abigale"
-      ,
-      "Abra"
-      ,
-      "Ada"
-      ,
-      "Adah"
-      ,
-      "Adaline"
-      ,
-      "Adan"
-      ,
-      "Adara"
-      ,
-      "Adda"
-      ,
-      "Addi"
-      ,
-      "Addia"
-      ,
-      "Addie"
-      ,
-      "Addy"
-      ,
-      "Adel"
-      ,
-      "Adela"
-      ,
-      "Adelaida"
-      ,
-      "Adelaide"
-      ,
-      "Adele"
-      ,
-      "Adelheid"
-      ,
-      "Adelice"
-      ,
-      "Adelina"
-      ,
-      "Adelind"
-      ,
-      "Adeline"
-      ,
-      "Adella"
-      ,
-      "Adelle"
-      ,
-      "Adena"
-      ,
-      "Adey"
-      ,
-      "Adi"
-      ,
-      "Adiana"
-      ,
-      "Adina"
-      ,
-      "Adora"
-      ,
-      "Adore"
-      ,
-      "Adoree"
-      ,
-      "Adorne"
-      ,
-      "Adrea"
-      ,
-      "Adria"
-      ,
-      "Adriaens"
-      ,
-      "Adrian"
-      ,
-      "Adriana"
-      ,
-      "Adriane"
-      ,
-      "Adrianna"
-      ,
-      "Adrianne"
-      ,
-      "Adriena"
-      ,
-      "Adrienne"
-      ,
-      "Aeriel"
-      ,
-      "Aeriela"
-      ,
-      "Aeriell"
-      ,
-      "Afton"
-      ,
-      "Ag"
-      ,
-      "Agace"
-      ,
-      "Agata"
-      ,
-      "Agatha"
-      ,
-      "Agathe"
-      ,
-      "Aggi"
-      ,
-      "Aggie"
-      ,
-      "Aggy"
-      ,
-      "Agna"
-      ,
-      "Agnella"
-      ,
-      "Agnes"
-      ,
-      "Agnese"
-      ,
-      "Agnesse"
-      ,
-      "Agneta"
-      ,
-      "Agnola"
-      ,
-      "Agretha"
-      ,
-      "Aida"
-      ,
-      "Aidan"
-      ,
-      "Aigneis"
-      ,
-      "Aila"
-      ,
-      "Aile"
-      ,
-      "Ailee"
-      ,
-      "Aileen"
-      ,
-      "Ailene"
-      ,
-      "Ailey"
-      ,
-      "Aili"
-      ,
-      "Ailina"
-      ,
-      "Ailis"
-      ,
-      "Ailsun"
-      ,
-      "Ailyn"
-      ,
-      "Aime"
-      ,
-      "Aimee"
-      ,
-      "Aimil"
-      ,
-      "Aindrea"
-      ,
-      "Ainslee"
-      ,
-      "Ainsley"
-      ,
-      "Ainslie"
-      ,
-      "Ajay"
-      ,
-      "Alaine"
-      ,
-      "Alameda"
-      ,
-      "Alana"
-      ,
-      "Alanah"
-      ,
-      "Alane"
-      ,
-      "Alanna"
-      ,
-      "Alayne"
-      ,
-      "Alberta"
-      ,
-      "Albertina"
-      ,
-      "Albertine"
-      ,
-      "Albina"
-      ,
-      "Alecia"
-      ,
-      "Aleda"
-      ,
-      "Aleece"
-      ,
-      "Aleen"
-      ,
-      "Alejandra"
-      ,
-      "Alejandrina"
-      ,
-      "Alena"
-      ,
-      "Alene"
-      ,
-      "Alessandra"
-      ,
-      "Aleta"
-      ,
-      "Alethea"
-      ,
-      "Alex"
-      ,
-      "Alexa"
-      ,
-      "Alexandra"
-      ,
-      "Alexandrina"
-      ,
-      "Alexi"
-      ,
-      "Alexia"
-      ,
-      "Alexina"
-      ,
-      "Alexine"
-      ,
-      "Alexis"
-      ,
-      "Alfi"
-      ,
-      "Alfie"
-      ,
-      "Alfreda"
-      ,
-      "Alfy"
-      ,
-      "Ali"
-      ,
-      "Alia"
-      ,
-      "Alica"
-      ,
-      "Alice"
-      ,
-      "Alicea"
-      ,
-      "Alicia"
-      ,
-      "Alida"
-      ,
-      "Alidia"
-      ,
-      "Alie"
-      ,
-      "Alika"
-      ,
-      "Alikee"
-      ,
-      "Alina"
-      ,
-      "Aline"
-      ,
-      "Alis"
-      ,
-      "Alisa"
-      ,
-      "Alisha"
-      ,
-      "Alison"
-      ,
-      "Alissa"
-      ,
-      "Alisun"
-      ,
-      "Alix"
-      ,
-      "Aliza"
-      ,
-      "Alla"
-      ,
-      "Alleen"
-      ,
-      "Allegra"
-      ,
-      "Allene"
-      ,
-      "Alli"
-      ,
-      "Allianora"
-      ,
-      "Allie"
-      ,
-      "Allina"
-      ,
-      "Allis"
-      ,
-      "Allison"
-      ,
-      "Allissa"
-      ,
-      "Allix"
-      ,
-      "Allsun"
-      ,
-      "Allx"
-      ,
-      "Ally"
-      ,
-      "Allyce"
-      ,
-      "Allyn"
-      ,
-      "Allys"
-      ,
-      "Allyson"
-      ,
-      "Alma"
-      ,
-      "Almeda"
-      ,
-      "Almeria"
-      ,
-      "Almeta"
-      ,
-      "Almira"
-      ,
-      "Almire"
-      ,
-      "Aloise"
-      ,
-      "Aloisia"
-      ,
-      "Aloysia"
-      ,
-      "Alta"
-      ,
-      "Althea"
-      ,
-      "Alvera"
-      ,
-      "Alverta"
-      ,
-      "Alvina"
-      ,
-      "Alvinia"
-      ,
-      "Alvira"
-      ,
-      "Alyce"
-      ,
-      "Alyda"
-      ,
-      "Alys"
-      ,
-      "Alysa"
-      ,
-      "Alyse"
-      ,
-      "Alysia"
-      ,
-      "Alyson"
-      ,
-      "Alyss"
-      ,
-      "Alyssa"
-      ,
-      "Amabel"
-      ,
-      "Amabelle"
-      ,
-      "Amalea"
-      ,
-      "Amalee"
-      ,
-      "Amaleta"
-      ,
-      "Amalia"
-      ,
-      "Amalie"
-      ,
-      "Amalita"
-      ,
-      "Amalle"
-      ,
-      "Amanda"
-      ,
-      "Amandi"
-      ,
-      "Amandie"
-      ,
-      "Amandy"
-      ,
-      "Amara"
-      ,
-      "Amargo"
-      ,
-      "Amata"
-      ,
-      "Amber"
-      ,
-      "Amberly"
-      ,
-      "Ambur"
-      ,
-      "Ame"
-      ,
-      "Amelia"
-    ];
-
-    for (let i = 0; i < 30; i++) {
-      const user: User = {
-        id: i,
-        lastLogin: "2018-01-01",
-        username: "username" + i,
-        email: i + "@scs.ubbcluj.ro",
-        firstName: names[Math.floor(Math.random() * 100 % names.length)],
-        lastName: names[Math.floor(Math.random() * 100 % names.length)],
-        userType: 1,
-        faculty: "IE",
-        createdAt: "2018-01-02",
-        updatedAt: "2018-01-02",
-      };
-      const student: Student = {
-        user: user,
-        group: "" + (i % 5 + 1),
-        year: i % 3 + 1
-      };
-      this.students.push(student);
-    }
+    this.students = this.getStudents();
 
 
     const teacher: Teacher = {
@@ -598,5 +144,39 @@ export class CourseService {
     this.situations = situations;
   }
 
+  getStudents(): Student[] {
+    let studentsBackend: StudentBackend[];
+    this.getStudentsBackend().subscribe(data => studentsBackend = data,  error => console.log(error));
+
+    let students: Student[];
+    students = studentsBackend.map(student => this.mapStudentBackendToFrontend(student));
+
+    return students;
+  }
+
+  getStudentsBackend(): Observable<StudentBackend[]> {
+    return this.http.get<StudentBackend[]>('http://bechend.azurewebsites.net/api/student');
+  }
+
+  mapStudentBackendToFrontend(student: StudentBackend): Student {
+    let user: User = {
+      id: student.$id,
+      lastLogin: "2018-01-01",
+      username: "TODO-ADDUSERNAMEBACKEND",
+      email: student.Email,
+      firstName: student.FirstName,
+      lastName: student.LastName,
+      userType: 1,
+      faculty: "IE",
+      createdAt: "2018-01-02",
+      updatedAt: "2018-01-02"
+    };
+    let studentFront: Student = {
+      user : user,
+      group: 'THIS IS THE GROUP ID' + student.GroupID,
+      year: student.GroupID
+    };
+    return studentFront;
+  }
 
 }
