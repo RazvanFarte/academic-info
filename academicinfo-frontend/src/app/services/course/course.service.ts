@@ -30,9 +30,12 @@ export class CourseService {
     this.situations = [];
     this.students = [];
 
-    this.students = this.getStudents();
+    // this.students = this.getStudents();
+    this.students = [];
+    this.getStudents();
+  }
 
-
+  doInit() {
     const teacher: Teacher = {
       user: {
         id: 0,
@@ -146,12 +149,19 @@ export class CourseService {
 
   getStudents(): Student[] {
     let studentsBackend: StudentBackend[];
-    this.getStudentsBackend().subscribe(data => studentsBackend = data,  error => console.log(error));
+    this.getStudentsBackend().subscribe(data => {
+      studentsBackend = data;
+      error => console.log(error);
+      
+      let students: Student[];
+      students = studentsBackend.map(student => this.mapStudentBackendToFrontend(student));
 
-    let students: Student[];
-    students = studentsBackend.map(student => this.mapStudentBackendToFrontend(student));
+      this.students = students;
 
-    return students;
+      this.doInit();
+    });
+
+    return [];
   }
 
   getStudentsBackend(): Observable<StudentBackend[]> {
