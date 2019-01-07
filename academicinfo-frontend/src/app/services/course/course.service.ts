@@ -71,21 +71,44 @@ export class CourseService {
       'Prelucrarea datelor audio-video',
     ];
 
-    for (let i = 0; i < this.subjects.length; i++) {
+    for (let i = 0; i < 7; i++) {
+      let subject: Subject = {
+        id: i,
+        name: subjectNames[i],
+        isOptional: i % 5 === 4,
+        teacher: teacher
+      };
+      this.subjects.push(subject);
       let meeting_1: Meeting = {
         id: i * 10,
         type: "Seminar",
         attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
-        subject: this.subjects[i]
+        subject: subject
       };
       let meeting_2: Meeting = {
         id: i * 10 + 1,
         type: "Laboratory",
         attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
-        subject: this.subjects[i]
+        subject: subject
       };
       this.meetings.push(meeting_1, meeting_2);
     }
+
+    // for (let i = 0; i < this.subjects.length; i++) {
+    //   let meeting_1: Meeting = {
+    //     id: i * 10,
+    //     type: "Seminar",
+    //     attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
+    //     subject: this.subjects[i]
+    //   };
+    //   let meeting_2: Meeting = {
+    //     id: i * 10 + 1,
+    //     type: "Laboratory",
+    //     attendanceRequired: (Math.floor(Math.random() * 10 % 2) > 0),
+    //     subject: this.subjects[i]
+    //   };
+    //   this.meetings.push(meeting_1, meeting_2);
+    // }
 
     let currentId = 0;
     for (let i = 0; i < this.students.length; i++) {
