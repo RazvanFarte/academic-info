@@ -11,6 +11,10 @@ import {Student} from "../../shared/models/Student";
 })
 export class CourseService {
 
+  //TODO   REPLACE THIS SERVICE WITH SITUATION SERVICE WHEN CONNECTED TO THE BACKEND !!!!!
+  //TODO   REPLACE THIS SERVICE WITH SITUATION SERVICE WHEN CONNECTED TO THE BACKEND !!!!!
+  //TODO   REPLACE THIS SERVICE WITH SITUATION SERVICE WHEN CONNECTED TO THE BACKEND !!!!!
+
   private subjects: Subject[];
   private meetings: Meeting[];
   private situations: Situation[];
@@ -582,8 +586,20 @@ export class CourseService {
     return this.subjects.filter(s => s.teacher.id === teacher.id);
   }
 
-  saveSituations(situations: Situation[]) {
+  createSituations(situations: Situation[]) {
     this.situations = situations;
+  }
+
+  updateSituation(situations: Situation[]) {
+
+  }
+
+  createOrUpdateSubject(subject: Subject){
+
+  }
+
+  createOrUpdateMeetings(meetings: Meeting[]){
+
   }
 
 

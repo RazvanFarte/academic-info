@@ -4,6 +4,9 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validat
 import {User} from "../shared/models/User";
 import {Meeting} from "../shared/models/Meeting";
 import {UserService} from "../services/user/user.service";
+import {CourseService} from "../services/course/course.service";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-teacher-add-course',
@@ -12,7 +15,6 @@ import {UserService} from "../services/user/user.service";
 })
 export class TeacherAddCourseComponent implements OnInit {
 
-  operationType: string;
   newCourse: Subject;
   addCourseFormGroup: FormGroup;
   teachers: User[];
@@ -23,12 +25,17 @@ export class TeacherAddCourseComponent implements OnInit {
   teacherCtrl: FormControl;
   meetingNoCtrl: FormControl;
 
-  constructor(private _formBuilder: FormBuilder, private userService: UserService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private userService: UserService,
+    private courseService: CourseService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
   }
 
   ngOnInit() {
     this.displayMeetingsControl = false;
-    this.operationType = 'none';
     this.meetingNoCtrl = new FormControl('', null);
     this.nameCtrl = new FormControl('', null);
     this.isOptionalCtrl = new FormControl('', null);
@@ -117,7 +124,10 @@ export class TeacherAddCourseComponent implements OnInit {
       }) === -1);
   }
 
-  editCourse() {
-    this.operationType = 'edit';
+  saveCourse(){
+    this.courseService.createOrUpdateSubject(this.newCourse);
+    this.courseService.createOrUpdateMeetings(this.meetings);
+    this.snackBar.open("Data has been successfully saved!", 'Clear', {duration: 2000});
+    //this.router.navigate(['/courses-management']);
   }
 }

@@ -1,9 +1,9 @@
 
-/deep/ mat-panel-title {
+ mat-panel-title {
   width: 30% !important;
 }
 
-/deep/ .mat-expansion-panel-header-description {
+ .mat-expansion-panel-header-description {
   text-align: right !important;
 }
 
@@ -13,16 +13,16 @@
   width: 20vw;
 }
 
-/deep/ .stepper-form {
+ .stepper-form {
   width: 30% !important;
 }
 
-/deep/ .mat-raised-button {
+ .mat-raised-button {
   margin-left: 1vw !important;
 }
 
 
-/deep/ mat-form-field {
+ mat-form-field {
   margin-left: 5% !important;
   width: 90% !important;
   margin-right: 5% !important;
@@ -40,7 +40,7 @@
   display: inline;
 }
 
-/deep/ .mat-figure {
+ .mat-figure {
   display: block !important;
 }
 

@@ -25,7 +25,7 @@
   width: 300px;
 }
 
-/deep/ .ubb-logo {
+ .ubb-logo {
   width: 100% !important;
   min-width: 20vw !important;
 }
@@ -315,8 +315,6 @@ iframe {
   height: 8vh;
   border-radius: 25px;
   padding: 0 30px 0 53px;
-  -webkit-animation: pulsate 5s ease-in-out infinite;
-  animation: pulsate 5s ease-in-out infinite;
 }
 
 
@@ -351,18 +349,6 @@ iframe {
 
 .input100:focus + .focus-input100 {
 
-}
-
-@-webkit-keyframes pulsate {
-  0%   { box-shadow: 0 0 0 darkred; }
-  50%  { box-shadow: 0 0 4vh darkred; }
-  100% { box-shadow: 0 0 0 darkred; }
-}
-
-@keyframes pulsate {
-  0%   { box-shadow: 0 0 0 darkred; }
-  50%  { box-shadow: 0 0 4vh darkred; }
-  100% { box-shadow: 0 0 0 darkred; }
 }
 
 

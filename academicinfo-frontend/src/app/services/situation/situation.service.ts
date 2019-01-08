@@ -32,7 +32,8 @@ export class SituationService {
       headers: new HttpHeaders(p.headers)
     };
     return of(this.courseService.getSituationsSorted(meeting, weekNumber));
-    //TODO return this.http.get<Situation[]>(this.properties.url, options);
+    //TODO CONNECT TO BACKEND: get all situations for teacher_id, meeting_id and weekNumber
+    //return this.http.get<Situation[]>(this.properties.url, options);
   }
 
   getAllSituations(teacher_id: number): Observable<Situation[]> {
@@ -42,7 +43,8 @@ export class SituationService {
       headers: new HttpHeaders(p.headers)
     };
     return of(this.courseService.getSituationsSorted(null,null));
-    //TODO return this.http.get<Situation[]>(p.url, options);
+    //TODO CONNECT TO BACKEND: get all situations for teacher_id
+    //return this.http.get<Situation[]>(p.url, options);
   }
 
 
@@ -54,16 +56,32 @@ export class SituationService {
 
   getMeetings(subject: Subject): Observable<Meeting[]> {
     //return this.meetings.filter(m => m.subject.id === subject.id);
-    //TODO
+    //TODO CONNECT TO BACKEND: get all meetings for a subject
     return of(this.courseService.getMeetings(subject));
   }
 
   getSubjects(teacher: Teacher): Observable<Subject[]> {
+    //TODO CONNECT TO BACKEND: get all subjects for a teacher
     //return this.subjects.filter(s => s.teacher.user.id === teacher.user.id);
     return of(this.courseService.getSubjects(teacher));
   }
 
-  saveSituations(situations: Situation[]) {
+  createSituations(situations: Situation[]) {
+    //TODO CONNECT TO BACKEND
     //this.situations = situations;
+  }
+
+  updateSituations(situations: Situation[]) {
+    //TODO CONNECT TO BACKEND
+  }
+
+  createOrUpdateSubject(subject: Subject){
+    //TODO CONNECT TO BACKEND
+  }
+
+  createOrUpdateMeetings(meetings: Meeting[]){
+    //TODO CONNECT TO BACKEND
+    // warning!! on update the old meetings for the same subject should be replaced by the new ones (ex. if we had some meetings for subject X before
+    // and we make another call on the api the new meetings should replace the old ones)
   }
 }

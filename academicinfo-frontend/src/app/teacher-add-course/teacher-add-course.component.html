@@ -55,7 +55,7 @@
           <mat-error> Value must be below 30</mat-error>
         </mat-form-field>
         <div class="button-stepper-row">
-          <button mat-raised-button matStepperNext color="basic" [disabled]=" ! isSubjectComplete()">Save</button>
+          <button mat-raised-button matStepperNext color="basic" [disabled]=" ! isSubjectComplete()" (click)="saveCourse()">Save</button>
           <button mat-raised-button matStepperPrevious color="warn">Back</button>
         </div>
       </mat-step>

@@ -41,6 +41,7 @@ export class SituationTableComponent implements OnInit {
   gradeFilter: string;
   presenceFilter;
   gradeOperationFilter;
+  hasUnsavedChanges: boolean;
 
   constructor(public snackBar: MatSnackBar) {
   }
@@ -58,6 +59,10 @@ export class SituationTableComponent implements OnInit {
   // warning, the changed field is not guaranteed to be updated when this method is called, it usually updates after
   saveChange(situation: Situation){
     situation.updated = true;
+    if(this.hasUnsavedChanges === false) {
+      this.snackBar.open("Warning: You have unsaved changes!", 'Ignore', { politeness: "assertive", duration: 12000000 });
+      this.hasUnsavedChanges = true;
+    }
   }
 
   ngOnInit() {
@@ -73,6 +78,7 @@ export class SituationTableComponent implements OnInit {
       {'value': 'grade', 'display': 'Grade'},
       {'value': 'email', 'display': 'E-Mail'}
     ];
+    this.hasUnsavedChanges = false;
     this.situationsDataSource = new MatTableDataSource(this.situations);
     this.getDisplayedColumns();
     this.situationsDataSource.sortingDataAccessor = (item, property) => {
@@ -260,14 +266,12 @@ export class SituationTableComponent implements OnInit {
     this.displayedColumns = this.displayedColumns.filter(c => c != column);
   }
 
+
   save() {
-    let avgGrade = Math.round(this.getAverageGrade() * 100) / 100;
-    let avgPresence = Math.round(this.getAveragePresence() * 100) / 100;
-
-    let message = "Average grade is " + avgGrade + "\n"
-      + "Average presence is " + avgPresence + "%";
-    //this.snackBar.open(message, 'OK', {duration: 2000,});
-
+    this.hasUnsavedChanges = false;
+    let updated = this.situations.filter(s => s.updated === true);
+    updated.forEach(s => s.updated =false);
+    // TODO updated will contain the updated situations
     this.snackBar.open("Data has been successfully saved!", 'Clear', {duration: 2000});
   }
 
