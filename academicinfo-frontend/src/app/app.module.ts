@@ -13,45 +13,6 @@ import {RecaptchaFormsModule} from 'ng-recaptcha/forms';
 import {ToastrModule} from 'ngx-toastr';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {CdkTableModule} from '@angular/cdk/table';
-import {CdkTreeModule} from '@angular/cdk/tree';
-import {
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatBottomSheetModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatTreeModule,
-} from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import { SituationTableComponent } from './situation-table/situation-table.component';
 import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
@@ -60,6 +21,8 @@ import {
   TeacherCourseManagementComponent
 } from './teacher-course-management/teacher-course-management.component';
 import { TeacherAddCourseComponent } from './teacher-add-course/teacher-add-course.component';
+import { TeacherEditCourseComponent } from './teacher-edit-course/teacher-edit-course.component';
+import {MaterialModule} from "./modules/material/material.module";
 
 
 
@@ -79,50 +42,6 @@ const appRoutes: Routes = [
   }
 ];
 
-@NgModule({
-  exports: [
-    CdkTableModule,
-    CdkTreeModule,
-    MatAutocompleteModule,
-    MatBadgeModule,
-    MatBottomSheetModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatStepperModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatTreeModule,
-  ],
-  declarations: []
-})
-export class MaterialModule {
-}
 
 
 @NgModule({
@@ -134,7 +53,8 @@ export class MaterialModule {
     TeacherSituationComponent,
     TeacherCourseManagementComponent,
     TeacherAddCourseComponent,
-    IntroductionDialog
+    IntroductionDialog,
+    TeacherEditCourseComponent
   ],
   entryComponents: [
     IntroductionDialog
@@ -142,9 +62,6 @@ export class MaterialModule {
   imports: [
     BrowserModule,
     MaterialModule,
-    MatTableModule,
-    MatSortModule,
-    MatSnackBarModule,
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),

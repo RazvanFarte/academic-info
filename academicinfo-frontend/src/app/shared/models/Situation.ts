@@ -8,6 +8,7 @@ export class Situation {
   isPresent: boolean;
   isGradable: boolean;
   grade: number;
+  gradePercentage: number;
   meeting: Meeting;
   student: Student;
   teacher: Teacher;
