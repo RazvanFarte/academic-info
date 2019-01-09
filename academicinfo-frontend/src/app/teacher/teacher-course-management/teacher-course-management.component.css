@@ -1,0 +1,268 @@
+
+
+
+.sidenav-button-row {
+  width: 90% !important;
+  min-width: 50px;
+
+}
+
+.sidenav-button {
+  width: 100% !important;
+  height: 50px !important;
+  text-align: left;
+  margin-bottom: 1vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+.sidenav-button-simulate {
+  width: 100% !important;
+  height: 50px !important;
+  text-align: left;
+  margin-bottom: 1vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  -webkit-animation: pulsate 5s ease-in-out infinite;
+  animation: pulsate 5s ease-in-out infinite;
+  background-color: lightsteelblue;
+}
+
+ .component-details {
+  position: fixed;
+  top: 40%;
+  left: 28%;
+  width: 60%;
+  height: 60%;
+  background-image: url("https://www.janbasktraining.com/assets/images/thank-page.png");
+  background-repeat: no-repeat;
+}
+
+.main-content {
+
+}
+
+
+@-webkit-keyframes pulsate {
+  0%   { box-shadow: 0 0 0 lightsteelblue; }
+  50%  { box-shadow: 0 0 4vh lightsteelblue; }
+  100% { box-shadow: 0 0 0 lightsteelblue; }
+}
+
+@keyframes pulsate {
+  0%   { box-shadow: 0 0 0 lightsteelblue; }
+  50%  { box-shadow: 0 0 4vh lightsteelblue; }
+  100% { box-shadow: 0 0 0 lightsteelblue; }
+}
+
+
+
+@-webkit-keyframes anim-shadow {
+  to {
+    box-shadow: 0 0 20vh 20vh;
+    opacity: 0.3;
+  }
+}
+
+@keyframes anim-shadow {
+  to {
+    box-shadow: 0 0 20vh 20vh;
+    opacity: 0.3;
+  }
+}
+
+
+.example-container {
+  position: absolute;
+  background-color: whitesmoke;
+  top: 60px;
+  left: 0;
+  right: 0;
+}
+
+.sidenav-hover-simulate {
+  margin-top: 20vh;
+  display: flex;
+  background: transparent;
+  overflow-x: hidden;
+  transition: width 1s;
+  width: 250px;
+}
+
+.example-sidenav:hover {
+  transition: width 0.5s;
+  width: 250px;
+}
+
+.example-sidenav {
+  margin-top: 20vh;
+  transition: width 3s;
+  display: flex;
+  width: 10px;
+  background: transparent;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.example-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+table {
+  width: 100% !important;
+}
+
+tr.custom-table-header th {
+  background-color: lightgrey !important;
+  border-bottom: 1px solid black !important;
+  font-size: 20px !important;
+  text-align-all: center !important;
+  color: black !important;
+}
+
+tr.custom-table-row td {
+  border-bottom-width: 0 !important;
+}
+
+tr.custom-table-row:hover {
+  background: #f5f5f5 !important;
+}
+
+.example-first-header-row th {
+  border-bottom: none !important;
+}
+
+.example-second-header-row {
+  font-style: italic !important;
+}
+
+.example-first-footer-row {
+  font-weight: bold !important;
+}
+
+.example-second-footer-row td {
+  color: #900000 !important;
+}
+
+.example-full-width {
+  margin-left: 5vw !important;
+}
+
+.mat-tab-label {
+  opacity: 1  !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: lightgreen !important;
+
+}
+
+.mat-sort-header-container {
+  text-align: center  !important;
+  align-items: center  !important;
+  margin-left: 26%  !important;
+}
+
+.mat-header-cell {
+  text-align: center !important;
+}
+
+.mat-cell {
+  justify-content: flex-end !important;
+  text-align: center !important;
+}
+
+th {
+  text-align: center !important;
+}
+
+th.mat-header-cell {
+  align-items: center;
+  margin-left: 30%  !important;
+
+}
+
+.mat-raised-button[disabled][disabled] {
+  background-color: lightgrey !important;
+  color: black !important;
+}
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  align-items: center;
+  margin-left: 30%  !important;
+
+}
+
+.situation-table-container {
+  margin-right: 20px !important;
+  margin-left: 20px !important;
+}
+
+.mat-elevation-z8 {
+  background-color: #fff !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+.button-row {
+  margin-bottom: 2vh !important;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 8px !important;
+}
+
+.basic-select {
+
+}
+
+.button-row .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 0  !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12)  !important;
+  background-color: white !important;
+}
+
+.button-row .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  border-radius: 0 !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12) !important;
+  background-color: white !important;
+}
+
+.button-row .mat-form-field-appearance-outline .mat-form-field-outline-end,  .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  min-width: 0 !important;
+}
+
+.button-row .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin-right: 8px !important;
+}
+
+.mat-cell .mat-form-field-wrapper .mat-form-field-infix {
+  width: 4vw  !important;
+}
+
+.cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+  text-align: center  !important;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0  !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.2vh 0 1vh 0  !important;
+}
+
+tr .form-group {
+  margin-bottom: 0  !important;
+}
+

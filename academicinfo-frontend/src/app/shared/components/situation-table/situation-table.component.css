@@ -1,0 +1,150 @@
+.situation-table-container table {
+  width: 100%;
+}
+
+.situation-table-container tr.custom-table-header th {
+  background-color: lightgrey;
+  border-bottom: 1px solid black;
+  font-size: 20px;
+  text-align-all: center;
+  color: black;
+}
+
+.situation-table-container tr.custom-table-row td {
+  border-bottom-width: 0;
+}
+
+.situation-table-container tr.custom-table-row:hover {
+  background: #f5f5f5;
+}
+
+.situation-table-container .example-first-header-row th {
+  border-bottom: none;
+}
+
+.situation-table-container .example-second-header-row {
+  font-style: italic;
+}
+
+.situation-table-container .example-first-footer-row {
+  font-weight: bold;
+}
+
+.situation-table-container .example-second-footer-row td {
+  color: #900000;
+}
+
+.situation-table-container .example-full-width {
+  margin-left: 5vw;
+}
+
+.situation-table-container /deep/ .mat-tab-label {
+  opacity: 1 !important;
+}
+
+.situation-table-container  /deep/ .mat-checkbox-checked.mat-accent .mat-checkbox-background{
+  background-color: lightgreen;
+
+}
+
+.situation-table-container /deep/ .mat-sort-header-container {
+  text-align: center !important;
+  align-items: center !important;
+  margin-left: 26% !important;
+}
+
+.situation-table-container /deep/ .mat-header-cell {
+  text-align: center;
+}
+
+.situation-table-container /deep/ .mat-cell {
+  justify-content: flex-end;
+  text-align: center;
+}
+
+.situation-table-container /deep/ th {
+  text-align: center;
+}
+
+.situation-table-container /deep/ th.mat-header-cell {
+  align-items: center;
+  margin-left: 30% !important;
+
+}
+
+.situation-table-container /deep/ .mat-raised-button[disabled][disabled] {
+  background-color: lightgrey;
+  color: black;
+}
+
+.situation-table-container td.mat-cell,
+.situation-table-container td.mat-footer-cell,
+.situation-table-container th.mat-header-cell {
+  align-items: center;
+  margin-left: 30% !important;
+
+}
+
+.situation-table-container {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.situation-table-container .mat-elevation-z8 {
+  background-color: #fff;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.situation-table-container .button-row {
+  margin-bottom: 2vh;
+}
+
+.situation-table-container .button-row button,
+.situation-table-container .button-row a {
+  margin-right: 8px;
+}
+
+.basic-select {
+
+}
+
+.situation-table-container /deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 0;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  background-color: white;
+}
+
+.situation-table-container /deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  border-radius: 0;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  background-color: white;
+}
+
+.situation-table-container /deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-outline-end,
+.situation-table-container /deep/ .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  min-width: 0;
+}
+
+.situation-table-container /deep/ .button-row .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin-right: 8px;
+}
+
+.situation-table-container /deep/ .mat-cell .mat-form-field-wrapper .mat-form-field-infix {
+  width: 4vw;
+}
+
+.situation-table-container /deep/ .cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+  text-align: center;
+}
+
+.situation-table-container .table-input-form /deep/ .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.situation-table-container /deep/ .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.2vh 0 1vh 0;
+}
+
+.situation-table-container /deep/ tr .form-group {
+  margin-bottom: 0;
+}

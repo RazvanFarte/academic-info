@@ -1,6 +1,6 @@
-import {User} from "./User";
 
-export interface Student extends User{
+
+export interface StudentDto {
   id: number;
   lastLogin: string;
   username: string;

@@ -1,0 +1,121 @@
+
+
+
+.sidenav-button-row {
+  width: 90% !important;
+  min-width: 50px;
+
+}
+
+.sidenav-button {
+  width: 100% !important;
+  height: 50px !important;
+  text-align: left;
+  margin-bottom: 1vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+.sidenav-button-simulate {
+  width: 100% !important;
+  height: 50px !important;
+  text-align: left;
+  margin-bottom: 1vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  -webkit-animation: pulsate 5s ease-in-out infinite;
+  animation: pulsate 5s ease-in-out infinite;
+  background-color: lightsteelblue;
+}
+
+.component-details {
+  position: fixed;
+  top: 40%;
+  left: 28%;
+  width: 60%;
+  height: 60%;
+  background-image: url("https://www.janbasktraining.com/assets/images/thank-page.png");
+  background-repeat: no-repeat;
+}
+
+.main-content {
+
+}
+
+
+@-webkit-keyframes pulsate {
+  0%   { box-shadow: 0 0 0 lightsteelblue; }
+  50%  { box-shadow: 0 0 4vh lightsteelblue; }
+  100% { box-shadow: 0 0 0 lightsteelblue; }
+}
+
+@keyframes pulsate {
+  0%   { box-shadow: 0 0 0 lightsteelblue; }
+  50%  { box-shadow: 0 0 4vh lightsteelblue; }
+  100% { box-shadow: 0 0 0 lightsteelblue; }
+}
+
+
+
+@-webkit-keyframes anim-shadow {
+  to {
+    box-shadow: 0 0 20vh 20vh;
+    opacity: 0.3;
+  }
+}
+
+@keyframes anim-shadow {
+  to {
+    box-shadow: 0 0 20vh 20vh;
+    opacity: 0.3;
+  }
+}
+
+
+.example-container {
+  position: absolute;
+  background-color: whitesmoke;
+  top: 60px;
+  left: 0;
+  right: 0;
+}
+
+.sidenav-hover-simulate {
+  margin-top: 20vh;
+  display: flex;
+  background: transparent;
+  overflow-x: hidden;
+  transition: width 1s;
+  width: 250px;
+}
+
+.example-sidenav:hover {
+  transition: width 0.5s;
+  width: 250px;
+}
+
+.example-sidenav {
+  margin-top: 20vh;
+  transition: width 3s;
+  display: flex;
+  width: 10px;
+  background: transparent;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.example-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+

@@ -1,6 +1,5 @@
-import {User} from "./User";
 
-export interface Student extends User{
+export interface UserDto {
   id: number;
   lastLogin: string;
   username: string;
@@ -11,6 +10,6 @@ export interface Student extends User{
   faculty: string;
   createdAt: string;
   updatedAt: string;
-  group: string;
-  year: number;
 }
+
+

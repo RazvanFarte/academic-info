@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
-import {ACCESS_TOKEN, LoginService} from "./services/login/login.service";
+import {ACCESS_TOKEN, LoginService} from "./shared/services/login/login.service";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
   }
 
   isUserLoggedIn(): boolean {
-    return localStorage.getItem('currentUser') != null;
+    return localStorage.getItem(ACCESS_TOKEN) != null;
   }
 
   logout() {

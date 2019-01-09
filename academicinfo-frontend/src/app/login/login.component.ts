@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Error, Information, Warning} from '../communication/communication.component';
+import {Error, Information, Warning} from '../shared/components/communication/communication.component';
 import {login_properties} from "../shared/properties/login-properties";
-import {ACCESS_TOKEN, LoginService, REFRESH_TOKEN} from "../services/login/login.service";
+import {ACCESS_TOKEN, LoginService, REFRESH_TOKEN} from "../shared/services/login/login.service";
 
 @Component({
   selector: 'app-login',

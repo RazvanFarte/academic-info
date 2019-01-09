@@ -3,7 +3,6 @@ import {Injectable, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
-import {CommunicationComponent} from './communication/communication.component';
 import {ActivatedRouteSnapshot, CanActivate, RouterModule, RouterStateSnapshot, Routes, UrlTree} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
@@ -14,15 +13,16 @@ import {ToastrModule} from 'ngx-toastr';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ReactiveFormsModule} from '@angular/forms';
-import { SituationTableComponent } from './situation-table/situation-table.component';
-import { TeacherSituationComponent } from './teacher-situation/teacher-situation.component';
-import {
-  IntroductionDialog,
-  TeacherCourseManagementComponent
-} from './teacher-course-management/teacher-course-management.component';
-import { TeacherAddCourseComponent } from './teacher-add-course/teacher-add-course.component';
-import { TeacherEditCourseComponent } from './teacher-edit-course/teacher-edit-course.component';
 import {MaterialModule} from "./modules/material/material.module";
+import { StudentCourseManagementComponent } from './student/student-course-management/student-course-management.component';
+import { StudentSituationComponent } from './student/student-situation/student-situation.component';
+import {TeacherSituationComponent} from "./teacher/teacher-situation/teacher-situation.component";
+import {TeacherCourseManagementComponent} from "./teacher/teacher-course-management/teacher-course-management.component";
+import {CommunicationComponent} from "./shared/components/communication/communication.component";
+import {SituationTableComponent} from "./shared/components/situation-table/situation-table.component";
+import {TeacherEditCourseComponent} from "./teacher/teacher-edit-course/teacher-edit-course.component";
+import {TeacherAddCourseComponent} from "./teacher/teacher-add-course/teacher-add-course.component";
+import { IntroductionDialogComponent } from './shared/components/introduction-dialog/introduction-dialog.component';
 
 
 
@@ -35,15 +35,12 @@ const appRoutes: Routes = [
     path: 'login', component: LoginComponent,
   },
   {
-    path: 'situations', component: TeacherSituationComponent
+    path: 'teacher', component: TeacherCourseManagementComponent
   },
   {
-    path: 'courses-management', component: TeacherCourseManagementComponent
+    path: 'student', component: StudentCourseManagementComponent
   }
 ];
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,11 +50,13 @@ const appRoutes: Routes = [
     TeacherSituationComponent,
     TeacherCourseManagementComponent,
     TeacherAddCourseComponent,
-    IntroductionDialog,
-    TeacherEditCourseComponent
+    TeacherEditCourseComponent,
+    StudentCourseManagementComponent,
+    StudentSituationComponent,
+    IntroductionDialogComponent
   ],
   entryComponents: [
-    IntroductionDialog
+    IntroductionDialogComponent
   ],
   imports: [
     BrowserModule,
