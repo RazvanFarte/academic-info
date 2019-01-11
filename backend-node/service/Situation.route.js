@@ -25,7 +25,7 @@ situationRoutes.route('/')
 situationRoutes.route('/update/:id') //TODO FIX
   .put(function (req, res) {
     let id = req.params.id;
-    Situation.update({id:id}, req.body, function (err, situation) {
+    Situation.update({_id:id}, req.body, function (err, situation) {
       if(err) {
         conole.log(err);
       } else {
@@ -40,7 +40,7 @@ situationRoutes.route('/update/:id') //TODO FIX
   });
 
 situationRoutes.route('/delete/:id').delete(function(req, res) {
-  Situation.find({id: req.params.id}, function (err, situation) {
+  Situation.find({_id: req.params.id}, function (err, situation) {
     if(err) res.status(500).json("Error");
     else res.json(situation);
   }).remove().exec()
@@ -49,7 +49,7 @@ situationRoutes.route('/delete/:id').delete(function(req, res) {
 situationRoutes.route('/:id')
   .get(function (req, res) {
     let id = req.params.id;
-    Situation.find({id: id}, function (err, situation) {
+    Situation.find({_id: id}, function (err, situation) {
       if(err) {
         console.log(err);
       } else {
@@ -57,6 +57,31 @@ situationRoutes.route('/:id')
       }
     });
 });
+
+//TODO To be tested
+situationRoutes.route('student/:id')
+    .get(function (req, res) {
+        let id = req.params.id;
+        Situation.find({student_id: id}, function (err, situation) {
+            if(err) {
+                console.log(err);
+            } else {
+                res.json(situation);
+            }
+        });
+    });
+
+situationRoutes.route('teacher/:id')
+    .get(function (req, res) {
+        let id = req.params.id;
+        Situation.find({teacher_id: id}, function (err, situation) {
+            if(err) {
+                console.log(err);
+            } else {
+                res.json(situation);
+            }
+        });
+    });
 
 
 module.exports = situationRoutes;

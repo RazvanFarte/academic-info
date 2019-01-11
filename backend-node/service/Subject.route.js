@@ -3,29 +3,38 @@ const app = express();
 const subjectRoutes = express.Router();
 
 let Subject = require('../models/Subject');
+let Teacher = require('../models/Teacher');
 
 subjectRoutes.route('/add').post(function (req, res) {
   let subject = new Subject(req.body);
-  subject.save()
-    .then(data => {res.status(200).json(data)})
-    .catch(err => {res.status(500).send('Unable to save to database' + err)})
+
+  Teacher.findById(subject.teacher, function (error) {
+      if(error)
+          res.status(500).send("No teacher with that ID");
+      else
+          subject.save()
+              .then(data => {res.status(200).json(data)})
+              .catch(err => {res.status(500).send('Unable to save to database' + err)})
+  });
 });
 
 subjectRoutes.route('/')
   .get(function (req, res) {
-     Subject.find(function (err, subjects) {
-       if(err) {
-         console.log(err);
-       } else {
-         res.json(subjects);
-       }
-     })
+     Subject.find()
+         .populate('teacher')
+         .exec(function (error, subjects) {
+             if(error) {
+                 console.log(error);
+             } else {
+                 res.json(subjects);
+             }
+         });
   });
 
-subjectRoutes.route('/update/:id') //TODO FIX
+subjectRoutes.route('/update/:id')
   .put(function (req, res) {
     let id = req.params.id;
-    Subject.update({id:id}, req.body, function (err, subject) {
+    Subject.findByIdAndUpdate({_id:id}, req.body, {new: false}, function (err, subject) {
       if(err) {
         conole.log(err);
       } else {
@@ -36,36 +45,46 @@ subjectRoutes.route('/update/:id') //TODO FIX
         }
       }
     })
-    res.send("Not yet implemented");
   });
 
 subjectRoutes.route('/delete/:id').delete(function(req, res) {
-  Subject.find({id: req.params.id}, function (err, subject) {
+  Subject.findByIdAndRemove({_id: req.params.id}, function (err, subject) {
     if(err) res.status(500).json("Error");
     else res.json(subject);
-  }).remove().exec()
+  });
+});
+
+subjectRoutes.route('/deleteAll').delete(function(req, res) {
+    Subject.remove({}, function (err, subject) {
+        if(err) res.status(500).json("Error");
+        else res.json(subject);
+    });
 });
 
 subjectRoutes.route('/:id')
   .get(function (req, res) {
     let id = req.params.id;
-    Subject.find({id: id}, function (err, subject) {
-      if(err) {
+    Subject.find({_id: id}, function (err) {
+      if(err)
         console.log(err);
-      } else {
-        res.json(subject);
-      }
+    }).populate('teacher')
+        .exec(function (error, subjects) {
+            if(error) {
+                console.log(error);
+            } else {
+                res.json(subjects);
+            }
     });
 });
 
 subjectRoutes.route('/teacher/:teacherId')
     .get(function (req, res) {
         let teacherId = req.params.teacherId;
-        Subject.find({teacher_id: teacherId}, function (err, subject) {
+        Subject.find({teacher: teacherId}, function (err, subjects) {
             if(err) {
                 console.log(err);
             } else {
-                res.json(subject);
+                res.json(subjects);
             }
         });
     });

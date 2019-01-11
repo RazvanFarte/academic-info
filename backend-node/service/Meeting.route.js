@@ -25,7 +25,7 @@ meetingRoutes.route('/')
 meetingRoutes.route('/update/:id') //TODO FIX
   .put(function (req, res) {
     let id = req.params.id;
-    Meeting.update({id:id}, req.body, function (err, meeting) {
+    Meeting.update({_id:id}, req.body, function (err, meeting) {
       if(err) {
         conole.log(err);
       } else {
@@ -40,7 +40,7 @@ meetingRoutes.route('/update/:id') //TODO FIX
   });
 
 meetingRoutes.route('/delete/:id').delete(function(req, res) {
-  Meeting.find({id: req.params.id}, function (err, meeting) {
+  Meeting.find({_id: req.params.id}, function (err, meeting) {
     if(err) res.status(500).json("Error");
     else res.json(meeting);
   }).remove().exec()
@@ -49,7 +49,7 @@ meetingRoutes.route('/delete/:id').delete(function(req, res) {
 meetingRoutes.route('/:id')
   .get(function (req, res) {
     let id = req.params.id;
-    Meeting.find({id: id}, function (err, meeting) {
+    Meeting.find({_id: id}, function (err, meeting) {
       if(err) {
         console.log(err);
       } else {

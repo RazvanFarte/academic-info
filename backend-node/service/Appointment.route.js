@@ -25,7 +25,7 @@ appointmentRoutes.route('/')
 appointmentRoutes.route('/update/:id') //TODO FIX
   .put(function (req, res) {
     let id = req.params.id;
-    Appointment.update({id:id}, req.body, function (err, appointment) {
+    Appointment.update({_id:id}, req.body, function (err, appointment) {
       if(err) {
         conole.log(err);
       } else {
@@ -40,7 +40,7 @@ appointmentRoutes.route('/update/:id') //TODO FIX
   });
 
 appointmentRoutes.route('/delete/:id').delete(function(req, res) {
-  Appointment.find({id: req.params.id}, function (err, appointment) {
+  Appointment.find({_id: req.params.id}, function (err, appointment) {
     if(err) res.status(500).json("Error");
     else res.json(appointment);
   }).remove().exec()
@@ -49,7 +49,7 @@ appointmentRoutes.route('/delete/:id').delete(function(req, res) {
 appointmentRoutes.route('/:id')
   .get(function (req, res) {
     let id = req.params.id;
-    Appointment.find({id: id}, function (err, appointment) {
+    Appointment.find({_id: id}, function (err, appointment) {
       if(err) {
         console.log(err);
       } else {

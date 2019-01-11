@@ -2,16 +2,25 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Situation = new Schema({
-  id: {type: Number},
-  weekNumber: {type: Number},
-  isPresent: {type: Boolean},
-  isGradable: {type: Boolean},
-  grade: {type: Number},
-  gradePercentage: {type: Number},
-  meeting_id: {type: Number},
-  student_id: {type: Number},
-  teacher_id: {type: Number},
+  isPresent: Boolean,
+  grade: Number,
+  appointment: {
+    type: Schema.Types.ObjectId,
+    ref: 'Appointment'
+  },
+  student: {
+    type: Schema.Types.ObjectId,
+      ref: 'Student'
+},
+  updated: Boolean,
 });
 
+Situation.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
 
 module.exports = mongoose.model('Situation', Situation);
