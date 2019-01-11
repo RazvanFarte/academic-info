@@ -23,11 +23,11 @@ export class StudentService {
   }
 
   addStudent(student: Student): Observable<Student> {
-    return this.http.post<Student>(this.host + this.endpoint + '/add', student);
+    return this.http.post<Student>(this.host + this.endpoint + 'add', student);
   }
 
   updateStudent(studentId: number, student: Student): Observable<Student> {
-    return this.http.put<Student>(this.host + this.endpoint + '/update/' + studentId, student);
+    return this.http.put<Student>(this.host + this.endpoint + 'update/' + studentId, student);
   }
   
 }

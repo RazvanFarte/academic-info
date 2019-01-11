@@ -23,11 +23,11 @@ export class AppointmentService {
   }
 
   addAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.http.post<Appointment>(this.host + this.endpoint + '/add', appointment);
+    return this.http.post<Appointment>(this.host + this.endpoint + 'add', appointment);
   }
 
   updateAppointment(appointmentId: number, appointment: Appointment): Observable<Appointment> {
-    return this.http.put<Appointment>(this.host + this.endpoint + '/update/' + appointmentId, appointment);
+    return this.http.put<Appointment>(this.host + this.endpoint + 'update/' + appointmentId, appointment);
   }
 
 }

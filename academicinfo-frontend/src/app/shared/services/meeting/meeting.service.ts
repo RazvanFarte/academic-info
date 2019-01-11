@@ -23,11 +23,11 @@ export class MeetingService {
   }
 
   addMeeting(meeting: Meeting): Observable<Meeting> {
-    return this.http.post<Meeting>(this.host + this.endpoint + '/add', meeting);
+    return this.http.post<Meeting>(this.host + this.endpoint + 'add', meeting);
   }
 
   updateMeeting(meetingId: number, meeting: Meeting): Observable<Meeting> {
-    return this.http.put<Meeting>(this.host + this.endpoint + '/update/' + meetingId, meeting);
+    return this.http.put<Meeting>(this.host + this.endpoint + 'update/' + meetingId, meeting);
   }
 
 }

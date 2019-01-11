@@ -23,11 +23,14 @@ export class SubjectService {
   }
 
   addSubject(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>(this.host + this.endpoint + '/add', subject);
+    return this.http.post<Subject>(this.host + this.endpoint + 'add', subject);
   }
 
   updateSubject(subjectId: number, subject: Subject): Observable<Subject> {
-    return this.http.put<Subject>(this.host + this.endpoint + '/update/' + subjectId, subject);
+    return this.http.put<Subject>(this.host + this.endpoint + 'update/' + subjectId, subject);
   }
 
+  getSubjectsForUser(loggedInUser: number) {
+    return this.http.get<Subject[]>(this.host + this.endpoint + 'user/' + loggedInUser);
+  }
 }
