@@ -58,5 +58,18 @@ subjectRoutes.route('/:id')
     });
 });
 
+subjectRoutes.route('/teacher/:teacherId')
+    .get(function (req, res) {
+        let teacherId = req.params.teacherId;
+        Subject.find({teacher_id: teacherId}, function (err, subject) {
+            if(err) {
+                console.log(err);
+            } else {
+                res.json(subject);
+            }
+        });
+    });
+
+
 
 module.exports = subjectRoutes;
