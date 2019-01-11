@@ -93,19 +93,19 @@ export class SituationTableComponent implements OnInit {
         case 'group':
           return item.student.group;
         case 'week':
-          return item.weekNumber;
+          return item.appointment.weekNumber;
         case 'subject':
-          return item.meeting.subject.name;
+          return item.appointment.meeting.subject.name;
         case 'meeting':
-          return item.meeting.type;
+          return item.appointment.meeting.type;
         case 'email':
           return item.student.email;
         case "is_present":
-          return item.meeting.attendanceRequired ? ( item.isPresent === true ? -1 : 0 ) : 1;
+          return item.appointment.attendanceRequired ? ( item.isPresent === true ? -1 : 0 ) : 1;
         case "grade":
-          return item.isGradable ? item.grade : -1;
+          return item.appointment.isGradable ? item.grade : -1;
         case "grade_percentage":
-          return item.gradePercentage;
+          return item.appointment.gradePercentage;
         default:
           return item[property];
       }
@@ -132,23 +132,23 @@ export class SituationTableComponent implements OnInit {
 
   filterBySubject(situation: Situation): boolean {
     return this.filters.subject == ''
-      || situation.meeting.subject.name.toLowerCase().trim()
+      || situation.appointment.meeting.subject.name.toLowerCase().trim()
         .includes(this.filters.subject.trim().toLowerCase());
   }
 
   filterByMeeting(situation: Situation): boolean {
     return this.filters.meeting == ''
-      || situation.meeting.type.toLowerCase().trim()
+      || situation.appointment.meeting.type.toLowerCase().trim()
         .includes(this.filters.meeting.trim().toLowerCase());
   }
 
   filterByWeek(situation: Situation): boolean {
-    return this.filters.week == '' || "" + situation.weekNumber == "" + this.filters.week;
+    return this.filters.week == '' || "" + situation.appointment.weekNumber == "" + this.filters.week;
   }
 
   filterByGrade(situation: Situation): boolean {
     return (this.filters.grade == '' || this.filters.gradeOperation == '')
-      || (situation.isGradable && (this.gradeOperationFilter == 'less_than' ? situation.grade < this.filters.grade
+      || (situation.appointment.isGradable && (this.gradeOperationFilter == 'less_than' ? situation.grade < this.filters.grade
         : this.gradeOperationFilter == 'greater_than' ? situation.grade > this.filters.grade
           : this.gradeOperationFilter == 'equal_to' ? situation.grade == this.filters.grade
             : this.gradeOperationFilter == 'different_from' ? situation.grade != this.filters.grade
@@ -163,8 +163,8 @@ export class SituationTableComponent implements OnInit {
 
   filterByPresence(situation: Situation): boolean {
     return (this.filters.is_present == '')
-      || (this.filters.is_present == 'not_required' ? situation.meeting.attendanceRequired == false
-        : (situation.meeting.attendanceRequired == true
+      || (this.filters.is_present == 'not_required' ? situation.appointment.attendanceRequired == false
+        : (situation.appointment.attendanceRequired == true
           && situation.isPresent == (this.filters.is_present == 'true')));
 
   }
@@ -233,7 +233,7 @@ export class SituationTableComponent implements OnInit {
 
   getAveragePresence(): number {
     let filteredSituations = this.situationsDataSource.data
-      .filter(s  => this.filterPredicate(s) &&  s.meeting.attendanceRequired === true);
+      .filter(s  => this.filterPredicate(s) &&  s.appointment.attendanceRequired === true);
 
     if (filteredSituations.length === 0)
       return 100;
@@ -246,7 +246,7 @@ export class SituationTableComponent implements OnInit {
 
   getAverageGrade(): number {
     const filteredSituations = this.situationsDataSource.data
-      .filter(s => this.filterPredicate(s) && s.isGradable === true);
+      .filter(s => this.filterPredicate(s) && s.appointment.isGradable === true);
 
     if (filteredSituations.length === 0)
       return null;

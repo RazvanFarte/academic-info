@@ -1,6 +1,8 @@
 
-import {User} from "./User";
-
-export interface Teacher extends User{
-
+export interface Teacher{
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  faculty: string;
 }

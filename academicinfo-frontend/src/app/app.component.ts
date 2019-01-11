@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {ACCESS_TOKEN, LoginService} from "./shared/services/login/login.service";
 

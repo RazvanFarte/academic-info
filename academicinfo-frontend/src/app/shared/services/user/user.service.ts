@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {User} from "../../models/User";
 import {Teacher} from "../../models/Teacher";
 
 @Injectable({
@@ -45,7 +44,7 @@ export class UserService {
     return true;
   }
 
-  getCurrentLoggedInUser(): User {
+  getCurrentLoggedInUser(): Teacher {
     const user = {
       id: 0,
       lastLogin: "2018-01-01",

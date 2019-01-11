@@ -23,6 +23,8 @@ import {SituationTableComponent} from "./shared/components/situation-table/situa
 import {TeacherEditCourseComponent} from "./teacher/teacher-edit-course/teacher-edit-course.component";
 import {TeacherAddCourseComponent} from "./teacher/teacher-add-course/teacher-add-course.component";
 import { IntroductionDialogComponent } from './shared/components/introduction-dialog/introduction-dialog.component';
+import { TeacherSetupCourseComponent } from './teacher/teacher-setup-course/teacher-setup-course.component';
+import { TeacherAddMeetingComponent } from './teacher/teacher-add-meeting/teacher-add-meeting.component';
 
 
 
@@ -53,10 +55,13 @@ const appRoutes: Routes = [
     TeacherEditCourseComponent,
     StudentCourseManagementComponent,
     StudentSituationComponent,
-    IntroductionDialogComponent
+    IntroductionDialogComponent,
+    TeacherSetupCourseComponent,
+    TeacherAddMeetingComponent
   ],
   entryComponents: [
-    IntroductionDialogComponent
+    IntroductionDialogComponent,
+    TeacherAddMeetingComponent
   ],
   imports: [
     BrowserModule,
@@ -92,4 +97,3 @@ export class AppModule {
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
-

@@ -29,7 +29,7 @@ export class CourseService {
     this.meetings = [];
     this.situations = [];
     this.students = [];
-
+/*
     let names: string[] = [
       "Aaren"
       ,
@@ -564,6 +564,7 @@ export class CourseService {
         }
       }
     }
+    */
   }
 
 
@@ -573,7 +574,7 @@ export class CourseService {
       return this.situations;
     }
 
-    return this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === weekNumber)
+    return this.situations.filter(s => s.appointment.meeting.id === meeting.id && s.appointment.weekNumber === weekNumber)
       .sort((s1, s2) => s1.student.lastName > s2.student.lastName ? 1 : -1);
   }
 

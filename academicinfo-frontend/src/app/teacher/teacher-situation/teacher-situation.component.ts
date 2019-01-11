@@ -8,7 +8,6 @@ import {Teacher} from "../../shared/models/Teacher";
 import {LoginService} from "../../shared/services/login/login.service";
 import {SituationService} from "../../shared/services/situation/situation.service";
 import {UserService} from "../../shared/services/user/user.service";
-import {User} from "../../shared/models/User";
 
 @Component({
   selector: 'app-teacher-situation',
@@ -20,7 +19,7 @@ export class TeacherSituationComponent implements OnInit {
   weeks: number[];
   meetings: Meeting[];
   subjects: Subject[];
-  loggedInUser: User;
+  loggedInUser: Teacher;
   situations: Situation[];
   selectedSituations: Situation[];
   weekControl: FormControl;
@@ -87,7 +86,7 @@ export class TeacherSituationComponent implements OnInit {
     if (!meeting || !week) {
       this.selectedSituations = this.situations;
     } else {
-      this.selectedSituations = this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === week);
+      this.selectedSituations = this.situations.filter(s => s.appointment.meeting.id === meeting.id && s.appointment.weekNumber === week);
     }
     return this.selectedSituations;
   }

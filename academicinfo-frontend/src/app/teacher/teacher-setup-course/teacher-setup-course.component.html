@@ -1,0 +1,21 @@
+
+<h4> Select course </h4>
+<mat-form-field appearance="outline">
+  <mat-select placeholder="Subject..." [(ngModel)]="selectedSubject"
+              required>
+    <mat-select-trigger>
+      Subject
+    </mat-select-trigger>
+    <mat-option *ngFor="let subject of possibleSubjects" [value]="subject">
+      {{ subject.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<h4> Choose number of weeks </h4>
+<mat-form-field appearance="outline">
+  <input matInput type="number" [(ngModel)]="selectedNumberOfWeeks">
+</mat-form-field>
+
+<h4> Assign students by: </h4>
+<h3> Year of study </h3>

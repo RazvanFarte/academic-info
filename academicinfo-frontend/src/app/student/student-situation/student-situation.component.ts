@@ -45,19 +45,7 @@ export class StudentSituationComponent implements OnInit {
     this.enableSaveSelection = true;
     this.enableSelectionStepper = true;
     this.showSelectedButtonClicked = false;
-    const teacher: Teacher = {
-      id: 0,
-      lastLogin: "2018-01-01",
-      username: "popescu",
-      email: "popescu@scs.ubbcluj.ro",
-      firstName: "Ion",
-      lastName: "Popescu",
-      userType: 1,
-      faculty: "IE",
-      createdAt: "2018-01-02",
-      updatedAt: "2018-01-02"
-    };
-
+    const teacher = this.userService.getCurrentLoggedInUser();
     this.studentId = this.loginService.getUserId();
     this.weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     this.weekControl = new FormControl('', [Validators.required]);
@@ -95,7 +83,7 @@ export class StudentSituationComponent implements OnInit {
     if (!meeting || !week) {
       this.selectedSituations = this.situations;
     } else {
-      this.selectedSituations = this.situations.filter(s => s.meeting.id === meeting.id && s.weekNumber === week);
+      this.selectedSituations = this.situations.filter(s => s.appointment.meeting.id === meeting.id && s.appointment.weekNumber === week);
     }
     return this.selectedSituations;
   }
