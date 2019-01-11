@@ -23,11 +23,11 @@ export class TeacherService {
   }
 
   addTeacher(teacher: Teacher): Observable<Teacher> {
-    return this.http.post<Teacher>(this.host + this.endpoint + '/add', teacher);
+    return this.http.post<Teacher>(this.host + this.endpoint + 'add', teacher);
   }
 
   updateTeacher(teacherId: number, teacher: Teacher): Observable<Teacher> {
-    return this.http.put<Teacher>(this.host + this.endpoint + '/update/' + teacherId, teacher);
+    return this.http.put<Teacher>(this.host + this.endpoint + 'update/' + teacherId, teacher);
   }
 
 }
