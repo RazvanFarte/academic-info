@@ -8,6 +8,8 @@ import {Teacher} from "../../shared/models/Teacher";
 import {LoginService} from "../../shared/services/login/login.service";
 import {SituationService} from "../../shared/services/situation/situation.service";
 import {UserService} from "../../shared/services/user/user.service";
+import {User} from "../../shared/models/User";
+import {SubjectService} from "../../shared/services/subject/subject.service";
 
 @Component({
   selector: 'app-teacher-situation',
@@ -37,7 +39,8 @@ export class TeacherSituationComponent implements OnInit {
   constructor(
     private situationService: SituationService,
     private loginService: LoginService,
-    private userService: UserService
+    private userService: UserService,
+    private subjectService: SubjectService
   ) {
   }
 
@@ -54,17 +57,30 @@ export class TeacherSituationComponent implements OnInit {
     this.weekControl = new FormControl('', [Validators.required]);
     this.subjectControl = new FormControl('', [Validators.required]);
     this.meetingControl = new FormControl('', [Validators.required]);
-    this.situationService.getSubjects(this.loggedInUser).subscribe(s => this.subjects = s);
-    this.situationService.getSituations(this.teacherID, null, null)
-      .subscribe(r => {
-          this.situations = r;
-        }
-        ,
-        e => {
-        },
-        () => {
-          this.doneLoading = true;
-        });
+
+    this.subjectService.getSubjectsForUser(this.loggedInUser.id).subscribe(s => this.subjects = s);
+    this.situationService.getSituationsForUser(this.loggedInUser.id).subscribe((value) => {
+      this.situations = value;
+    });
+
+    // //TODO GEt logged in student and teacher
+    //
+    // this.situationService.getSituationsForLoggedInUser(this.loggedInUser.id);
+    //
+    // this.situationService.getSituations().subscribe((v) => {
+    //   this.situations = v;
+    // });
+    // //
+    // this.situationService.getSituations(this.teacherID, null, null)
+    //   .subscribe(r => {
+    //       this.situations = r;
+    //     }
+    //     ,
+    //     e => {
+    //     },
+    //     () => {
+    //       this.doneLoading = true;
+    //     });
   }
 
   subjectSelected() {
