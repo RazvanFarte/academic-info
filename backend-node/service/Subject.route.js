@@ -4,6 +4,8 @@ const subjectRoutes = express.Router();
 
 let Subject = require('../models/Subject');
 let Teacher = require('../models/Teacher');
+let Appointment = require('../models/Appointment');
+let Meeting = require('../models/Meeting');
 
 subjectRoutes.route('/add').post(function (req, res) {
   let subject = new Subject(req.body);
@@ -88,6 +90,33 @@ subjectRoutes.route('/teacher/:teacherId')
             }
         });
     });
+
+subjectRoutes.route('/associateTeacher/:teacherId')
+    .get(function (req, res) {
+        let teacherId = req.params.teacherId;
+        Appointment.find({responsibleTeacher: teacherId})
+            .distinct('meeting', function (err, meetingsId) {
+                if(err) {
+                    res.send(err);
+                } else {
+                    Meeting.find({_id: {$in: meetingsId}})
+                        .distinct('subject', (err, subjectsId) => {
+                            if(err) {
+                                res.send(err);
+                            } else {
+                                Subject.find({_id : {$in: subjectsId}}, (err, subjects) => {
+                                    if(err) {
+                                        res.send(err);
+                                    } else {
+                                        res.send(subjects);
+                                    }
+                                });
+                            }
+                        });
+                }
+                });
+    });
+
 
 
 

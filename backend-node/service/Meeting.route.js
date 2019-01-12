@@ -80,6 +80,29 @@ meetingRoutes.route('/:id')
             });
     });
 
+meetingRoutes.route('/subject/:subjectId')
+    .get(function (req, res) {
+        Meeting.find({subject: req.params.subjectId}, function (err) {
+            if(err)
+                console.log(err);
+        }).populate('subject')
+            .populate('teachers')
+            .exec(function (error, meetings) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    res.json(meetings);
+                }
+            });
+    });
 
+meetingRoutes.route('/ownerTeacher/:subjectId/:teacherId')
+    .get((req, res) => {
+        Meeting.find({subject: req.param.subjectId})
+            .populate('subject')
+            .find({teacher: req.param.teacherId})
+            .populate('teacher')
+            .exec((err, teachers) => res.send(teachers))
+});
 
 module.exports = meetingRoutes;
