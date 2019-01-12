@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Subject} from "../../shared/models/Subject";
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Meeting} from "../../shared/models/Meeting";
@@ -8,6 +8,7 @@ import {MatDialog, MatSnackBar} from "@angular/material";
 import {CourseService} from "../../shared/services/course/course.service";
 import {Teacher} from "../../shared/models/Teacher";
 import {TeacherAddMeetingComponent} from "../teacher-add-meeting/teacher-add-meeting.component";
+import {Appointment} from "../../shared/models/Appointment";
 
 @Component({
   selector: 'app-teacher-add-course',
@@ -26,6 +27,8 @@ export class TeacherAddCourseComponent implements OnInit {
   isOptionalCtrl: FormControl;
   teacherCtrl: FormControl;
   meetingNoCtrl: FormControl;
+  appointments: Appointment[];
+  meetings: Meeting[];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -74,11 +77,8 @@ export class TeacherAddCourseComponent implements OnInit {
   }
 
 
-
-
-
   isComplete(meetingComplexForm: any): boolean {
-    return meetingComplexForm.occurrencesFormControl != '';
+    return meetingComplexForm.result != null;
   }
 
 
@@ -86,35 +86,73 @@ export class TeacherAddCourseComponent implements OnInit {
     return this.addSubjectFormGroup.get('formArray');
   }
 
-  editMeeting(meeting: Meeting){
+  editMeeting(meeting) {
 
     const dialogRef = this.dialog.open(TeacherAddMeetingComponent, {
       width: '600px',
-      data: { meeting: meeting }
+      data: meeting
     });
 
+    let r;
+
     dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
+      meeting.result = result;
+      meeting.appointments = [];
+
+      result.appointments.forEach(resultedAppointment => {
+
+        let index = meeting.appointments.findIndex(a => a.weekNumber === resultedAppointment.weekNumber);
+        if(index != -1){
+          meeting.appointments[index]
+        }
+
+
+      });
+
+
+
+      meeting.appointments = result.appointments;
+      console.log(meeting.appointments)
+
+    }, error => {
+      console.log(error);
+    }, () => {
     });
   }
 
 
-  createMeeting(){
-    /*
+  createMeeting() {
+
     this.subject = {
       id: 0,
       name: this.nameCtrl.value,
       isOptional: this.isOptionalCtrl.value,
       teacher: this.teacherCtrl.value
-    };*/
+    };
+
+    let possibleAppointments = [];
+    for (let i = 1; i < 15; i++) {
+      possibleAppointments.push({weekNumber: 'Week ' + i});
+    }
+    possibleAppointments.push({weekNumber: 'Primary Examination Week'});
+    possibleAppointments.push({weekNumber: 'Secondary Examination Week'});
+    possibleAppointments.push({weekNumber: 'Reexamination week'});
+
+
+
+
     this.meetingComplexForms.push({
-      reference: this.meetingComplexForms.length,
-      occurrencesFormControl: new FormControl(),
-      typeFormControl: new FormControl(),
-      teachersFormControl: new FormControl(),
-      attendanceReqFormControl: new FormControl(),
+      meeting: {
+        id: -1,
+        type: null,
+        subject: this.subject,
+        teachers: null
+      },
+      appointments: [],
       possibleTeachers: this.teachers,
-      subject: this.subject
+      hasSeparatedWeekConfigurations: false,
+      possibleAppointments: possibleAppointments,
+      result: null
     });
   }
 
@@ -122,7 +160,17 @@ export class TeacherAddCourseComponent implements OnInit {
     return true;
   }
 
-  saveSubject(){
+  saveSubject() {
+
+    let meetings: Meeting[] = this.meetingComplexForms.map(form => form.result.meeting);
+    this.appointments = [];
+    this.meetingComplexForms.forEach(form => {
+        form.result.appointments.forEach(appointment => this.appointments.push(appointment))
+      }
+    );
+
+
+
     this.subjectService.createOrUpdateSubject(this.subject);
     this.subjectService.createOrUpdateMeetings(this.meetingComplexForms);
     this.snackBar.open("Data has been successfully saved!", 'Clear', {duration: 2000});

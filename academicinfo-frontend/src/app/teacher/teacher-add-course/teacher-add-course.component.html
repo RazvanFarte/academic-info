@@ -61,13 +61,13 @@
           <div class="meeting-list" *ngFor="let meetingForm of meetingComplexForms">
             <div  *ngIf="isComplete(meetingForm) == false">
               <button class="incomplete-meeting" mat-raised-button color="basic" (click)="editMeeting(meetingForm)">
-                New meeting
+                Meeting (incomplete)
               </button>
             </div>
 
             <div *ngIf="isComplete(meetingForm) == true">
               <button class="complete-meeting"mat-raised-button color="basic" (click)="editMeeting(meetingForm)">
-                {{subject.name}} Done
+                {{subject.name}} {{meetingForm.result.meeting.type}}
               </button>
             </div>
           </div>

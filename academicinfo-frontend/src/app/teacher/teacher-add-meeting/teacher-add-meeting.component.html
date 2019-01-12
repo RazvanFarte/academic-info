@@ -1,11 +1,11 @@
-<div class="teacher-add-meeting-container">
+<div class="teacher-add-container">
   <h3 mat-dialog-title> Meeting configuration </h3>
   <div mat-dialog-content>
     <mat-list>
 
       <mat-list-item>
         <mat-form-field>
-          <input matInput [formControl]="data.meeting.typeFormControl" placeholder="Meeting type...">
+          <input matInput [(ngModel)]="data.meeting.type" placeholder="Meeting type...">
         </mat-form-field>
       </mat-list-item>
 
@@ -14,16 +14,16 @@
       <mat-list-item>
 
         <mat-form-field>
-          <mat-select placeholder="Select occurrences" [formControl]="data.meeting.occurrencesFormControl" multiple
-                      (selectionChange)="refreshGrading()" >
-            <mat-option *ngFor="let appointment of this.separateAppointmentsConfig" [value]="appointment">
-              {{ appointment.week }}
+          <mat-select placeholder="Select occurrences" [(ngModel)]="data.appointments" multiple
+                      (selectionChange)="refreshGrading()" [compareWith]="compare">
+            <mat-option *ngFor="let appointment of this.data.possibleAppointments" [value]="appointment">
+              {{ appointment.weekNumber }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
         <div style="display: inline-block; margin-left: 15%">
-          <mat-slide-toggle color="primary" (change)="toggleSeparateConfiguration($event)" style="display: inline">
+          <mat-slide-toggle color="primary" (change)="toggleSeparateConfiguration($event)" style="display: inline" [checked]="data.hasSeparatedWeekConfigurations === true">
             Configure each week separately
           </mat-slide-toggle>
         </div>
@@ -32,8 +32,8 @@
 
       <mat-list-item>
         <mat-form-field>
-          <mat-select placeholder="Select teachers" [formControl]="data.meeting.teachersFormControl" multiple>
-            <mat-option *ngFor="let teacher of data.meeting.possibleTeachers" [value]="teacher">
+          <mat-select placeholder="Select teachers" [(ngModel)]="data.meeting.teachers" multiple>
+            <mat-option *ngFor="let teacher of data.possibleTeachers" [value]="teacher">
               {{ teacher.lastName + " " + teacher.firstName }}
             </mat-option>
           </mat-select>
@@ -42,13 +42,13 @@
 
       <mat-divider></mat-divider>
 
-      <div *ngIf="separateWeekConfiguration == false
-      && data.meeting.occurrencesFormControl.value
-      && data.meeting.teachersFormControl.value">
+      <div *ngIf="data.hasSeparatedWeekConfigurations == false
+      && data.appointments
+      && data.meeting.teachers">
 
         <mat-list-item>
           <mat-form-field>
-            <mat-select placeholder="Attendance requirement" [(ngModel)]="sharedAppointmentsConfig.attendanceRequired">
+            <mat-select placeholder="Attendance requirement" [(ngModel)]="data.sharedAppointment.attendanceRequired">
               <mat-option [value]="true"> Attendance will be required</mat-option>
               <mat-option [value]="false"> Attendance will NOT be required</mat-option>
             </mat-select>
@@ -59,11 +59,11 @@
           <mat-form-field>
             <input matInput type="text" [disabled]="true"
                    placeholder="Grade percentage"
-                   [(ngModel)]="sharedAppointmentsConfig.gradePercentage">
+                   [(ngModel)]="data.sharedAppointment.gradePercentage">
           </mat-form-field>
           <div style="display: inline-block; margin-left: 15%">
-            <mat-slide-toggle color="primary" (change)="toggleGrading($event,sharedAppointmentsConfig)"
-                              style="display: inline">
+            <mat-slide-toggle color="primary" (change)="toggleGrading($event,data.sharedAppointment)"
+                              style="display: inline" checked="{{data.sharedAppointment.isGradable}}">
               Toggle grading for all weeks
             </mat-slide-toggle>
           </div>
@@ -73,22 +73,21 @@
       </div>
 
 
-      <mat-accordion *ngIf="separateWeekConfiguration == true
-      && data.meeting.occurrencesFormControl.value
-      && data.meeting.teachersFormControl.value">
+      <mat-accordion *ngIf="data.hasSeparatedWeekConfigurations == true
+      && data.appointments
+      && data.meeting.teachers">
 
-        <mat-expansion-panel *ngFor="let appointment of data.meeting.occurrencesFormControl.value">
+        <mat-expansion-panel *ngFor="let appointment of data.appointments">
 
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Week {{ appointment.week }}
+              Week {{ appointment.weekNumber }}
 
             </mat-panel-title>
             <mat-panel-description>
-              <span *ngIf="appointment.week < 10" style="margin-right: 5px">&nbsp;</span>
+              <span *ngIf="appointment.weekNumber < 10" style="margin-right: 5px">&nbsp;</span>
               <span *ngIf="appointment.attendanceRequired == true"> [Attendance required] &nbsp; </span>
               <span *ngIf="appointment.isGradable == true"> [Gradable] &nbsp; </span>
-              <span *ngIf="appointment.teachers">[Assigned {{appointment.teachers.length}} teachers]</span>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <mat-divider></mat-divider>
@@ -113,24 +112,6 @@
               Toggle grading for this week
             </mat-slide-toggle>
           </div>
-
-          <div *ngIf="data.meeting.teachersFormControl.value.length > 1">
-            <mat-divider></mat-divider>
-            <mat-form-field>
-              <mat-select placeholder="Select teacher" [(ngModel)]="appointment.teachers"
-                          [disabled]="appointment.restrictTeacher === false">
-                <mat-option *ngFor="let teacher of data.meeting.teachersFormControl.value" [value]="teacher">
-                  {{ teacher.lastName + " " + teacher.firstName }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div style="display: inline-block; margin-left: 15%">
-              <mat-slide-toggle color="primary" (change)="toggleRestrictTeach($event,appointment)"
-                                style="display: inline" checked="{{appointment.restrictTeacher}}">
-                Toggle restriction for teacher
-              </mat-slide-toggle>
-            </div>
-          </div>
         </mat-expansion-panel>
       </mat-accordion>
 
@@ -139,19 +120,20 @@
     </mat-list>
   </div>
   <div mat-dialog-actions *ngIf="canSave()" style="display: inline-block">
-    <button mat-raised-button (click)="onSaveClick()" [mat-dialog-close]="output">Save</button>
+    <button mat-raised-button [mat-dialog-close]="getData()">Save</button>
   </div>
   <div style="display: inline-block">
-  <div class="error-container" *ngIf="totalPercentage > 100.1">
-    <mat-icon>error</mat-icon>
-    <span class="error-message">Error! Total percentage of the grades (currently: {{totalPercentage}}%) exceeds 100.1%!</span>
-  </div>
-  <div class="error-container" *ngIf="totalPercentage < 99.9">
-    <mat-icon>error</mat-icon>
-    <span class="error-message">Error! Total percentage of the grades (currently: {{totalPercentage}}%) is below 99.9%! </span>
-  </div>
-  <div mat-dialog-actions style="display: inline-block">
-    <button mat-raised-button (click)="onCloseClick()">Close</button>
-  </div>
+    <div class="error-container" *ngIf="totalPercentage > 100.1">
+      <mat-icon>error</mat-icon>
+      <span class="error-message">Error! Total percentage of the grades (currently: {{totalPercentage}}%) exceeds 100.1%!</span>
+    </div>
+    <div class="error-container" *ngIf="totalPercentage < 99.9">
+      <mat-icon>error</mat-icon>
+      <span class="error-message">Error! Total percentage of the grades (currently: {{totalPercentage}}%) is below 99.9%! </span>
+    </div>
+    <div mat-dialog-actions style="display: inline-block">
+      <button mat-raised-button (click)="onCloseClick()">Close</button>
+    </div>
 
+  </div>
 </div>

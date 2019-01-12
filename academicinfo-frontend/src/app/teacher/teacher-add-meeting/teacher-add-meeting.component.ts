@@ -12,91 +12,44 @@ import {Subject} from "../../shared/models/Subject";
 })
 export class TeacherAddMeetingComponent {
 
-
-  separateAppointmentsConfig: any[];
-  separateWeekConfiguration: boolean;
-  sharedAppointmentsConfig: any;
   totalPercentage: number;
-  constructorDone: boolean;
   output: {
     meeting: Meeting,
     appointments: Appointment[]
   };
+  isSaving: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<TeacherAddMeetingComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.constructorDone = false;
     this.totalPercentage = 100;
-    this.separateWeekConfiguration = false;
-    this.sharedAppointmentsConfig = {
+    this.isSaving = false;
+    this.data.possibleAppointments.forEach(conf => {
+      conf.gradeEdited = false;
+      conf.isGradable = conf.gradePercentage != null;
+      conf.gradePercentage = null;
+      conf.attendanceRequired = false;
+      conf.restrictTeacher = false;
+    });
+
+    this.data.sharedAppointment = {
       gradePercentage: null,
       attendanceRequired: false,
       isGradable: false,
-      restrictTeacher: false,
-      teachers: null
     };
-    this.separateAppointmentsConfig = [];
-    for (let i = 1; i < 15; i++) {
-      this.separateAppointmentsConfig.push(
-        {
-          week: 'Week ' + i,
-          gradePercentage: 0,
-          attendanceRequired: false,
-          isGradable: false,
-          restrictTeacher: false,
-          teachers: null,
-          gradeEdited: false
-        }
-      );
-    }
-    this.separateAppointmentsConfig.push(
-      {
-        week: 'Primary Examination Week',
-        gradePercentage: 0,
-        attendanceRequired: false,
-        isGradable: false,
-        restrictTeacher: false,
-        teachers: null,
-        gradeEdited: false
-      }
-    );
-    this.separateAppointmentsConfig.push(
-      {
-        week: 'Secondary Examination Week',
-        gradePercentage: 0,
-        attendanceRequired: false,
-        isGradable: false,
-        restrictTeacher: false,
-        teachers: null,
-        gradeEdited: false
-      }
-    );
-    this.separateAppointmentsConfig.push(
-      {
-        week: 'Reexamination week',
-        gradePercentage: 0,
-        attendanceRequired: false,
-        isGradable: false,
-        restrictTeacher: false,
-        teachers: null,
-        gradeEdited: false
-      }
-    );
-    this.sharedAppointmentsConfig.gradePercentage = "Not gradable";
-    this.constructorDone = true;
+
+
   };
 
 
   getTotalGradePercentage(): number {
-    let filteredArray = this.data.meeting.occurrencesFormControl.value
+    let filteredArray = this.data.appointments
       .filter(appconf => appconf.isGradable === true && appconf.gradePercentage != null);
     return filteredArray.length === 0 ? 100 : filteredArray
       .map(appconf => appconf.gradePercentage)
       .reduce(((sum, currentValue) => sum + currentValue));
   }
-
 
   redistributePercentages(ignoreAppointment: any) {
 
@@ -109,17 +62,18 @@ export class TeacherAddMeetingComponent {
       else if (ignoreAppointment.gradePercentage > 100)
         ignoreAppointment.gradePercentage = 100;
       else {
-        let approxValue = Math.floor(ignoreAppointment.gradePercentage * 100) / 100;
+        let approxValue = Math.floor(ignoreAppointment.gradePercentage * 100 + (0.001)) / 100;
+
         if (approxValue != ignoreAppointment.gradePercentage)
           ignoreAppointment.gradePercentage = approxValue;
       }
     }
 
-    let isGradableAppConfigLength = this.data.meeting.occurrencesFormControl.value
+    let isGradableAppConfigLength = this.data.appointments
       .filter(appconf => appconf.isGradable === true)
       .length;
 
-    let editedAppConfigs = this.data.meeting.occurrencesFormControl.value
+    let editedAppConfigs = this.data.appointments
       .filter(appconf => appconf.gradeEdited === true && appconf.isGradable === true);
 
     let reservedAmount =
@@ -137,7 +91,7 @@ export class TeacherAddMeetingComponent {
     if (newValue < 0) return;
 
     let totalAmount = 0;
-    this.data.meeting.occurrencesFormControl.value.forEach(appconf => {
+    this.data.appointments.forEach(appconf => {
       if (appconf.gradeEdited == false && appconf.isGradable === true) {
         appconf.gradePercentage = newValue;
       }
@@ -147,45 +101,45 @@ export class TeacherAddMeetingComponent {
   }
 
   private getGradePercentage(): number {
-    if (this.data.meeting.occurrencesFormControl.value == null)
+    if (this.data.appointments == null)
       return null;
-    return Math.round((100 / this.data.meeting.occurrencesFormControl.value.length) * 100) / 100;
+    return Math.round((100 / this.data.appointments.length) * 100) / 100;
   }
 
 
   refreshGrading() {
-    if (this.sharedAppointmentsConfig.isGradable == true) {
-      this.sharedAppointmentsConfig.gradePercentage = this.getGradePercentage();
+    if (this.data.sharedAppointment.isGradable == true) {
+      this.data.sharedAppointment.gradePercentage = this.getGradePercentage();
     }
   }
 
   toggleGrading(event: MatSlideToggleChange, appointment: any) {
     if (event.checked) {
       appointment.isGradable = true;
-      if (this.separateWeekConfiguration == false)
+      if (this.data.hasSeparatedWeekConfigurations == false) {
         appointment.gradePercentage = this.getGradePercentage();
-      else {
+      } else {
         this.redistributePercentages(null);
       }
     } else {
       appointment.isGradable = false;
-      appointment.gradePercentage = 0;
+      appointment.gradePercentage = null;
       this.redistributePercentages(null);
     }
   }
 
   toggleSeparateConfiguration(event: MatSlideToggleChange) {
     if (event.checked == true) {
-      this.data.meeting.occurrencesFormControl.value.forEach(a => {
-        a.attendanceRequired = this.sharedAppointmentsConfig.attendanceRequired;
-        a.gradePercentage = this.sharedAppointmentsConfig.gradePercentage;
-        a.isGradable = this.sharedAppointmentsConfig.isGradable;
-        a.restrictTeacher = this.sharedAppointmentsConfig.restrictTeacher;
-        a.teachers = this.sharedAppointmentsConfig.teachers;
+      this.data.appointments.forEach(a => {
+        a.attendanceRequired = this.data.sharedAppointment.attendanceRequired;
+        a.gradePercentage = this.data.sharedAppointment.gradePercentage;
+        a.isGradable = this.data.sharedAppointment.isGradable;
+        a.restrictTeacher = this.data.sharedAppointment.restrictTeacher;
+        a.teachers = this.data.sharedAppointment.teachers;
       });
-      this.separateWeekConfiguration = true;
+      this.data.hasSeparatedWeekConfigurations = true;
     } else {
-      this.separateWeekConfiguration = false;
+      this.data.hasSeparatedWeekConfigurations = false;
     }
 
   }
@@ -201,10 +155,19 @@ export class TeacherAddMeetingComponent {
   }
 
   onCloseClick(): void {
+
     this.dialogRef.close();
   }
 
-  onSaveClick(): void {
+  compare(first, second){
+    return first.weekNumber == second.weekNumber;
+  }
+
+  getData() {
+    if (this.isSaving === true)
+      return;
+
+    this.isSaving = false;
 
     this.output = {
       meeting: null,
@@ -213,27 +176,26 @@ export class TeacherAddMeetingComponent {
 
     this.output.meeting = {
       id: -1,
-      type: this.data.meeting.typeFormControl.value,
+      type: this.data.meeting.type,
       subject: this.data.meeting.subject,
-      teachers: this.data.meeting.teachersFormControl.value
+      teachers: this.data.meeting.teachers
     };
 
     this.output.appointments = [];
 
-    this.data.meeting.occurrencesFormControl.value.forEach(appData => {
-      if (this.separateWeekConfiguration === true) {
-        this.createAppointment(appData, appData.week)
+    this.data.appointments.forEach(appData => {
+      if (this.data.hasSeparatedWeekConfigurations === true) {
+        this.createAppointment(appData, appData.weekNumber)
       } else {
-        this.createAppointment(this.sharedAppointmentsConfig, appData.week)
+        this.createAppointment(this.data.sharedAppointment, appData.weekNumber)
       }
     });
-
-    console.log(this.output);
+    return this.output;
   }
 
 
   createAppointment(app, weekNumber): void {
-    if (app.restrictTeacher === true ) {
+
       this.output.appointments.push({
         id: -1,
         weekNumber: weekNumber,
@@ -241,31 +203,20 @@ export class TeacherAddMeetingComponent {
         attendanceRequired: app.attendanceRequired,
         isGradable: app.isGradable,
         meeting: this.output.meeting,
-        responsibleTeacher: app.teachers
+        responsibleTeacher: null
       });
-    } else {
-      this.output.meeting.teachers.forEach(teacher => {
-        this.output.appointments.push({
-          id: -1,
-          weekNumber: weekNumber,
-          gradePercentage: app.gradePercentage,
-          attendanceRequired: app.attendanceRequired,
-          isGradable: app.isGradable,
-          meeting: this.output.meeting,
-          responsibleTeacher: teacher
-        });
-      })
-    }
+
   }
 
   canSave() {
-    return this.constructorDone === true
-      && this.totalPercentage <= 100.005
+    return this.totalPercentage <= 100.005
       && this.totalPercentage >= 99.995
-      && this.data.meeting.occurrencesFormControl.value != null
-      && this.data.meeting.occurrencesFormControl.value.length > 0
-      && this.data.meeting.teachersFormControl.value != null
-      && this.data.meeting.teachersFormControl.value.length > 0;
+      && this.data.appointments != null
+      && this.data.appointments.length > 0
+      && this.data.meeting.type != null
+      && this.data.meeting.type != ''
+      && this.data.meeting.teachers != null
+      && this.data.meeting.teachers.length > 0;
   }
 
 }
