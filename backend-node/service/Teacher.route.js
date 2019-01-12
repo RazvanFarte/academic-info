@@ -25,7 +25,7 @@ teacherRoutes.route('/')
 teacherRoutes.route('/update/:id') //TODO FIX
   .put(function (req, res) {
     let id = req.params.id;
-    Teacher.update({id:id}, req.body, function (err, teacher) {
+    Teacher.update({_id:id}, req.body, function (err, teacher) {
       if(err) {
         conole.log(err);
       } else {
@@ -40,7 +40,7 @@ teacherRoutes.route('/update/:id') //TODO FIX
   });
 
 teacherRoutes.route('/delete/:id').delete(function(req, res) {
-  Teacher.find({id: req.params.id}, function (err, teacher) {
+  Teacher.find({_id: req.params.id}, function (err, teacher) {
     if(err) res.status(500).json("Error");
     else res.json(teacher);
   }).remove().exec()
@@ -49,7 +49,7 @@ teacherRoutes.route('/delete/:id').delete(function(req, res) {
 teacherRoutes.route('/:id')
   .get(function (req, res) {
     let id = req.params.id;
-    Teacher.find({id: id}, function (err, teacher) {
+    Teacher.find({_id: id}, function (err, teacher) {
       if(err) {
         console.log(err);
       } else {
