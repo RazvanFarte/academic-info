@@ -8,7 +8,6 @@ import {Teacher} from "../../shared/models/Teacher";
 import {LoginService} from "../../shared/services/login/login.service";
 import {SituationService} from "../../shared/services/situation/situation.service";
 import {UserService} from "../../shared/services/user/user.service";
-import {User} from "../../shared/models/User";
 import {SubjectService} from "../../shared/services/subject/subject.service";
 
 @Component({
@@ -84,7 +83,7 @@ export class TeacherSituationComponent implements OnInit {
   }
 
   subjectSelected() {
-    this.situationService.getMeetings(this.subjectControl.value).subscribe(m => this.meetings = m);
+    //this.situationService.getMeetings(this.subjectControl.value).subscribe(m => this.meetings = m);
     this.meetingControl.reset();
   }
 

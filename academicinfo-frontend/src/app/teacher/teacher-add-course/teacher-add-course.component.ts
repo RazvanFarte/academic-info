@@ -9,6 +9,10 @@ import {CourseService} from "../../shared/services/course/course.service";
 import {Teacher} from "../../shared/models/Teacher";
 import {TeacherAddMeetingComponent} from "../teacher-add-meeting/teacher-add-meeting.component";
 import {Appointment} from "../../shared/models/Appointment";
+import {TeacherService} from "../../shared/services/teacher/teacher.service";
+import {SubjectService} from "../../shared/services/subject/subject.service";
+import {MeetingService} from "../../shared/services/meeting/meeting.service";
+import {AppointmentService} from "../../shared/services/appointment/appointment.service";
 
 @Component({
   selector: 'app-teacher-add-course',
@@ -32,11 +36,13 @@ export class TeacherAddCourseComponent implements OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private userService: UserService,
-    private subjectService: CourseService,
     private router: Router,
+    private subjectService: SubjectService,
+    private meetingService: MeetingService,
+    private appointmentService: AppointmentService,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private teacherService: TeacherService
   ) {
   }
 
@@ -49,7 +55,9 @@ export class TeacherAddCourseComponent implements OnInit {
     this.isOptionalCtrl = new FormControl('', null);
     this.teacherCtrl = new FormControl('', null);
     this.meetingNoCtrl = new FormControl('', [Validators.max((30))]);
-    this.teachers = this.userService.getAllTeachers();
+
+    this.teacherService.getTeachers().subscribe(teachers => this.teachers = teachers);
+
     this.addSubjectFormGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
@@ -77,12 +85,18 @@ export class TeacherAddCourseComponent implements OnInit {
   }
 
 
-  isComplete(meetingComplexForm: any): boolean {
+  isComplete(meetingComplexForm
+               :
+               any
+  ):
+    boolean {
     return meetingComplexForm.result != null;
   }
 
 
-  get formArray(): AbstractControl | null {
+  get formArray()
+    :
+    AbstractControl | null {
     return this.addSubjectFormGroup.get('formArray');
   }
 
@@ -98,26 +112,8 @@ export class TeacherAddCourseComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       meeting.result = result;
       meeting.appointments = [];
-
-      result.appointments.forEach(resultedAppointment => {
-
-        let index = meeting.appointments.findIndex(a => a.weekNumber === resultedAppointment.weekNumber);
-        if(index != -1){
-          meeting.appointments[index]
-        }
-
-
-      });
-
-
-
       meeting.appointments = result.appointments;
-      console.log(meeting.appointments)
-
-    }, error => {
-      console.log(error);
-    }, () => {
-    });
+    }, _ => {}, () => {});
   }
 
 
@@ -139,8 +135,6 @@ export class TeacherAddCourseComponent implements OnInit {
     possibleAppointments.push({weekNumber: 'Reexamination week'});
 
 
-
-
     this.meetingComplexForms.push({
       meeting: {
         id: -1,
@@ -156,23 +150,41 @@ export class TeacherAddCourseComponent implements OnInit {
     });
   }
 
-  isSubjectComplete(): boolean {
+  isSubjectComplete()
+    :
+    boolean {
     return true;
   }
 
-  saveSubject() {
-
-    let meetings: Meeting[] = this.meetingComplexForms.map(form => form.result.meeting);
-    this.appointments = [];
-    this.meetingComplexForms.forEach(form => {
-        form.result.appointments.forEach(appointment => this.appointments.push(appointment))
-      }
+  saveChanges(){
+/*
+    this.subjectService.addSubject(this.subject).subscribe(
+      response => {console.log(response)},
+      error => {console.log(error)},
+      () => {console.log('done')}
+    );
+    */
+    this.subjectService.getSubjects().subscribe(
+      response => {console.log(response)},
+      error => {console.log(error)},
+      () => {console.log('done')}
     );
 
 
 
-    this.subjectService.createOrUpdateSubject(this.subject);
-    this.subjectService.createOrUpdateMeetings(this.meetingComplexForms);
+
+    this.meetingComplexForms
+      .map(form => form.result.meeting)
+      .filter(meeting => meeting.type != null)
+      .forEach( meeting => this.meetingService.addMeeting(meeting));
+
+
+    this.appointments = [];
+    this.meetingComplexForms.forEach(form => {
+        form.result.appointments.forEach(appointment => this.appointments.push(appointment))}
+    );
+    this.appointments.forEach(appointment => this.appointmentService.addAppointment(appointment));
+
     this.snackBar.open("Data has been successfully saved!", 'Clear', {duration: 2000});
   }
 }

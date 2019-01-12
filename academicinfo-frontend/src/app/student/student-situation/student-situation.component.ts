@@ -4,7 +4,6 @@ import {Situation} from "../../shared/models/Situation";
 import {SelectionModel} from "@angular/cdk/collections";
 import {Meeting} from "../../shared/models/Meeting";
 import {LoginService} from "../../shared/services/login/login.service";
-import {Teacher} from "../../shared/models/Teacher";
 import {SituationService} from "../../shared/services/situation/situation.service";
 import {Subject} from "../../shared/models/Subject";
 import {UserService} from "../../shared/services/user/user.service";
@@ -51,23 +50,10 @@ export class StudentSituationComponent implements OnInit {
     this.weekControl = new FormControl('', [Validators.required]);
     this.subjectControl = new FormControl('', [Validators.required]);
     this.meetingControl = new FormControl('', [Validators.required]);
-    this.situationService.getSubjects(teacher).subscribe(s => this.subjects = s);
-    this.situationService.getSituations(this.studentId, null, null)
-      .subscribe(r => {
-          this.situations = r;
-          console.log('received: ' + r.length + ' elems');
-        }
-        ,
-        e => {
-          console.log(e);
-        },
-        () => {
-          this.doneLoading = true;
-        });
   }
 
   subjectSelected() {
-    this.situationService.getMeetings(this.subjectControl.value).subscribe(m => this.meetings = m);
+    //this.situationService.getMeetings(this.subjectControl.value).subscribe(m => this.meetings = m);
     this.meetingControl.reset();
   }
 

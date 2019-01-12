@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {Error, Information, Warning} from '../shared/components/communication/communication.component';
-import {login_properties} from "../shared/properties/login-properties";
 import {ACCESS_TOKEN, LoginService, REFRESH_TOKEN} from "../shared/services/login/login.service";
 
 @Component({
@@ -46,35 +45,7 @@ export class LoginComponent implements OnInit {
 
   submitForm() {
 
-    let loginData;
-    if(this.userModel.username.includes("scs")){
-      loginData = login_properties.student_login;
-    } else {
-      loginData = login_properties.teacher_login;
-    }
 
-    loginData.params.username = this.userModel.username;
-    loginData.params.password = this.userModel.password;
-
-
-    this.loginService.validateUserCredentials(loginData)
-      .subscribe((response) => {
-          localStorage.setItem(ACCESS_TOKEN, response.access_token);
-          localStorage.setItem(REFRESH_TOKEN, response.refresh_token);
-          this.router.navigate(['/home']);
-      },
-        (error) => {
-          this.errorMessage = error;
-          this.failedCounter++;
-          if (this.failedCounter > 1) {
-            this.usernameInformation.display = true;
-            this.passwordInformation.display = true;
-          }
-          if (this.failedCounter > 2) {
-            this.failedLoginWarning.display = true;
-          }
-        }
-      );
   }
   resolved(captchaResponse: string) {
     this.recaptchaResponse = captchaResponse;

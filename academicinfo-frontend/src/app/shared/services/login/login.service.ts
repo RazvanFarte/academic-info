@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
 import {Router} from "@angular/router";
 
@@ -12,6 +12,12 @@ export const REFRESH_TOKEN = 'REFRESH_TOKEN';
 export class LoginService {
 
   baseURL = 'http://localhost:port/app';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'my-auth-token'
+    })
+  };
 
   constructor(private router: Router,private http: HttpClient) {
   }
