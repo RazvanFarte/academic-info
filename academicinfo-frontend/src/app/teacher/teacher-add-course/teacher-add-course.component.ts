@@ -18,7 +18,7 @@ export class TeacherAddCourseComponent implements OnInit {
 
   subject: Subject;
   displayMeetingsControl: boolean;
-  meetings: any[];
+  meetingComplexForms: any[];
   teachers: Teacher[];
   /* Form controls & group */
   addSubjectFormGroup: FormGroup;
@@ -38,7 +38,7 @@ export class TeacherAddCourseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.meetings = [];
+    this.meetingComplexForms = [];
 
     this.displayMeetingsControl = false;
     this.meetingNoCtrl = new FormControl('', null);
@@ -74,6 +74,14 @@ export class TeacherAddCourseComponent implements OnInit {
   }
 
 
+
+
+
+  isComplete(meetingComplexForm: any): boolean {
+    return meetingComplexForm.occurrencesFormControl != '';
+  }
+
+
   get formArray(): AbstractControl | null {
     return this.addSubjectFormGroup.get('formArray');
   }
@@ -86,9 +94,7 @@ export class TeacherAddCourseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
-
-      // after close
+        console.log(result);
     });
   }
 
@@ -101,13 +107,14 @@ export class TeacherAddCourseComponent implements OnInit {
       isOptional: this.isOptionalCtrl.value,
       teacher: this.teacherCtrl.value
     };*/
-    this.meetings.push({
-      reference: this.meetings.length,
+    this.meetingComplexForms.push({
+      reference: this.meetingComplexForms.length,
       occurrencesFormControl: new FormControl(),
       typeFormControl: new FormControl(),
       teachersFormControl: new FormControl(),
       attendanceReqFormControl: new FormControl(),
       possibleTeachers: this.teachers,
+      subject: this.subject
     });
   }
 
@@ -117,7 +124,7 @@ export class TeacherAddCourseComponent implements OnInit {
 
   saveSubject(){
     this.subjectService.createOrUpdateSubject(this.subject);
-    this.subjectService.createOrUpdateMeetings(this.meetings);
+    this.subjectService.createOrUpdateMeetings(this.meetingComplexForms);
     this.snackBar.open("Data has been successfully saved!", 'Clear', {duration: 2000});
   }
 }

@@ -58,10 +58,19 @@
             <button mat-raised-button matStepperPrevious color="warn">Back</button>
           </div>
 
-          <div *ngFor="let meeting of meetings">
-            <button mat-raised-button color="basic" (click)="editMeeting(meeting)"> Meeting </button>
-          </div>
+          <div class="meeting-list" *ngFor="let meetingForm of meetingComplexForms">
+            <div  *ngIf="isComplete(meetingForm) == false">
+              <button class="incomplete-meeting" mat-raised-button color="basic" (click)="editMeeting(meetingForm)">
+                New meeting
+              </button>
+            </div>
 
+            <div *ngIf="isComplete(meetingForm) == true">
+              <button class="complete-meeting"mat-raised-button color="basic" (click)="editMeeting(meetingForm)">
+                {{subject.name}} Done
+              </button>
+            </div>
+          </div>
 
         </mat-step>
 

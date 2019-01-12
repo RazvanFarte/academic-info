@@ -3,3 +3,19 @@
 .teacher-add-meeting-container /deep/ mat-form-field {
 
 }
+
+.teacher-add-meeting-container /deep/ mat-divider {
+  margin-bottom: 3%;
+  margin-top: 3%;
+}
+
+.error-container {
+  color: red;
+  margin-top: 5%;
+}
+
+.error-message {
+  position: absolute;
+  margin-top: 3px;
+  margin-left: 1%;
+}

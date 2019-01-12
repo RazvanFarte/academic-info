@@ -13,6 +13,19 @@
   width: 20vw;
 }
 
+
+ .incomplete-meeting {
+    background-color: #c80000;
+ }
+
+ .complete-meeting {
+   background-color: greenyellow;
+ }
+
+ .meeting-list {
+   margin-top: 5%;
+ }
+
  .teacher-add-course-container .stepper-form {
   width: 30% !important;
 }
